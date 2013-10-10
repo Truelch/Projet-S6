@@ -1,10 +1,10 @@
+SHELL := /bin/bash
+
 EXECUTABLE = HelloCpp
 
 INCLUDES = -I.. 
 
-SOURCES = main.cpp \
-          AppDelegate.cpp \
-          HelloWorldScene.cpp
+SOURCES = $(shell ls *.cpp)
 
 COCOS_ROOT = cocos2d-x-2.1.5
 include $(COCOS_ROOT)/cocos2dx/proj.linux/cocos2dx.mk
