@@ -1,4 +1,4 @@
-obj/release/AppDelegate.o: AppDelegate.cpp AppDelegate.h \
+obj/debug/Game.o: Game.cpp Game.h \
  cocos2d-x-2.1.5/cocos2dx/include/cocos2d.h \
  cocos2d-x-2.1.5/cocos2dx/include/ccConfig.h \
  cocos2d-x-2.1.5/cocos2dx/platform/CCPlatformConfig.h \
@@ -175,5 +175,5 @@ obj/release/AppDelegate.o: AppDelegate.cpp AppDelegate.h \
  cocos2d-x-2.1.5/cocos2dx/CCScheduler.h \
  cocos2d-x-2.1.5/cocos2dx/support/data_support/uthash.h \
  cocos2d-x-2.1.5/cocos2dx/support/component/CCComponent.h \
- cocos2d-x-2.1.5/cocos2dx/support/component/CCComponentContainer.h Game.h \
+ cocos2d-x-2.1.5/cocos2dx/support/component/CCComponentContainer.h \
  Displayable.h AppMacros.h

@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-EXECUTABLE = HelloCpp
+EXECUTABLE = Game
 
 INCLUDES = -I.. 
 
@@ -8,6 +8,8 @@ SOURCES = $(shell ls *.cpp)
 
 COCOS_ROOT = cocos2d-x-2.1.5
 include $(COCOS_ROOT)/cocos2dx/proj.linux/cocos2dx.mk
+
+CXXFLAGS+= -g
 
 SHAREDLIBS += -lcocos2d -lX11
 COCOS_LIBS = $(LIB_DIR)/libcocos2d.so $(LIB_DIR)/libglfw.so.3

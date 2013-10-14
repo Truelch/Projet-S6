@@ -1,4 +1,4 @@
-obj/release/AppDelegate.o: AppDelegate.cpp AppDelegate.h \
+obj/debug/AppDelegate.o: AppDelegate.cpp AppDelegate.h \
  cocos2d-x-2.1.5/cocos2dx/include/cocos2d.h \
  cocos2d-x-2.1.5/cocos2dx/include/ccConfig.h \
  cocos2d-x-2.1.5/cocos2dx/platform/CCPlatformConfig.h \
