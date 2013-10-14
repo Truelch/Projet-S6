@@ -1,5 +1,5 @@
-#ifndef DISPLAYABLE_CPP
-#define DISPLAYABLE_CPP
+#ifndef DISPLAYABLE_H
+#define DISPLAYABLE_H
 
 #include "cocos2d.h"
 
