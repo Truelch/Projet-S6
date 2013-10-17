@@ -101,13 +101,13 @@ void Game::update(CCTime dt)
 
 
 void Game::ccTouchesBegan(CCSet* touches, CCEvent* event) {
-	CCTouch * p = (CCTouch *)(*(touches->begin()));
-	(*_displayables.begin())->setPosition(p->getLocation());
+	CCPoint p = ((CCTouch *)(*(touches->begin())))->getLocation();
+	(*_displayables.begin())->setPosition(p);
 }
 
 void Game::ccTouchesMoved(CCSet* touches, CCEvent* event) {
-	CCTouch * p = (CCTouch *)(*(touches->begin()));
-	(*_displayables.begin())->setPosition(p->getLocation());
+	CCPoint p = ((CCTouch *)(*(touches->begin())))->getLocation();
+	(*_displayables.begin())->setPosition(p);
 }
 
 void Game::ccTouchesEnded(CCSet* touches, CCEvent* event) {
