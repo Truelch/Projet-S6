@@ -62,6 +62,8 @@ bool Game::init()
 	
 	// --- --- ---
 	this->schedule( schedule_selector( Game::update ), 1.0 / 50 );
+
+	this->setTouchEnabled(true);
 	
 	return true;
 }
@@ -96,3 +98,22 @@ void Game::update(CCTime dt)
 	if(pos) delete pos;
 
 }
+
+
+void Game::ccTouchesBegan(CCSet* touches, CCEvent* event) {
+	CCTouch * p = (CCTouch *)(*(touches->begin()));
+	(*_displayables.begin())->setPosition(p->getLocation());
+}
+
+void Game::ccTouchesMoved(CCSet* touches, CCEvent* event) {
+	CCTouch * p = (CCTouch *)(*(touches->begin()));
+	(*_displayables.begin())->setPosition(p->getLocation());
+}
+
+void Game::ccTouchesEnded(CCSet* touches, CCEvent* event) {
+}
+
+void Game::ccTouchesCancelled(CCSet* touches, CCEvent* event) {
+}
+
+
