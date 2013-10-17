@@ -2,9 +2,9 @@ SHELL := /bin/bash
 
 EXECUTABLE = Game
 
-INCLUDES = -I.. 
+INCLUDES = -Iinclude
 
-SOURCES = $(shell ls *.cpp)
+SOURCES = $(shell ls source/*.cpp)
 
 COCOS_ROOT = cocos2d-x-2.1.5
 include $(COCOS_ROOT)/cocos2dx/proj.linux/cocos2dx.mk

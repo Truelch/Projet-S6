@@ -1,0 +1,10 @@
+source/Unit.cpp: In member function ‘void Unit::set_armor_type(std::string)’:
+source/Unit.cpp:118:16: error: no match for ‘operator=’ in ‘((Unit*)this)->Unit::_type_armor = ((Unit*)this)->Unit::type_armor’
+source/Unit.cpp:118:16: note: candidates are:
+/usr/include/c++/4.6/bits/basic_string.h:541:7: note: std::basic_string<_CharT, _Traits, _Alloc>& std::basic_string<_CharT, _Traits, _Alloc>::operator=(const std::basic_string<_CharT, _Traits, _Alloc>&) [with _CharT = char, _Traits = std::char_traits<char>, _Alloc = std::allocator<char>, std::basic_string<_CharT, _Traits, _Alloc> = std::basic_string<char>]
+/usr/include/c++/4.6/bits/basic_string.h:541:7: note:   no known conversion for argument 1 from ‘<unresolved overloaded function type>’ to ‘const std::basic_string<char>&’
+/usr/include/c++/4.6/bits/basic_string.h:549:7: note: std::basic_string<_CharT, _Traits, _Alloc>& std::basic_string<_CharT, _Traits, _Alloc>::operator=(const _CharT*) [with _CharT = char, _Traits = std::char_traits<char>, _Alloc = std::allocator<char>, std::basic_string<_CharT, _Traits, _Alloc> = std::basic_string<char>]
+/usr/include/c++/4.6/bits/basic_string.h:549:7: note:   no known conversion for argument 1 from ‘<unresolved overloaded function type>’ to ‘const char*’
+/usr/include/c++/4.6/bits/basic_string.h:560:7: note: std::basic_string<_CharT, _Traits, _Alloc>& std::basic_string<_CharT, _Traits, _Alloc>::operator=(_CharT) [with _CharT = char, _Traits = std::char_traits<char>, _Alloc = std::allocator<char>, std::basic_string<_CharT, _Traits, _Alloc> = std::basic_string<char>]
+/usr/include/c++/4.6/bits/basic_string.h:560:7: note:   no known conversion for argument 1 from ‘<unresolved overloaded function type>’ to ‘char’
+make: *** [obj/release/source/Unit.o] Erreur 1
