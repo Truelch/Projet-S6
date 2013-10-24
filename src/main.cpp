@@ -10,11 +10,12 @@ USING_NS_CC;
 
 int main(int argc, char **argv)
 {
-    // create the application instance
-    AppDelegate app;
+	// create the application instance
+	AppDelegate app;
 
-    CCEGLView* eglView = CCEGLView::sharedOpenGLView();
-    eglView->setFrameSize(1024, 768);
+	CCEGLView* eglView = CCEGLView::sharedOpenGLView();
+	eglView->setFrameSize(1024, 768);
 
-    return CCApplication::sharedApplication()->run();
+	cocos2d::CCApplication * app2 = CCApplication::sharedApplication();
+	return app2->run();
 }

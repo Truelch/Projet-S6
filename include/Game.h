@@ -8,31 +8,30 @@
 
 using namespace std;
 
-class Game : public cocos2d::CCLayer
+class Game : public cocos2d::CCScene
 {
-public:
-	// Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
-	virtual bool init();  
+	public:
+		Game();
+		// Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
 
-	// there's no 'id' in cpp, so we recommend returning the class instance pointer
-	static cocos2d::CCScene* scene();
-	
-	// a selector callback
-	void menuCloseCallback(CCObject* pSender);
-	
-	// implement the "static node()" method manually
-	CREATE_FUNC(Game);
-	
-	//Faire bouger l'unite
-	virtual void update(CCTime dt); //le virtual (qui n'est que dans le .h d'ailleurs) sert à indiquer qu'on surcharge une methode existante
-	
-	//Attributs
-	vector <Displayable *> _displayables;
+		// there's no 'id' in cpp, so we recommend returning the class instance pointer
+		CCLayer * layer;
+		
+		// implement the "static node()" method manually
+		CREATE_FUNC(Game);
 
-	virtual void ccTouchesBegan(CCSet* touches, CCEvent* event);
-	virtual void ccTouchesMoved(CCSet* touches, CCEvent* event);
-	virtual void ccTouchesEnded(CCSet* touches, CCEvent* event);
-	virtual void ccTouchesCancelled(CCSet* touches, CCEvent* event);
+		//Faire bouger l'unite
+		virtual void update(CCTime dt); //le virtual (qui n'est que dans le .h d'ailleurs) sert à indiquer qu'on surcharge une methode existante
+		
+		void ccTouchesBegan(CCSet* touches, CCEvent* event);
+		void ccTouchesMoved(CCSet* touches, CCEvent* event);
+		void ccTouchesEnded(CCSet* touches, CCEvent* event);
+		void ccTouchesCancelled(CCSet* touches, CCEvent* event);
+		
+	
+		//Attributs
+		vector <Displayable *> _displayables;
+
 };
 
 #endif // GAME_H
