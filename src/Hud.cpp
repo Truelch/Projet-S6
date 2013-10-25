@@ -4,7 +4,7 @@ Hud::Hud(): Displayable() {
 	//
 }
 
-Hud::Hud(float x, float y, float rotation, const char * filename): Displayable(x,y,rotation,filename)
+Hud::Hud(float x, float y, const char * filename): Displayable(x,y,0,filename)
 {
 	//
 }

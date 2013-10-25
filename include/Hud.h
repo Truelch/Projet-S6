@@ -10,7 +10,7 @@ class Hud : public Displayable
 {
 	public:
 		Hud();
-		Hud(float x, float y, float rotation, const char * filename);
+		Hud(float x, float y, const char * filename);
 		
 		// --- ATTRIBUTS ---
 		//Lui ajouter un container de Boutons
