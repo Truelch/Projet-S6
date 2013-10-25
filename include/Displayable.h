@@ -10,7 +10,6 @@ class Displayable : public CCSprite
 	public:
 		Displayable();
 		Displayable(float x, float y, float rotation, const char * filename);
-		
 };
 
 #endif

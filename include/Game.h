@@ -4,7 +4,9 @@
 #include "cocos2d.h"
 #include <vector>
 
-#include "Displayable.h"
+#include "Moveable.h"
+//#include Unit.h"
+#include "Hud.h"
 
 using namespace std;
 
@@ -28,9 +30,12 @@ class Game : public cocos2d::CCScene
 		void ccTouchesEnded(CCSet* touches, CCEvent* event);
 		void ccTouchesCancelled(CCSet* touches, CCEvent* event);
 		
+		
 	
 		//Attributs
-		vector <Displayable *> _displayables;
+		vector <Moveable *> _moveables;
+		//MES AJOUTS
+		//Hud* hud;
 
 };
 

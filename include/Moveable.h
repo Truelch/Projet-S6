@@ -14,11 +14,14 @@ class Moveable : public Displayable
 		
 		// --- Attributs ---
 		CCPoint _destination;
-		float _move_speed;
+		float   _move_speed;
+		
+		// --- METHODES ---
+		void move();
 		
 		// --- GET ---
-		CCPoint destination();
-		float move_speed();
+		CCPoint get_destination();
+		float   get_move_speed();
 		
 		// --- SET ---
 		void set_destination(float x_dest, float y_dest);

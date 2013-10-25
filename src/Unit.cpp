@@ -1,5 +1,6 @@
 #include "Unit.h"
 
+
 Unit::Unit(): Moveable() {
 	//
 }
@@ -17,6 +18,8 @@ Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float m
 	set_armor_type(armor_type);
 	set_prod_time(prod_time);
 }
+
+// --- METHODES ---
 
 // --- GET ---
 

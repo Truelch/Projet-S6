@@ -15,7 +15,7 @@ class Unit : public Moveable
 		Unit();
 		Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, const char * filename, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, string armor_type, int prod_time);
 		
-		// --- Attributs ---
+		// --- ATTRIBUTS ---
 		string _name;
 		int _hp;
 		int _hp_max;
@@ -26,6 +26,9 @@ class Unit : public Moveable
 		int _armor;
 		string _type_armor;
 		int _prod_time;
+		
+		// --- METHODES ---
+
 	
 		// --- GET ---
 		string get_name();
