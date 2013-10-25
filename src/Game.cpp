@@ -13,11 +13,13 @@ Game::Game(): CCScene()
 {
 	layer = new Layer(this);
 	addChild(layer);
+	
+	layer_hud = new Layer(this);
 
 	_moveables.push_back(new Moveable(200,200,300,300,-90,3.5,"01.png"));/* !! */
 	layer->addChild(*(_moveables.end()-1),0); //this->addChild(_displayables[_displayables.size()-1]),0);
 	
-	//_hud = new Hud(0, 210, 0, "hud.png")
+	_hud = new Hud(0, 780, "hud.png")
 
 	this->schedule( schedule_selector( Game::update ), 1.0 / 50 );
 	layer->setTouchEnabled(true);

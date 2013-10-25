@@ -34,6 +34,7 @@ class Game : public cocos2d::CCScene
 	
 		//Attributs
 		vector <Moveable *> _moveables;
+		Hud* _hud;
 		//MES AJOUTS
 		//Hud* hud;
 
