@@ -16,12 +16,6 @@ class Missile : public Moveable
 		Missile(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, const char * filename, 
 				float x_origin, float y_origin, float range_max, int damage);
 		
-		// --- ATTRIBUTS ---
-		float _x_origin;
-		float _y_origin;
-		float _range_max;
-		int   _damage;
-		
 		// --- METHODES ---
 
 	
@@ -37,6 +31,13 @@ class Missile : public Moveable
 		void set_range_max(float range_max);
 		void set_damage(int damage);
 
+	private:
+		// --- ATTRIBUTS ---
+		float _x_origin;
+		float _y_origin;
+		float _range_max;
+		int   _damage;
+		
 		
 };
 
