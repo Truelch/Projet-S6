@@ -4,7 +4,7 @@ Building::Building(): Displayable() {
 	//
 }
 
-Building::Building(float x, float y, float rotation, const char * filename, float x_rally_point, float y_rally_point): Displayable(x,y,rotation,filename)
+Building::Building(float x, float y, const char * filename, float x_rally_point, float y_rally_point): Displayable(x,y,0,filename)
 {
 	//
 }

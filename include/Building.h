@@ -10,7 +10,7 @@ class Building : public Displayable
 {
 	public:
 		Building();
-		Building(float x, float y, float rotation, const char * filename, float x_rally_point, float y_rally_point);
+		Building(float x, float y, const char * filename, float x_rally_point, float y_rally_point);
 		//Pensez à rajouter la liste d'unités pouvant être produites
 		
 		// --- ATTRIBUTS ---
