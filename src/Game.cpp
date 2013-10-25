@@ -11,18 +11,24 @@ using namespace std;
 
 Game::Game(): CCScene()
 {
-	layer = new Layer(this);
-	addChild(layer);
-	
-	layer_hud = new Layer(this);
+	_main_layer = new Layer(this);
+	_main_layer->setTouchEnabled(true);
+	_main_layer->setZOrder(1);
+	addChild(_main_layer);
 
 	_moveables.push_back(new Moveable(200,200,300,300,-90,3.5,"01.png"));/* !! */
-	layer->addChild(*(_moveables.end()-1),0); //this->addChild(_displayables[_displayables.size()-1]),0);
-	
-	_hud = new Hud(0, 780, "hud.png")
+	_main_layer->addChild(*(_moveables.end()-1),0); //this->addChild(_displayables[_displayables.size()-1]),0);
 
+	_hud_layer = new Layer(this);
+	_hud_layer->setTouchEnabled(true);
+	_hud_layer->setZOrder(2);
+	addChild(_hud_layer);
+
+	_hud = new Hud(256,180,"hud.png");
+	_hud_layer->addChild(_hud,0);
+
+	
 	this->schedule( schedule_selector( Game::update ), 1.0 / 50 );
-	layer->setTouchEnabled(true);
 }
 
 

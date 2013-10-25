@@ -16,9 +16,6 @@ class Game : public cocos2d::CCScene
 		Game();
 		// Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
 
-		// there's no 'id' in cpp, so we recommend returning the class instance pointer
-		CCLayer * layer;
-		
 		// implement the "static node()" method manually
 		CREATE_FUNC(Game);
 
@@ -30,13 +27,13 @@ class Game : public cocos2d::CCScene
 		void ccTouchesEnded(CCSet* touches, CCEvent* event);
 		void ccTouchesCancelled(CCSet* touches, CCEvent* event);
 		
+	private:
+
+		CCLayer * _main_layer;
+		CCLayer * _hud_layer;
 		
-	
-		//Attributs
 		vector <Moveable *> _moveables;
 		Hud* _hud;
-		//MES AJOUTS
-		//Hud* hud;
 
 };
 

@@ -176,4 +176,5 @@ obj/release/src/Game.o: src/Game.cpp include/Game.h \
  cocos2d-x-2.1.5/cocos2dx/support/data_support/uthash.h \
  cocos2d-x-2.1.5/cocos2dx/support/component/CCComponent.h \
  cocos2d-x-2.1.5/cocos2dx/support/component/CCComponentContainer.h \
- include/Displayable.h include/AppMacros.h
+ include/Moveable.h include/Displayable.h include/Hud.h \
+ include/AppMacros.h include/Layer.h
