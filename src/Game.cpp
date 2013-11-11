@@ -2,8 +2,6 @@
 #include "AppMacros.h"
 #include <iostream>
 
-#include "Layer.h"
-
 
 USING_NS_CC;
 
@@ -34,6 +32,17 @@ Game::Game(): Scene()
 }
 
 // --- GET ---
+
+int Game::get_map_width()
+{
+	return _map_width;
+}
+
+int Game::get_map_height()
+{
+	return _map_height;
+}
+
 DisplayLayer * Game::get_display_layer()
 {
 	return _display_layer;

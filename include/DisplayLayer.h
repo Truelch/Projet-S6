@@ -6,6 +6,7 @@
 #include <string>
 
 #include "Layer.h"
+#include "TileLayer.h"
 
 using namespace std;
 
@@ -19,11 +20,12 @@ class DisplayLayer : public Layer
 	
 		// --- GET ---
 		
-		Layer * get_tile_layer();
+		Layer * get_background_layer();
+		Layer * get_opacity_layer();
+		TileLayer * get_tile_layer();
 		Layer * get_doodad_layer();
 		Layer * get_unit_layer();
 		Layer * get_missile_layer();
-		//CCLayer * get_interaction_layer();
 		
 
 		// --- SET ---
@@ -36,12 +38,12 @@ class DisplayLayer : public Layer
 		//void set_interaction_layer();
 
 	private:
-		Layer * _tile_layer;        //z = 0
-		Layer * _doodad_layer;      //z = 1
-		Layer * _unit_layer;        //z = 2
-		Layer * _missile_layer;     //z = 3
-		//CCLayer * _interaction_layer; //z = 7	
-		
+		Layer * _background_layer;   //z = 0
+		Layer * _opacity_layer;     //z = 1
+		TileLayer * _tile_layer;        //z = 2
+		Layer * _doodad_layer;      //z = 3
+		Layer * _unit_layer;        //z = 4
+		Layer * _missile_layer;     //z = 5	
 };
 
 #endif

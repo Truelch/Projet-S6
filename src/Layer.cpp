@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 Layer::Layer(): CCLayer(), _scene(NULL)
 {
 	init();
