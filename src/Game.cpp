@@ -11,12 +11,13 @@ using namespace std;
 
 Game::Game(): Scene()
 {
-	/*
-	_main_layer = new Layer(this);
-	_main_layer->setTouchEnabled(true);
-	_main_layer->setZOrder(1);
-	addChild(_main_layer);
+	
+	_display_layer = new DisplayLayer(this);
+	_display_layer->setTouchEnabled(true);
+	//_display_layer->setZOrder(1);
+	addChild(_display_layer);
 
+	/*
 	_moveables.push_back(new Moveable(200,200,300,300,-90,3.5,"01.png"));  // !!
 	_main_layer->addChild(*(_moveables.end()-1),0); //this->addChild(_displayables[_displayables.size()-1]),0);
 
