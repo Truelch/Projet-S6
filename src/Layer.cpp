@@ -1,17 +1,17 @@
-
 #include "Layer.h"
-#include "Displayable.h"
 
-#include  "Game.h"
+#include "Scene.h"
+
+
 
 using namespace std;
 
-Layer::Layer(): CCLayer(), _game(NULL)
+Layer::Layer(): CCLayer(), _scene(NULL)
 {
 	init();
 }
 
-Layer::Layer(Game * game): CCLayer(), _game(game)
+Layer::Layer(Scene * scene): CCLayer(), _scene(scene)
 {
 	init();
 }
@@ -61,17 +61,17 @@ void Layer::menuCloseCallback(CCObject* pSender)
 
 
 void Layer::ccTouchesBegan(CCSet* touches, CCEvent* event) {
-	_game->ccTouchesBegan(touches, event);
+	_scene->ccTouchesBegan(touches, event);
 }
 
 void Layer::ccTouchesMoved(CCSet* touches, CCEvent* event) {
-	_game->ccTouchesMoved(touches, event);
+	_scene->ccTouchesMoved(touches, event);
 }
 
 void Layer::ccTouchesEnded(CCSet* touches, CCEvent* event) {
-	_game->ccTouchesEnded(touches, event);
+	_scene->ccTouchesEnded(touches, event);
 }
 
 void Layer::ccTouchesCancelled(CCSet* touches, CCEvent* event) {
-	_game->ccTouchesCancelled(touches, event);
+	_scene->ccTouchesCancelled(touches, event);
 }

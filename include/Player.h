@@ -21,13 +21,17 @@ class Player
 		int    _player_number;
 		int    _team_number;
 		
+		//Unit*  _unit_selection;
+		//Il faudra que je retrouve comment bien initialiser le pointeur. Est ce que ça doit être un container ??
+		
 		//METHODES
 		
 		//GET
 		string get_name();
 		string get_color();
 		int    get_player_number();
-		int    get_team_number();		
+		int    get_team_number();
+			
 		
 		//SET
 		void set_name(string name);

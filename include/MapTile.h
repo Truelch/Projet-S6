@@ -19,6 +19,7 @@ class MapTile : public Displayable
 		
 		// --- METHODES ---
 		
+		
 		// --- GET ---
 
 		
