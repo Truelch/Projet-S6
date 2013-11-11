@@ -41,7 +41,7 @@ DisplayLayer * Game::get_display_layer()
 
 
 
-void Game::update(CCTime dt)
+void Game::update(float dt)
 {
 	vector <Displayable *>::iterator it;
 

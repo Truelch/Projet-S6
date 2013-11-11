@@ -29,7 +29,7 @@ class Game : public Scene
 		CREATE_FUNC(Game);
 
 		//Faire bouger l'unite
-		virtual void update(CCTime dt); //le virtual (qui n'est que dans le .h d'ailleurs) sert à indiquer qu'on surcharge une methode existante
+		virtual void update(float dt); //le virtual (qui n'est que dans le .h d'ailleurs) sert à indiquer qu'on surcharge une methode existante
 		
 		virtual void ccTouchesBegan(CCSet* touches, CCEvent* event);
 		virtual void ccTouchesMoved(CCSet* touches, CCEvent* event);
