@@ -13,8 +13,11 @@ using namespace std;
 
 //Pour le Tile Layer
 
-typedef vector<vector<MapTile *> > Matrix;
-typedef vector<vector<MapTile *> >::iterator row;
+typedef vector<vector<MapTile *> > MapTileMatrix;
+typedef vector<vector<MapTile *> >::iterator MapTileMatrixIt;
+
+typedef vector<vector<int> > IntMatrix;
+typedef vector<vector<int> >::iterator IntMatrixIt;
 
 
 class TileLayer : public Layer
@@ -23,13 +26,16 @@ class TileLayer : public Layer
 		TileLayer();
 		TileLayer(Scene * scene);
 		// --- METHODES ---
-		void init2();
+		int init_file(string filename);
 	
 		// --- GET ---
-		Matrix * get_tile_matrix;
 
 	private:
-		Matrix * _tile_matrix;		
+		IntMatrix _int_matrix;		
+		MapTileMatrix _map_tile_matrix;		
+
+		unsigned int _width;
+		unsigned int _height;
 };
 
 #endif
