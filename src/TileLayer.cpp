@@ -1,5 +1,9 @@
 #include "TileLayer.h"
 
+#include <fstream>
+
+using namespace std;
+
 
 TileLayer::TileLayer(): Layer()
 {
@@ -22,13 +26,9 @@ TileLayer::TileLayer(Scene * scene): Layer(scene)
 
 void TileLayer::init2()
 {
-	//
-	
-	
-	//Générer le terrain
-	
+	ifstream mapFile;
+	mapFile.open("map/map1");
+	sting line;
+	if(mapFile.is_open())
 }
-
-
-
 
