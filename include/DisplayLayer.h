@@ -35,15 +35,7 @@ class DisplayLayer : public Layer
 		Layer *     get_unit_layer();
 		Layer *     get_missile_layer();
 		
-
 		// --- SET ---
-		/*
-		void set_tile_layer();
-		void set_doodad_layer();
-		void set_unite_layer();
-		void set_missile_layer();
-		*/
-		//void set_interaction_layer();
 		
 		// --- METHODES ---
 		void init2();
@@ -58,7 +50,7 @@ class DisplayLayer : public Layer
 		Layer *     _unit_layer;       //z = 5
 		Layer *     _missile_layer;    //z = 6
 		
-		IntMatrix     _int_matrix;		
+		IntMatrix     _int_matrix;
 		MapTileMatrix _map_tile_matrix;            //=> _tile_layer
 		MapTileMatrix _background_map_tile_matrix; //=> _background_layer	
 

@@ -1,15 +1,25 @@
 #include "DisplayLayer.h"
 
+#include <stdlib.h>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <string>
 
 DisplayLayer::DisplayLayer(): Layer()
 {
+	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
+	init_file("map/map1");
 }
 
 
 DisplayLayer::DisplayLayer(Scene * scene): Layer(scene)
 {
+	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
+	init_file("map/map1");
+	
 }
 
 
@@ -95,7 +105,7 @@ int DisplayLayer::init_file(string filename)
 	 * 
 	 */
 	
-	unsigned int i,j,x,y, nombreLigne=0, int_tile;
+	unsigned int i/*,j,x,y*/, nombreLigne=0, int_tile;
 	int findIndex;
 	istringstream buffer;
 	string line;
@@ -138,17 +148,23 @@ int DisplayLayer::init_file(string filename)
 	// --- BACKGROUND ---
 	
 	//Création d'une matrice remplie de Tiles identiques. A l'avenir, les données seront chargées à partir du fichier map et du fichier xml associant identifiant de Tile et toutes ses données
+	/*
 	for(j=0;j<_map_height;j++)
 	{
+		_background_map_tile_matrix.push_back(vector<MapTile *>());
 		for(i=0;i<_map_width;i++)
 		{
 			//Faut-il donner le chemin vers l'image ou seulement le nom de fichier de l'image ?
 			x = _tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
 			y = _tile_size*j;
-			_background_map_tile_matrix[j][i] = new MapTile(x,y,"000.png"); //Cela marche-t-il ?
+			_background_map_tile_matrix[j].push_back(new MapTile(x,y,"000.png")); //Cela marche-t-il ?
 			_background_layer->addChild(_background_map_tile_matrix[j][i]);
 		}
-	}
+	}*/
+	//_background_layer->addChild(new MapTile(0,0,"000.png"));
+	_background_layer->addChild(new MapTile(75,50,"000.png"));
+	//_background_layer->addChild(new MapTile(500,500,"000.png"));
+	//_background_layer->addChild(new MapTile(150,50,"000.png"));
 	
 	// --- OPACITY ---
 	
@@ -166,7 +182,7 @@ int DisplayLayer::init_file(string filename)
 	// => Réglé : on est dans DisplayLayer maintenant
 	
 	// --- TILES ---
-	
+	/*
 	for(y=0;y<_map_height;y++)
 	{
 		for(x=0;x<_map_width;x++)
@@ -175,7 +191,7 @@ int DisplayLayer::init_file(string filename)
 			_tile_layer->addChild(_map_tile_matrix[y][x]); // Cela marche-t-il ?
 		}
 	}
-	
+	*/
 	//On aurait également besoin de quelque chose semblable à un dictionnaire en Python; associant un identifiant à un élément stocké.
 	//Par exemple id = 1 renvoie un Tile avec l'image 01.png, son type de collisions etc.
 	
