@@ -1,7 +1,7 @@
 #include "Layer.h"
 
 #include "Scene.h"
-
+#include "TileLayer.h"
 
 
 using namespace std;
@@ -19,7 +19,6 @@ Layer::Layer(Scene * scene): CCLayer(), _scene(scene)
 
 bool Layer::init()
 {
-
 	if( !CCLayer::init() ) {
 		return false;
 	}
