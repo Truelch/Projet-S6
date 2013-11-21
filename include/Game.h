@@ -5,10 +5,11 @@
 #include <vector>
 
 #include "Moveable.h"
-//#include Unit.h"
+#include "Unit.h"
 #include "Hud.h"
 #include "DisplayLayer.h"
 #include "Scene.h"
+#include "UnitLayer.h"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ class Game : public Scene
 		// --- GET ---
 		int get_map_width();
 		int get_map_height();
+		
 		DisplayLayer * get_display_layer();
 		
 		// --- SET ---
@@ -41,8 +43,8 @@ class Game : public Scene
 	private:
 		int _map_width;
 		int _map_height;
+		
 		DisplayLayer * _display_layer;
-
 };
 
 #endif

@@ -2,12 +2,14 @@
 #define DISPLAYLAYER_H
 
 #include "cocos2d.h"
+#include "CCArmature/external_tool/GLES-Render.h"
 
 #include <string>
 
 #include "Layer.h"
 #include "TileLayer.h"
 #include "LayerRGBA.h"
+#include "UnitLayer.h"
 
 //Pour le Tile Layer
 
@@ -25,6 +27,8 @@ class DisplayLayer : public Layer
 		DisplayLayer();
 		DisplayLayer(Scene * scene);
 
+		virtual void draw();
+
 	
 		// --- GET ---
 		LayerRGBA * get_black_layer();
@@ -32,18 +36,10 @@ class DisplayLayer : public Layer
 		LayerRGBA * get_opacity_layer();
 		TileLayer * get_tile_layer();
 		Layer *     get_doodad_layer();
-		Layer *     get_unit_layer();
+		UnitLayer *     get_unit_layer();
 		Layer *     get_missile_layer();
 		
-
 		// --- SET ---
-		/*
-		void set_tile_layer();
-		void set_doodad_layer();
-		void set_unite_layer();
-		void set_missile_layer();
-		*/
-		//void set_interaction_layer();
 		
 		// --- METHODES ---
 		void init2();
@@ -55,18 +51,21 @@ class DisplayLayer : public Layer
 		LayerRGBA * _opacity_layer;    //z = 2
 		TileLayer * _tile_layer;       //z = 3
 		Layer *     _doodad_layer;     //z = 4
-		Layer *     _unit_layer;       //z = 5
+		UnitLayer *     _unit_layer;       //z = 5
 		Layer *     _missile_layer;    //z = 6
 		
-		IntMatrix     _int_matrix;		
+		IntMatrix     _int_matrix;
 		MapTileMatrix _map_tile_matrix;            //=> _tile_layer
 		MapTileMatrix _background_map_tile_matrix; //=> _background_layer	
+
+		MapTile * _mapTile;
 
 		unsigned int  _map_width;
 		unsigned int  _map_height;
 		
 		unsigned int _tile_size;
 		
+		cocos2d::extension::GLESDebugDraw* m_debugDraw;
 		
 };
 

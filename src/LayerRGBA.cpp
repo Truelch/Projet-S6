@@ -2,7 +2,7 @@
 
 #include "Scene.h"
 #include "TileLayer.h"
-
+#include <iostream>
 
 using namespace std;
 
@@ -29,29 +29,3 @@ bool LayerRGBA::init()
 	return true;
 }
 
-
-void Layer::menuCloseCallback(CCObject* pSender)
-{
-	CCDirector::sharedDirector()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	exit(0);
-#endif
-}
-
-
-void Layer::ccTouchesBegan(CCSet* touches, CCEvent* event) {
-	_scene->ccTouchesBegan(touches, event);
-}
-
-void Layer::ccTouchesMoved(CCSet* touches, CCEvent* event) {
-	_scene->ccTouchesMoved(touches, event);
-}
-
-void Layer::ccTouchesEnded(CCSet* touches, CCEvent* event) {
-	_scene->ccTouchesEnded(touches, event);
-}
-
-void Layer::ccTouchesCancelled(CCSet* touches, CCEvent* event) {
-	_scene->ccTouchesCancelled(touches, event);
-}

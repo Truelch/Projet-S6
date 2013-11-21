@@ -2,14 +2,24 @@
 #define SCENE
 
 #include "cocos2d.h"
+#include "Box2D/Box2D.h"
+
+#define PTM_RATIO 32
 
 class Scene : public cocos2d::CCScene
 {
 	public:
-		virtual void ccTouchesBegan(CCSet* touches, CCEvent* event) = 0;
-		virtual void ccTouchesMoved(CCSet* touches, CCEvent* event) = 0;
-		virtual void ccTouchesEnded(CCSet* touches, CCEvent* event) = 0;
-		virtual void ccTouchesCancelled(CCSet* touches, CCEvent* event) = 0;
+		Scene();
+
+		virtual void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event) = 0;
+		virtual void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event) = 0;
+		virtual void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event) = 0;
+		virtual void ccTouchesCancelled(cocos2d::CCSet* touches, cocos2d::CCEvent* event) = 0;
+
+		b2World * getWorld() { return _world; }
+	private:
+
+		b2World * _world;
 };
 
 #endif

@@ -2,6 +2,8 @@
 #include "AppMacros.h"
 #include <iostream>
 
+#include "Unit.h"
+
 
 USING_NS_CC;
 
@@ -14,10 +16,12 @@ Game::Game(): Scene()
 	//_display_layer->setZOrder(1);
 	addChild(_display_layer);
 
-	/*
-	_moveables.push_back(new Moveable(200,200,300,300,-90,3.5,"01.png"));  // !!
-	_main_layer->addChild(*(_moveables.end()-1),0); //this->addChild(_displayables[_displayables.size()-1]),0);
+	_display_layer->get_unit_layer()->addUnit(new Unit(100,160,400,150,-90,5,5.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100));
+	_display_layer->get_unit_layer()->addUnit(new Unit(400,140,100,150,-90,5,5.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100));
 
+	//_display_layer->get_unit_layer()->addUnit(new Unit(0,0,0,0,-90,5,5.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100));
+
+	/*
 	_hud_layer = new Layer(this);
 	_hud_layer->setTouchEnabled(true);
 	_hud_layer->setZOrder(2);
@@ -25,8 +29,8 @@ Game::Game(): Scene()
 
 	_hud = new Hud(256,180,"hud.png");
 	_hud_layer->addChild(_hud,0);
-
 	*/
+
 	this->schedule( schedule_selector( Game::update ), 1.0 / 50 );	
 }
 
@@ -51,15 +55,13 @@ DisplayLayer * Game::get_display_layer()
 
 void Game::update(float dt)
 {
-	vector <Displayable *>::iterator it;
+	int i;
+	for(i=0;i<_display_layer->get_unit_layer()->getNumberUnit();i++)
+	{
+		_display_layer->get_unit_layer()->getUnit(i)->move(dt);
+	}
 
-	//Unités
-	
-	for(it=get_display_layer()->get_unit_layer()->get_displayable_list().begin() ; it!=get_display_layer()->get_unit_layer()->get_displayable_list().end() ; it++)
-		{
-			((Moveable *)(*it))->move(/*float dt*/);
-		}
-
+	getWorld()->Step(dt, 8, 1);
 }
 
 
@@ -68,12 +70,11 @@ void Game::ccTouchesBegan(CCSet* touches, CCEvent* event) {
 	CCPoint p = ((CCTouch *)(*(touches->begin())))->getLocation();
 	(*_displayables.begin())->setPosition(p);
 	*/
-	/*vector <Moveable *>::iterator it;
 	CCPoint destination = ((CCTouch *)(*(touches->begin())))->getLocation();
-	for(it=_moveables.begin();it!=_moveables.end();it++)
+	if(_display_layer->get_unit_layer()->getNumberUnit()>0)
 	{
-		(*it)->set_destination(destination.x,destination.y);
-	}*/	
+		_display_layer->get_unit_layer()->getUnit(0)->set_destination(destination.x,destination.y);
+	}
 	
 }
 

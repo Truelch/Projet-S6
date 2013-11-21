@@ -12,7 +12,7 @@ class MapTile : public Displayable
 {
 	public:
 		MapTile();
-		MapTile(float x, float y, const char * filename);
+		MapTile(float x, float y, const char * filename, Scene * scene);
 		
 		// --- Attributs ---
 

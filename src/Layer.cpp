@@ -3,6 +3,8 @@
 #include "Scene.h"
 #include "TileLayer.h"
 
+#include <iostream>
+
 
 using namespace std;
 

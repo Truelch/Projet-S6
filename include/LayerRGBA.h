@@ -9,7 +9,7 @@ class Scene;
 
 USING_NS_CC;
 
-class LayerRGBA : public cocos2d::CCLayer
+class LayerRGBA : public cocos2d::CCLayerRGBA
 {
 	public:
 
@@ -18,16 +18,6 @@ class LayerRGBA : public cocos2d::CCLayer
 
 		virtual bool init();
 
-		// a selector callback
-		//Plus besoin, non ?
-		/*
-		void menuCloseCallback(CCObject* pSender);
-
-		virtual void ccTouchesBegan(CCSet* touches, CCEvent* event);
-		virtual void ccTouchesMoved(CCSet* touches, CCEvent* event);
-		virtual void ccTouchesEnded(CCSet* touches, CCEvent* event);
-		virtual void ccTouchesCancelled(CCSet* touches, CCEvent* event);
-		*/
 		// --- GET ---
 		
 		Scene * get_scene() { return _scene; }

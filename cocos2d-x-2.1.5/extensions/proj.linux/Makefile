@@ -1,3 +1,4 @@
+USE_BOX2D = 1
 TARGET = libextension.a
 
 COCOS_ROOT=../..

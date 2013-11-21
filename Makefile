@@ -1,8 +1,9 @@
+USE_BOX2D = 1
 SHELL := /bin/bash
 
 EXECUTABLE = Game
 
-INCLUDES = -Iinclude
+INCLUDES = -Iinclude -Icocos2d-x-2.1.5/external -Icocos2d-x-2.1.5/external/Box2D -Icocos2d-x-2.1.5/extensions -Icocos2d-x-2.1.5/external/chipmunk/include/chipmunk
 
 SOURCES = $(shell ls src/*.cpp)
 
@@ -10,6 +11,12 @@ COCOS_ROOT = cocos2d-x-2.1.5
 include $(COCOS_ROOT)/cocos2dx/proj.linux/cocos2dx.mk
 
 CXXFLAGS+= -g
+
+STATICLIBS += \
+	$(STATICLIBS_DIR)/libcurl.a \
+	$(LIB_DIR)/libextension.a \
+	$(LIB_DIR)/libbox2d.a \
+	$(LIB_DIR)/libchipmunk.a
 
 SHAREDLIBS += -lcocos2d -lX11
 COCOS_LIBS = $(LIB_DIR)/libcocos2d.so $(LIB_DIR)/libglfw.so.3

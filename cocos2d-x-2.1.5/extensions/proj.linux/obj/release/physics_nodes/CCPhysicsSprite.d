@@ -156,24 +156,39 @@ obj/release/physics_nodes/CCPhysicsSprite.o: \
  ../../cocos2dx/support/data_support/uthash.h \
  ../../cocos2dx/support/component/CCComponent.h \
  ../../cocos2dx/support/component/CCComponentContainer.h \
- ../ExtensionMacros.h ../../external/chipmunk/include/chipmunk/chipmunk.h \
- ../../external/chipmunk/include/chipmunk/chipmunk_types.h \
- ../../external/chipmunk/include/chipmunk/cpVect.h \
- ../../external/chipmunk/include/chipmunk/cpBB.h \
- ../../external/chipmunk/include/chipmunk/cpSpatialIndex.h \
- ../../external/chipmunk/include/chipmunk/cpBody.h \
- ../../external/chipmunk/include/chipmunk/cpShape.h \
- ../../external/chipmunk/include/chipmunk/cpPolyShape.h \
- ../../external/chipmunk/include/chipmunk/cpArbiter.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpConstraint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpPinJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpSlideJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpPivotJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpGrooveJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpDampedSpring.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpDampedRotarySpring.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpRotaryLimitJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpRatchetJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpGearJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpSimpleMotor.h \
- ../../external/chipmunk/include/chipmunk/cpSpace.h
+ ../ExtensionMacros.h ../../external/Box2D/Box2D.h \
+ ../../external/Box2D/Common/b2Settings.h \
+ ../../external/Box2D/Common/b2Draw.h \
+ ../../external/Box2D/Common/b2Math.h \
+ ../../external/Box2D/Common/b2Timer.h \
+ ../../external/Box2D/Collision/Shapes/b2CircleShape.h \
+ ../../external/Box2D/Collision/Shapes/b2Shape.h \
+ ../../external/Box2D/Common/b2BlockAllocator.h \
+ ../../external/Box2D/Collision/b2Collision.h \
+ ../../external/Box2D/Collision/Shapes/b2EdgeShape.h \
+ ../../external/Box2D/Collision/Shapes/b2ChainShape.h \
+ ../../external/Box2D/Collision/Shapes/b2PolygonShape.h \
+ ../../external/Box2D/Collision/b2BroadPhase.h \
+ ../../external/Box2D/Collision/b2DynamicTree.h \
+ ../../external/Box2D/Common/b2GrowableStack.h \
+ ../../external/Box2D/Collision/b2Distance.h \
+ ../../external/Box2D/Collision/b2TimeOfImpact.h \
+ ../../external/Box2D/Dynamics/b2Body.h \
+ ../../external/Box2D/Dynamics/b2Fixture.h \
+ ../../external/Box2D/Dynamics/b2WorldCallbacks.h \
+ ../../external/Box2D/Dynamics/b2TimeStep.h \
+ ../../external/Box2D/Dynamics/b2World.h \
+ ../../external/Box2D/Common/b2StackAllocator.h \
+ ../../external/Box2D/Dynamics/b2ContactManager.h \
+ ../../external/Box2D/Dynamics/Contacts/b2Contact.h \
+ ../../external/Box2D/Dynamics/Joints/b2DistanceJoint.h \
+ ../../external/Box2D/Dynamics/Joints/b2Joint.h \
+ ../../external/Box2D/Dynamics/Joints/b2FrictionJoint.h \
+ ../../external/Box2D/Dynamics/Joints/b2GearJoint.h \
+ ../../external/Box2D/Dynamics/Joints/b2WheelJoint.h \
+ ../../external/Box2D/Dynamics/Joints/b2MouseJoint.h \
+ ../../external/Box2D/Dynamics/Joints/b2PrismaticJoint.h \
+ ../../external/Box2D/Dynamics/Joints/b2PulleyJoint.h \
+ ../../external/Box2D/Dynamics/Joints/b2RevoluteJoint.h \
+ ../../external/Box2D/Dynamics/Joints/b2RopeJoint.h \
+ ../../external/Box2D/Dynamics/Joints/b2WeldJoint.h

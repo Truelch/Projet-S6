@@ -157,24 +157,4 @@ obj/release/physics_nodes/CCPhysicsDebugNode.o: \
  ../../cocos2dx/support/data_support/uthash.h \
  ../../cocos2dx/support/component/CCComponent.h \
  ../../cocos2dx/support/component/CCComponentContainer.h \
- ../ExtensionMacros.h ../../external/chipmunk/include/chipmunk/chipmunk.h \
- ../../external/chipmunk/include/chipmunk/chipmunk_types.h \
- ../../external/chipmunk/include/chipmunk/cpVect.h \
- ../../external/chipmunk/include/chipmunk/cpBB.h \
- ../../external/chipmunk/include/chipmunk/cpSpatialIndex.h \
- ../../external/chipmunk/include/chipmunk/cpBody.h \
- ../../external/chipmunk/include/chipmunk/cpShape.h \
- ../../external/chipmunk/include/chipmunk/cpPolyShape.h \
- ../../external/chipmunk/include/chipmunk/cpArbiter.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpConstraint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpPinJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpSlideJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpPivotJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpGrooveJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpDampedSpring.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpDampedRotarySpring.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpRotaryLimitJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpRatchetJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpGearJoint.h \
- ../../external/chipmunk/include/chipmunk/constraints/cpSimpleMotor.h \
- ../../external/chipmunk/include/chipmunk/cpSpace.h
+ ../ExtensionMacros.h

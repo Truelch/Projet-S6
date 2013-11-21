@@ -13,8 +13,7 @@ class Missile : public Moveable
 {
 	public:
 		Missile();
-		Missile(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, const char * filename, 
-				float x_origin, float y_origin, float range_max, int damage);
+		Missile(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, const char * filename, Scene * scene, float x_origin, float y_origin, float range_max, int damage);
 		
 		// --- METHODES ---
 

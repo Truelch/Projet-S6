@@ -5,8 +5,7 @@ Missile::Missile(): Moveable() {
 	//
 }
 
-Missile::Missile(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, const char * filename,
-			float x_origin, float y_origin, float range_max, int damage): Moveable(x, y, x_dest, y_dest, rotation, move_speed, filename)
+Missile::Missile(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, const char * filename, Scene * scene, float x_origin, float y_origin, float range_max, int damage): Moveable(x, y, x_dest, y_dest, rotation, move_speed, 0.8f, 0.0f, filename, scene)
 {
 	set_x_origin(x_origin);
 	set_y_origin(y_origin);

@@ -2,15 +2,13 @@
 #define BUILDING_H
 
 #include "cocos2d.h"
-#include "Displayable.h"
+#include "PhysicsDisplayable.h"
 
-using namespace cocos2d;
-
-class Building : public Displayable
+class Building : public PhysicsDisplayable
 {
 	public:
 		Building();
-		Building(float x, float y, const char * filename, float x_rally_point, float y_rally_point);
+		Building(float x, float y, const char * filename, Scene * scene, float x_rally_point, float y_rally_point);
 		//Pensez à rajouter la liste d'unités pouvant être produites
 		
 		// --- ATTRIBUTS ---

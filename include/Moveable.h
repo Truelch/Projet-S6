@@ -2,22 +2,30 @@
 #define MOVEABLE_H
 
 #include "cocos2d.h"
-#include "Displayable.h"
+#include "cocos-ext.h"
+
+#include "PhysicsDisplayable.h"
 
 using namespace cocos2d;
 
-class Moveable : public Displayable
+class Moveable : public PhysicsDisplayable
 {
-	public:
-		Moveable();
-		Moveable(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, const char * filename);
-		
+	private:
 		// --- Attributs ---
 		CCPoint _destination;
 		float   _move_speed;
+
+		bool _targetReached;
+		float _groundFixture;
+		
+	public:
+		Moveable();
+		Moveable(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, const char * filename, Scene * scene);
+
+		void bodyInit(int x,int y, int rotation, float hitboxRadius);
 		
 		// --- METHODES ---
-		void move();
+		void move(float dt);
 		
 		// --- GET ---
 		CCPoint get_destination();
