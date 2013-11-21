@@ -10,10 +10,10 @@
 
 using namespace std;
 
-Moveable::Moveable(): PhysicsDisplayable(), _targetReached(false), _groundFixture(5.0f) {
+Moveable::Moveable(): PhysicsDisplayable(), _targetReached(false), _groundFixture(5.0f), _density(1.0f) {
 }
 
-Moveable::Moveable(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, const char * filename, Scene * scene): PhysicsDisplayable(scene,CCPhysicsSprite::create(filename)), _targetReached(false), _groundFixture(groundFixture)
+Moveable::Moveable(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene): PhysicsDisplayable(scene,CCPhysicsSprite::create(filename)), _targetReached(false), _groundFixture(groundFixture), _density(density)
 {
 	bodyInit(x,y,rotation,hitboxRadius);
 	set_destination(x_dest,y_dest);
@@ -24,6 +24,7 @@ void Moveable::bodyInit(int x, int y, int rotation, float hitboxRadius) {
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position.Set(x/PTM_RATIO, y/PTM_RATIO);
+	bodyDef.fixedRotation = true;
 
 	b2Body *body = getScene()->getWorld()->CreateBody(&bodyDef);
 
@@ -37,6 +38,7 @@ void Moveable::bodyInit(int x, int y, int rotation, float hitboxRadius) {
 	// Define the dynamic body fixture.
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;	
+	fixtureDef.density = _density;
 	body->CreateFixture(&fixtureDef);	
 
 	getPhysicsSprite()->setB2Body(body);

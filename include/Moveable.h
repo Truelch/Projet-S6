@@ -17,10 +17,11 @@ class Moveable : public PhysicsDisplayable
 
 		bool _targetReached;
 		float _groundFixture;
+		float _density;
 		
 	public:
 		Moveable();
-		Moveable(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, const char * filename, Scene * scene);
+		Moveable(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene);
 
 		void bodyInit(int x,int y, int rotation, float hitboxRadius);
 		

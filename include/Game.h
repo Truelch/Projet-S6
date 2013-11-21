@@ -10,6 +10,7 @@
 #include "DisplayLayer.h"
 #include "Scene.h"
 #include "UnitLayer.h"
+#include "ContactListener.h"
 
 using namespace std;
 
@@ -43,6 +44,8 @@ class Game : public Scene
 	private:
 		int _map_width;
 		int _map_height;
+
+		ContactListener * _contactListener;
 		
 		DisplayLayer * _display_layer;
 };

@@ -1,14 +1,16 @@
 #include "Missile.h"
 
 
-Missile::Missile(): Moveable() {
+Missile::Missile(): Displayable() {
 	//
 }
 
-Missile::Missile(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, const char * filename, Scene * scene, float x_origin, float y_origin, float range_max, int damage): Moveable(x, y, x_dest, y_dest, rotation, move_speed, 0.8f, 0.0f, filename, scene)
+Missile::Missile(float x, float y, float rotation, float x_dest, float y_dest, float move_speed, const char * filename, Scene * scene, float range_max, int damage): Displayable(x, y, rotation, filename, scene)
 {
-	set_x_origin(x_origin);
-	set_y_origin(y_origin);
+	set_x_dest(x_dest);
+	set_y_dest(y_dest);
+	set_x_origin(x);
+	set_y_origin(y);
 	set_range_max(range_max);
 	set_damage(damage);
 }
@@ -34,6 +36,16 @@ float Missile::get_y_origin()
 	return _y_origin;
 }
 
+float Missile::get_x_dest()
+{
+	return _x_dest;
+}
+
+float Missile::get_y_dest()
+{
+	return _y_dest;
+}
+
 float Missile::get_range_max()
 {
 	return _range_max;
@@ -54,6 +66,16 @@ void Missile::set_x_origin(float x_origin)
 void Missile::set_y_origin(float y_origin)
 {
 	_y_origin = y_origin;
+}
+
+void Missile::set_x_dest(float x_dest)
+{
+	_x_dest = x_dest;
+}
+
+void Missile::set_y_dest(float y_dest)
+{
+	_y_dest = y_dest;
 }
 
 void Missile::set_range_max(float range_max)

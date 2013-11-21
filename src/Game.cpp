@@ -17,8 +17,11 @@ Game::Game(): Scene()
 	//_display_layer->setZOrder(1);
 	addChild(_display_layer);
 
-	_display_layer->get_unit_layer()->addUnit(new Unit(100,160,400,150,-90,5,5.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100));
-	_display_layer->get_unit_layer()->addUnit(new Unit(400,140,100,150,-90,5,5.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100));
+	_display_layer->get_unit_layer()->addUnit(new Unit(100,140,400,150,-90,5,5.0f,5.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100));
+	_display_layer->get_unit_layer()->addUnit(new Unit(400,160,100,150,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100));
+
+	_contactListener = new ContactListener();
+	getWorld()->SetContactListener(_contactListener);
 
 	//_display_layer->get_unit_layer()->addUnit(new Unit(0,0,0,0,-90,5,5.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100));
 
