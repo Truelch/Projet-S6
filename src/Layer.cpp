@@ -11,11 +11,13 @@ using namespace std;
 
 Layer::Layer(): CCLayer(), _scene(NULL)
 {
+	std::cout << "Constructeur de Layer" << std::endl;
 	init();
 }
 
 Layer::Layer(Scene * scene): CCLayer(), _scene(scene)
 {
+	std::cout << "Constructeur de Layer" << std::endl;
 	init();
 }
 

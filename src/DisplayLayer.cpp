@@ -8,6 +8,7 @@
 
 DisplayLayer::DisplayLayer(): Layer()
 {
+	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
 	init_file("map/map1");
 }
@@ -15,24 +16,12 @@ DisplayLayer::DisplayLayer(): Layer()
 
 DisplayLayer::DisplayLayer(Scene * scene): Layer(scene)
 {
+	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
 	init_file("map/map1");
 	
 }
 
-void DisplayLayer::draw()
-{
-	//
-	CCLayer::draw();
-
-	//afficher les hitbox
-	/*
-	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
-	kmGLPushMatrix();
-	get_scene()->getWorld()->DrawDebugData();
-	kmGLPopMatrix();
-	*/
-}
 
 // --- GET ---
 Layer * DisplayLayer::get_background_layer()
@@ -55,7 +44,7 @@ Layer * DisplayLayer::get_doodad_layer()
 	return _doodad_layer;
 }
 
-UnitLayer * DisplayLayer::get_unit_layer()
+Layer * DisplayLayer::get_unit_layer()
 {
 	return _unit_layer;
 }
@@ -99,7 +88,7 @@ void DisplayLayer::init2()
 	addChild(_doodad_layer);
 	
 	// --- Layer des Unités ---
-	_unit_layer = new UnitLayer(get_scene());
+	_unit_layer = new Layer(get_scene());
 	_unit_layer->setZOrder(5);
 	addChild(_unit_layer);
 	
@@ -173,8 +162,7 @@ int DisplayLayer::init_file(string filename)
 		}
 	}*/
 	//_background_layer->addChild(new MapTile(0,0,"000.png"));
-	_mapTile = new MapTile(75,50,"000.png",get_scene());
-	_background_layer->addChild(_mapTile->getSprite());
+	_background_layer->addChild(new MapTile(75,50,"000.png"));
 	//_background_layer->addChild(new MapTile(500,500,"000.png"));
 	//_background_layer->addChild(new MapTile(150,50,"000.png"));
 	

@@ -9,11 +9,13 @@ using namespace std;
 
 LayerRGBA::LayerRGBA(): CCLayerRGBA(), _scene(NULL)
 {
+	std::cout << "Constructeur de LayerRGBA" << std::endl;
 	init();
 }
 
 LayerRGBA::LayerRGBA(Scene * scene): CCLayerRGBA(), _scene(scene)
 {
+	std::cout << "Constructeur de LayerRGBA" << std::endl;
 	init();
 }
 

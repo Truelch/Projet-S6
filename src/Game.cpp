@@ -11,6 +11,7 @@ using namespace std;
 
 Game::Game(): Scene()
 {
+	std::cout << "Constructeur de Game" << std::endl;
 	_display_layer = new DisplayLayer(this);
 	_display_layer->setTouchEnabled(true);
 	//_display_layer->setZOrder(1);
