@@ -18,3 +18,6 @@ Displayable::Displayable(float x, float y, float rotation, const char * filename
 Displayable::Displayable(Scene * scene, CCSprite * sprite): _sprite(sprite), _scene(scene) {
 }
 
+Displayable::~Displayable() {
+	delete _sprite;
+}

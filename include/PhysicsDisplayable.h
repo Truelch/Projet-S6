@@ -12,6 +12,7 @@ class PhysicsDisplayable : public Displayable {
 		PhysicsDisplayable();
 		PhysicsDisplayable(float x, float y, float rotation, const char * filename, Scene * scene, b2Body * body);
 		PhysicsDisplayable(Scene * scene, CCPhysicsSprite * physicsSprite);
+		virtual ~PhysicsDisplayable();
 
 		CCPhysicsSprite * getPhysicsSprite() { return _physicsSprite; }
 	private:

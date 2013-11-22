@@ -5,12 +5,8 @@ Player::Player()
 	//
 }
 
-Player::Player(string name, string color, int player_number, int team_number)
+Player::Player(string name, string color, int player_number, int team_number): _name(name), _color(color), _player_number(player_number), _team_number(team_number)
 {
-	set_name(name);
-	set_color(color);
-	set_player_number(player_number);
-	set_team_number(team_number);
 }
 
 // --- METHODES ---

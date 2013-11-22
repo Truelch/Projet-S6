@@ -11,15 +11,16 @@ using namespace std;
 
 class Player
 {
-	public:
-		Player();
-		Player(string name, string color, int player_number, int team_number);
-		
+	private:
 		//ATTRIBUTS
 		string _name;
 		string _color;
 		int    _player_number;
 		int    _team_number;
+		
+	public:
+		Player();
+		Player(string name, string color, int player_number, int team_number);
 		
 		//Unit*  _unit_selection;
 		//Il faudra que je retrouve comment bien initialiser le pointeur. Est ce que ça doit être un container ??

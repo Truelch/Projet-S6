@@ -15,6 +15,7 @@ class Displayable
 		Displayable(CCSprite * sprite);
 		Displayable(float x, float y, float rotation, const char * filename, Scene * _scene);
 		Displayable(Scene * _scene, CCSprite * sprite);
+		virtual ~Displayable();
 
 		Scene * getScene() { return _scene; }
 		CCSprite * getSprite() { return _sprite; }

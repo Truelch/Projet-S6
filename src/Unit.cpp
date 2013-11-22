@@ -5,7 +5,7 @@ Unit::Unit(): Moveable() {
 	//
 }
 
-Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename, Scene * scene, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, int prod_time): Moveable(x, y, x_dest, y_dest, rotation, move_speed, 0.7f, groundFixture, density, filename, scene)
+Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename, Scene * scene, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, int prod_time, Player * player): Moveable(Moveable::UnitType, x, y, x_dest, y_dest, rotation, move_speed, 0.7f, groundFixture, density, filename, scene), _player(player)
 {
 	_stat = new Stat();
 	_stat->set_name(name);
@@ -19,7 +19,19 @@ Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float m
 	_stat->set_prod_time(prod_time);
 }
 
+Unit::~Unit() {
+}
+
 // --- METHODES ---
+void Unit::on_contact(Moveable * moveable) {
+	Unit * unit;
+	if(moveable->getType()==Moveable::UnitType) {
+		unit = (Unit *)moveable;
+		if(unit->getPlayer()==_player) set_tenir_position(false);
+		else set_tenir_position(true);
+	}
+	Moveable::on_contact(moveable);
+}
 
 // --- GET ---
 

@@ -16,3 +16,5 @@ PhysicsDisplayable::PhysicsDisplayable(float x, float y, float rotation, const c
 PhysicsDisplayable::PhysicsDisplayable(Scene * scene, CCPhysicsSprite * physicsSprite):Displayable(scene,physicsSprite), _physicsSprite(physicsSprite) {
 }
 
+PhysicsDisplayable::~PhysicsDisplayable() {
+}
