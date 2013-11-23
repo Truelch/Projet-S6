@@ -1,5 +1,5 @@
-#ifndef TILELAYER_H
-#define TILELAYER_H
+#ifndef DOODADLAYER_H
+#define DOODADLAYER_H
 
 #include "cocos2d.h"
 
@@ -7,14 +7,15 @@
 #include <vector>
 
 #include "Layer.h"
+#include "MapTile.h"
 
 using namespace std;
 
-class TileLayer : public Layer
+class DoodadLayer : public Layer
 {
 	public:
-		TileLayer();
-		TileLayer(Scene * scene);
+		DoodadLayer();
+		DoodadLayer(Scene * scene);
 		// --- METHODES ---
 	
 		// --- GET ---
@@ -22,3 +23,4 @@ class TileLayer : public Layer
 };
 
 #endif
+

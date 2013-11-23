@@ -1,8 +1,8 @@
 
 #include "PhysicsDisplayable.h"
 
-PhysicsDisplayable::PhysicsDisplayable(): _physicsSprite(CCPhysicsSprite::create()) {
-	Displayable((CCSprite *)_physicsSprite);
+PhysicsDisplayable::PhysicsDisplayable():Displayable(CCPhysicsSprite::create()) {
+	_physicsSprite = (CCPhysicsSprite *)getSprite();
 }
 
 PhysicsDisplayable::PhysicsDisplayable(float x, float y, float rotation, const char * filename, Scene * scene, b2Body * body):Displayable(scene,CCPhysicsSprite::create(filename)) {
