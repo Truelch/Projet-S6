@@ -29,7 +29,7 @@ class LayerRGBA : public cocos2d::CCLayerRGBA
 	
 	private:
 		Scene * _scene;
-		//td::vector<Displayable *> _displayable_list;
+		//std::vector<Displayable *> _displayable_list;
 };
 
 #endif

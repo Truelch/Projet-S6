@@ -1,4 +1,3 @@
-
 #include "PhysicsDisplayable.h"
 
 PhysicsDisplayable::PhysicsDisplayable(): _physicsSprite(CCPhysicsSprite::create()) {

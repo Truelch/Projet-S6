@@ -5,8 +5,9 @@ Player::Player()
 	//
 }
 
-Player::Player(string name, string color, int player_number, int team_number): _name(name), _color(color), _player_number(player_number), _team_number(team_number)
+Player::Player(string name, Color color, int player_number, int team_number): _name(name), _color(color), _player_number(player_number), _team_number(team_number)
 {
+	//
 }
 
 // --- METHODES ---
@@ -18,7 +19,7 @@ string Player::get_name()
 	return _name;
 }
 
-string Player::get_color()
+Player::Color Player::get_color()
 {
 	return _color;
 }
@@ -40,7 +41,7 @@ void Player::set_name(string name)
 	_name = name;
 }
 
-void Player::set_color(string color)
+void Player::set_color(Color color)
 {
 	_color = color;
 }

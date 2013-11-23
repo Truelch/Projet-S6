@@ -8,6 +8,7 @@
 
 DisplayLayer::DisplayLayer(): Layer()
 {
+	_tile_size = 124;
 	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
 	init_file("map/map1");
@@ -16,6 +17,7 @@ DisplayLayer::DisplayLayer(): Layer()
 
 DisplayLayer::DisplayLayer(Scene * scene): Layer(scene)
 {
+	_tile_size = 124;
 	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
 	init_file("map/map1");
@@ -119,7 +121,7 @@ int DisplayLayer::init_file(string filename)
 	 * 
 	 */
 	
-	unsigned int i/*,j,x,y*/, nombreLigne=0, int_tile;
+	unsigned int i,j,x,y, nombreLigne=0, int_tile;
 	int findIndex;
 	istringstream buffer;
 	string line;
@@ -162,22 +164,24 @@ int DisplayLayer::init_file(string filename)
 	// --- BACKGROUND ---
 	
 	//Création d'une matrice remplie de Tiles identiques. A l'avenir, les données seront chargées à partir du fichier map et du fichier xml associant identifiant de Tile et toutes ses données
-	/*
+	
 	for(j=0;j<_map_height;j++)
 	{
 		_background_map_tile_matrix.push_back(vector<MapTile *>());
 		for(i=0;i<_map_width;i++)
 		{
 			//Faut-il donner le chemin vers l'image ou seulement le nom de fichier de l'image ?
-			x = _tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
-			y = _tile_size*j;
-			_background_map_tile_matrix[j].push_back(new MapTile(x,y,"000.png")); //Cela marche-t-il ?
-			_background_layer->addChild(_background_map_tile_matrix[j][i]);
+			x = (1/COEFF)*_tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
+			y = (1/COEFF)*_tile_size*j;
+			_background_map_tile_matrix[j].push_back(new MapTile(x,y,"000.png",get_scene())); //Cela marche-t-il ?
+			_background_layer->addChild((_background_map_tile_matrix[j][i])->getSprite());
 		}
-	}*/
+	}
 	//_background_layer->addChild(new MapTile(0,0,"000.png"));
-	_mapTile = new MapTile(75,50,"000.png",get_scene());
-	_background_layer->addChild( _mapTile->getSprite() );
+	//_mapTile = new MapTile(75,50,"000.png",get_scene());
+	//_background_layer->addChild( _mapTile->getSprite() );
+	
+	//_background_layer->addChild( new MapTile(75,50,"000.png",get_scene() ));
 	//_background_layer->addChild(new MapTile(500,500,"000.png"));
 	//_background_layer->addChild(new MapTile(150,50,"000.png"));
 	

@@ -11,6 +11,7 @@
 #include "LayerRGBA.h"
 #include "UnitLayer.h"
 
+
 //Pour le Tile Layer
 
 typedef vector<vector<MapTile *> > MapTileMatrix;
@@ -51,7 +52,7 @@ class DisplayLayer : public Layer
 		LayerRGBA * _opacity_layer;    //z = 2
 		TileLayer * _tile_layer;       //z = 3
 		Layer *     _doodad_layer;     //z = 4
-		UnitLayer *     _unit_layer;       //z = 5
+		UnitLayer *     _unit_layer;   //z = 5
 		Layer *     _missile_layer;    //z = 6
 		
 		IntMatrix     _int_matrix;
@@ -64,6 +65,7 @@ class DisplayLayer : public Layer
 		unsigned int  _map_height;
 		
 		unsigned int _tile_size;
+		
 		
 		cocos2d::extension::GLESDebugDraw* m_debugDraw;
 		

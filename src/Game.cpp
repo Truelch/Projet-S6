@@ -20,11 +20,11 @@ Game::Game(): Scene()
 	_contactListener = new ContactListener();
 	getWorld()->SetContactListener(_contactListener);
 
-	Player * joueur1 = new Player("joueur1", "blue", 1, 1);
-	Player * joueur2 = new Player("joueur2", "red", 2, 2);
+	Player * joueur1 = new Player("joueur1", Player::blue, 1, 1);
+	Player * joueur2 = new Player("joueur2", Player::red, 2, 2);
 
-	_display_layer->get_unit_layer()->addUnit(new Unit(250,150,250,150,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur1));
-	_display_layer->get_unit_layer()->addUnit(new Unit(400,150,250,150,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur2));
+	_display_layer->get_unit_layer()->add_unit(new Unit(250,150,250,150,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur1));
+	_display_layer->get_unit_layer()->add_unit(new Unit(400,150,250,150,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur2));
 
 	//_display_layer->get_unit_layer()->addUnit(new Unit(0,0,0,0,-90,5,5.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100));
 
@@ -61,9 +61,9 @@ DisplayLayer * Game::get_display_layer()
 void Game::update(float dt)
 {
 	int i;
-	for(i=0;i<_display_layer->get_unit_layer()->getNumberUnit();i++)
+	for(i=0;i<_display_layer->get_unit_layer()->get_number_unit();i++)
 	{
-		_display_layer->get_unit_layer()->getUnit(i)->move(dt);
+		_display_layer->get_unit_layer()->get_unit(i)->move(dt);
 	}
 
 	getWorld()->Step(dt, 8, 1);
@@ -76,9 +76,9 @@ void Game::ccTouchesBegan(CCSet* touches, CCEvent* event) {
 	(*_displayables.begin())->setPosition(p);
 	*/
 	CCPoint destination = ((CCTouch *)(*(touches->begin())))->getLocation();
-	if(_display_layer->get_unit_layer()->getNumberUnit()>0)
+	if(_display_layer->get_unit_layer()->get_number_unit()>0)
 	{
-		_display_layer->get_unit_layer()->getUnit(0)->set_destination(destination.x,destination.y);
+		_display_layer->get_unit_layer()->get_unit(0)->set_destination(destination.x,destination.y);
 	}
 	
 }

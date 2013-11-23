@@ -11,16 +11,29 @@ using namespace std;
 
 class Player
 {
+	public:
+		typedef enum {
+			red,
+			blue,
+			green,
+			purple,
+			cyan,
+			yellow,
+			orange,
+			brown,
+			pink,
+		} Color;
+		
 	private:
 		//ATTRIBUTS
 		string _name;
-		string _color;
+		Color _color;
 		int    _player_number;
 		int    _team_number;
 		
 	public:
 		Player();
-		Player(string name, string color, int player_number, int team_number);
+		Player(string name, Color color, int player_number, int team_number);
 		
 		//Unit*  _unit_selection;
 		//Il faudra que je retrouve comment bien initialiser le pointeur. Est ce que ça doit être un container ??
@@ -29,14 +42,14 @@ class Player
 		
 		//GET
 		string get_name();
-		string get_color();
+		Color get_color();
 		int    get_player_number();
 		int    get_team_number();
 			
 		
 		//SET
 		void set_name(string name);
-		void set_color(string color);
+		void set_color(Color color);
 		void set_player_number(int player_number); //Eviter son utilisation
 		void set_team_number(int team_number); //Eviter son utilisation	
 };

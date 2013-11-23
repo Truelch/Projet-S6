@@ -10,11 +10,12 @@ class UnitLayer : public Layer {
 	public:
 		UnitLayer();
 		UnitLayer(Scene * scene);
-
-		Unit * getUnit(int index);
-		void addUnit(Unit * unit);
-		void removeUnit(int index);
-		int getNumberUnit();
+			
+		Unit * get_unit(int index);
+		void   add_unit(Unit * unit);
+		void   remove_unit(int index);
+		int    get_number_unit();
+		
 	private:
 		std::vector<Unit *> _unit_list;
 };
