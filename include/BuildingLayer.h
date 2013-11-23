@@ -1,5 +1,5 @@
-#ifndef TILELAYER_H
-#define TILELAYER_H
+#ifndef BUILDINGLAYER_H
+#define BUILDINGLAYER_H
 
 #include "cocos2d.h"
 
@@ -10,11 +10,11 @@
 
 using namespace std;
 
-class TileLayer : public Layer
+class BuildingLayer : public Layer
 {
 	public:
-		TileLayer();
-		TileLayer(Scene * scene);
+		BuildingLayer();
+		BuildingLayer(Scene * scene);
 		// --- METHODES ---
 	
 		// --- GET ---
@@ -22,3 +22,4 @@ class TileLayer : public Layer
 };
 
 #endif
+

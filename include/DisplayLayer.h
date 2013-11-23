@@ -10,6 +10,10 @@
 #include "TileLayer.h"
 #include "LayerRGBA.h"
 #include "UnitLayer.h"
+#include "DoodadLayer.h"
+#include "BuildingLayer.h"
+#include "MapTile.h"
+#include "MissileLayer.h"
 
 
 //Pour le Tile Layer
@@ -32,13 +36,14 @@ class DisplayLayer : public Layer
 
 	
 		// --- GET ---
-		LayerRGBA * get_black_layer();
-		Layer *     get_background_layer();
-		LayerRGBA * get_opacity_layer();
-		TileLayer * get_tile_layer();
-		Layer *     get_doodad_layer();
+		LayerRGBA *     get_black_layer();
+		TileLayer *     get_background_layer();
+		LayerRGBA *     get_opacity_layer();
+		TileLayer *     get_tile_layer();
+		DoodadLayer *   get_doodad_layer();
+		BuildingLayer * get_building_layer();
 		UnitLayer *     get_unit_layer();
-		Layer *     get_missile_layer();
+		MissileLayer *  get_missile_layer();
 		
 		// --- SET ---
 		
@@ -48,21 +53,20 @@ class DisplayLayer : public Layer
 		
 	private:
 		LayerRGBA * _black_layer;      //z = 0
-		Layer *     _background_layer; //z = 1
+		TileLayer * _background_layer; //z = 1
 		LayerRGBA * _opacity_layer;    //z = 2
 		TileLayer * _tile_layer;       //z = 3
-		Layer *     _doodad_layer;     //z = 4
-		UnitLayer *     _unit_layer;   //z = 5
-		Layer *     _missile_layer;    //z = 6
+		DoodadLayer *     _doodad_layer;     //z = 4
+		BuildingLayer *		_building_layer;   //z = 5
+		UnitLayer * _unit_layer;       //z = 6
+		MissileLayer *     _missile_layer;    //z = 7
 		
-		IntMatrix     _int_matrix;
-		MapTileMatrix _map_tile_matrix;            //=> _tile_layer
+		IntMatrix _int_matrix;
+		MapTileMatrix _map_tile_matrix; //=> _tile_layer
 		MapTileMatrix _background_map_tile_matrix; //=> _background_layer	
 
-		MapTile * _mapTile;
-
-		unsigned int  _map_width;
-		unsigned int  _map_height;
+		unsigned int _map_width;
+		unsigned int _map_height;
 		
 		unsigned int _tile_size;
 		

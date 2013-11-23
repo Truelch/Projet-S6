@@ -11,6 +11,7 @@
 #include "Scene.h"
 #include "UnitLayer.h"
 #include "ContactListener.h"
+#include "Building.h"
 
 using namespace std;
 
@@ -48,6 +49,9 @@ class Game : public Scene
 		ContactListener * _contactListener;
 		
 		DisplayLayer * _display_layer;
+
+		Layer * _hud_layer;
+		Hud * _hud;
 };
 
 #endif

@@ -68,6 +68,7 @@ void Moveable::goToDestination() {
 		getPhysicsSprite()->getB2Body()->SetTransform(getPhysicsSprite()->getB2Body()->GetPosition(), angle);
 	}
 
+
 	if(vecteur_vitesse.Length() < vecteur_path.Length()) {
 		getPhysicsSprite()->getB2Body()->SetLinearVelocity(vecteur_vitesse);
 	}
@@ -117,8 +118,9 @@ void Moveable::move(float dt)
 				goToDestination();
 			}
 		}
-		else if(!_rest) goToDestination();
-		else applyFixture(dt);
+		if(_mode_restore_position || !_rest) goToDestination();
+		else /*applyFixture(dt);*/ 
+		getPhysicsSprite()->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
 	}
 
 	/*
@@ -168,11 +170,11 @@ void Moveable::on_contact(Moveable * moveable) {
 		if(_rest && moveable->_mode_restore_position) {
 			b2Vec2 vecteur_unitaire(getSprite()->getPositionX()-moveable->getSprite()->getPositionX(), getSprite()->getPositionY()-moveable->getSprite()->getPositionY());
 			vecteur_unitaire.Normalize();
-			vecteur_unitaire*=100;
+			vecteur_unitaire*=getPhysicsSprite()->getB2Body()->GetFixtureList()->GetShape()->m_radius*50;
 
 			set_destination(getSprite()->getPositionX()+vecteur_unitaire.x,getSprite()->getPositionY()+vecteur_unitaire.y);
 		}
-		else _time_before_restore_position=1;
+		else _time_before_restore_position=0.1;
 	}
 }
 

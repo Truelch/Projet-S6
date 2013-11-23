@@ -40,7 +40,7 @@ void DisplayLayer::draw()
 }
 
 // --- GET ---
-Layer * DisplayLayer::get_background_layer()
+TileLayer * DisplayLayer::get_background_layer()
 {
 	return _background_layer;
 }
@@ -55,9 +55,14 @@ TileLayer * DisplayLayer::get_tile_layer()
 	return _tile_layer;
 }
 
-Layer * DisplayLayer::get_doodad_layer()
+DoodadLayer * DisplayLayer::get_doodad_layer()
 {
 	return _doodad_layer;
+}
+
+BuildingLayer * DisplayLayer::get_building_layer()
+{
+	return _building_layer;
 }
 
 UnitLayer * DisplayLayer::get_unit_layer()
@@ -65,7 +70,7 @@ UnitLayer * DisplayLayer::get_unit_layer()
 	return _unit_layer;
 }
 
-Layer * DisplayLayer::get_missile_layer()
+MissileLayer * DisplayLayer::get_missile_layer()
 {
 	return _missile_layer;
 }
@@ -84,7 +89,7 @@ void DisplayLayer::init2()
 	addChild(_black_layer);
 		
 	// --- Layer de Background avec Tiles ---
-	_background_layer = new Layer(get_scene());
+	_background_layer = new TileLayer(get_scene());
 	_background_layer->setZOrder(1);
 	addChild(_background_layer);
 	
@@ -99,18 +104,23 @@ void DisplayLayer::init2()
 	addChild(_tile_layer);
 	
 	// --- Layer des Doodads ---
-	_doodad_layer = new Layer(get_scene());
+	_doodad_layer = new DoodadLayer(get_scene());
 	_doodad_layer->setZOrder(4);
 	addChild(_doodad_layer);
 	
 	// --- Layer des Unités ---
+	_building_layer = new BuildingLayer(get_scene());
+	_building_layer->setZOrder(5);
+	addChild(_building_layer);
+	
+	// --- Layer des Unités ---
 	_unit_layer = new UnitLayer(get_scene());
-	_unit_layer->setZOrder(5);
+	_unit_layer->setZOrder(6);
 	addChild(_unit_layer);
 	
 	// --- Layer des Missiles ---
-	_missile_layer = new Layer(get_scene());
-	_missile_layer->setZOrder(6);
+	_missile_layer = new MissileLayer(get_scene());
+	_missile_layer->setZOrder(7);
 	addChild(_missile_layer);
 }
 
@@ -178,10 +188,6 @@ int DisplayLayer::init_file(string filename)
 		}
 	}
 	//_background_layer->addChild(new MapTile(0,0,"000.png"));
-	//_mapTile = new MapTile(75,50,"000.png",get_scene());
-	//_background_layer->addChild( _mapTile->getSprite() );
-	
-	//_background_layer->addChild( new MapTile(75,50,"000.png",get_scene() ));
 	//_background_layer->addChild(new MapTile(500,500,"000.png"));
 	//_background_layer->addChild(new MapTile(150,50,"000.png"));
 	
