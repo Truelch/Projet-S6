@@ -23,9 +23,14 @@ Game::Game(): Scene()
 	Player * joueur1 = new Player("joueur1", Player::blue, 1, 1);
 	Player * joueur2 = new Player("joueur2", Player::red, 2, 2);
 
-	_display_layer->get_unit_layer()->add_unit(new Unit(250,200,250,200,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur1));
-	_display_layer->get_unit_layer()->add_unit(new Unit(400,200,400,200,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur1));
-	_display_layer->get_unit_layer()->add_unit(new Unit(100,200,100,200,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur2));
+<<<<<<< HEAD
+	_display_layer->get_unit_layer()->add_unit(new Unit(250,150,250,150,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur1));
+	_display_layer->get_unit_layer()->add_unit(new Unit(400,150,250,150,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur2));
+=======
+	_display_layer->get_unit_layer()->addUnit(new Unit(250,200,250,200,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur1));
+	_display_layer->get_unit_layer()->addUnit(new Unit(400,200,400,200,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur1));
+	_display_layer->get_unit_layer()->addUnit(new Unit(100,200,100,200,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur2));
+>>>>>>> 2d59c0b4deb46c00cebeff481d9533f8d2504485
 
 	MapTile * tile = new MapTile(200,200,"000.png",this);
 	_display_layer->get_tile_layer()->addChild(tile->getSprite());
@@ -75,9 +80,16 @@ void Game::update(float dt)
 
 void Game::ccTouchesBegan(CCSet* touches, CCEvent* event) {
 	CCPoint destination = ((CCTouch *)(*(touches->begin())))->getLocation();
-	//le hud va de (27,0) a (452,100)
-	if(_display_layer->get_unit_layer()->get_number_unit()>0) {
+<<<<<<< HEAD
+	if(_display_layer->get_unit_layer()->get_number_unit()>0)
+	{
 		_display_layer->get_unit_layer()->get_unit(0)->set_destination(destination.x,destination.y);
+=======
+	std::cout << destination.x << "," << destination.y << std::endl;
+	//le hud va de (27,0) a (452,100)
+	if(_display_layer->get_unit_layer()->getNumberUnit()>0) {
+		_display_layer->get_unit_layer()->getUnit(0)->set_destination(destination.x,destination.y);
+>>>>>>> 2d59c0b4deb46c00cebeff481d9533f8d2504485
 	}
 }
 
