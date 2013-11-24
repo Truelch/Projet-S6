@@ -13,12 +13,6 @@ class Turret : public Displayable
 		Turret(float x, float y, float rotation, const char * filename, Scene * scene,
 				float x_relative, float y_relative, float missile_speed, int damage, float cooldown);
 		
-		// --- Attributs ---
-		CCPoint _relative_position;
-		float   _missile_speed;
-		int     _damage;
-		float   _cooldown;
-		
 		// --- METHODES ---
 		//void fire(); //-> Lance un projectile
 		
@@ -33,7 +27,13 @@ class Turret : public Displayable
 		void set_missile_speed(float missile_speed);
 		void set_damage(int damage);
 		void set_cooldown(float cooldown);
-		
+	
+	private:
+		// --- Attributs ---
+		CCPoint _relative_position;
+		float   _missile_speed;
+		int     _damage;
+		float   _cooldown;
 };
 
 #endif

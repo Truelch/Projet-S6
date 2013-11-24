@@ -15,6 +15,7 @@ AppDelegate::AppDelegate() {
 
 AppDelegate::~AppDelegate() 
 {
+	std::cout << "~AppDelegate" << std::endl;
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {

@@ -46,6 +46,13 @@ Game::Game(): Scene()
 	this->schedule( schedule_selector( Game::update ), 1.0 / 50 );	
 }
 
+Game::~Game() {
+	delete _contactListener;
+	delete _display_layer;
+	delete _hud_layer;
+	delete _hud;
+}
+
 // --- GET ---
 
 int Game::get_map_width()

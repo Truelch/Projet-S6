@@ -13,9 +13,6 @@ class PowerNode : public Displayable
 	public:
 		PowerNode();
 		
-		// --- Attributs ---
-		//Un container à power node pour indiquer avec quels power node il est relié
-		std::vector <PowerNode *> _power_node_list; //Hm finalement il faudrait que ce container puisse aussi contenir également des bâtiments !
 		// --- METHODES ---
 		
 		
@@ -24,6 +21,11 @@ class PowerNode : public Displayable
 		
 		// --- SET ---
 		
+
+	private:
+		// --- Attributs ---
+		//Un container à power node pour indiquer avec quels power node il est relié
+		std::vector <PowerNode *> _power_node_list; //Hm finalement il faudrait que ce container puisse aussi contenir également des bâtiments !
 };
 
 #endif

@@ -21,6 +21,13 @@ Layer::Layer(Scene * scene): CCLayer(), _scene(scene)
 	init();
 }
 
+Layer::~Layer() {
+	unsigned int i;
+	for(i=0; i<_displayable_list.size(); i++) {
+		delete _displayable_list[i];
+	}
+}
+
 bool Layer::init()
 {
 	if( !CCLayer::init() ) {

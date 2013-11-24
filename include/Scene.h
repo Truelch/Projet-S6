@@ -11,6 +11,7 @@ class Scene : public cocos2d::CCScene
 {
 	public:
 		Scene();
+		virtual ~Scene();
 
 		virtual void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event) = 0;
 		virtual void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event) = 0;

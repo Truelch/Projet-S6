@@ -24,6 +24,17 @@ DisplayLayer::DisplayLayer(Scene * scene): Layer(scene)
 	
 }
 
+DisplayLayer::~DisplayLayer() {
+	delete _black_layer;
+	delete _background_layer;
+	delete _opacity_layer;
+	delete _tile_layer;
+	delete _doodad_layer;
+	delete _building_layer;
+	delete _unit_layer;
+	delete _missile_layer;
+}
+
 
 void DisplayLayer::draw()
 {

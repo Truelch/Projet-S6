@@ -31,6 +31,7 @@ class DisplayLayer : public Layer
 	public:
 		DisplayLayer();
 		DisplayLayer(Scene * scene);
+		~DisplayLayer();
 
 		virtual void draw();
 
@@ -69,10 +70,6 @@ class DisplayLayer : public Layer
 		unsigned int _map_height;
 		
 		unsigned int _tile_size;
-		
-		
-		cocos2d::extension::GLESDebugDraw* m_debugDraw;
-		
 };
 
 #endif

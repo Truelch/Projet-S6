@@ -23,3 +23,7 @@ Scene::Scene(): CCScene() {
 	m_debugDraw->SetFlags(flags);
 
 }
+
+Scene::~Scene() {
+	delete _world;
+}

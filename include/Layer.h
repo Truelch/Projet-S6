@@ -15,6 +15,7 @@ class Layer : public cocos2d::CCLayer
 
 		Layer();
 		Layer(Scene * scene);
+		virtual Layer();
 
 		virtual bool init();
 
