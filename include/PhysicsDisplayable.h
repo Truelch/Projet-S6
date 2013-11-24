@@ -10,8 +10,8 @@ USING_NS_CC_EXT;
 class PhysicsDisplayable : public Displayable {
 	public:
 		PhysicsDisplayable();
-		PhysicsDisplayable(float x, float y, float rotation, const char * filename, Scene * scene, b2Body * body);
-		PhysicsDisplayable(Scene * scene, CCPhysicsSprite * physicsSprite);
+		PhysicsDisplayable(float x, float y, float rotation, const char * filename, Scene * scene, Layer * layer, b2Body * body);
+		PhysicsDisplayable(Scene * scene, CCPhysicsSprite * physicsSprite, Layer * layer);
 		virtual ~PhysicsDisplayable();
 
 		CCPhysicsSprite * getPhysicsSprite() { return _physicsSprite; }

@@ -13,7 +13,7 @@ using namespace std;
 Moveable::Moveable(): PhysicsDisplayable(), _type(UnitType), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false) {
 }
 
-Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene): PhysicsDisplayable(scene,CCPhysicsSprite::create(filename)), _type(type), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false)
+Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer): PhysicsDisplayable(scene,CCPhysicsSprite::create(filename), layer), _type(type), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false)
 {
 	bodyInit(x,y,rotation,hitboxRadius);
 	set_destination(x_dest,y_dest);

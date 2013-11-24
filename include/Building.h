@@ -9,8 +9,8 @@ class Building : public PhysicsDisplayable
 {
 	public:
 		Building();
-		Building(int x, int y, const char * filename, Scene * scene, float x_rally_point, float y_rally_point);
-		Building(MapTile * mapTile, const char * filename, Scene * scene, float x_rally_point, float y_rally_point);
+		Building(int x, int y, const char * filename, Scene * scene, Layer * layer, float x_rally_point, float y_rally_point);
+		Building(MapTile * mapTile, const char * filename, Scene * scene, Layer  * layer, float x_rally_point, float y_rally_point);
 		
 		// --- GET ---
 		CCPoint get_rally_point() { return _rally_point; }

@@ -33,7 +33,7 @@ class Moveable : public PhysicsDisplayable
 		
 	public:
 		Moveable();
-		Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene);
+		Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer);
 		virtual ~Moveable();
 
 		// --- METHODES ---

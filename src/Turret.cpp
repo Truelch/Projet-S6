@@ -11,8 +11,7 @@ Turret::Turret(): Displayable() {
 	//
 }
 
-Turret::Turret(float x, float y, float rotation, const char * filename, Scene * scene,
-				float x_relative, float y_relative, float missile_speed, int damage, float cooldown): Displayable(x,y,rotation,filename,scene)
+Turret::Turret(float x, float y, float rotation, const char * filename, Scene * scene, Layer * layer , float x_relative, float y_relative, float missile_speed, int damage, float cooldown): Displayable(x,y,rotation,filename,scene,layer)
 {
 	set_relative_position(x_relative,y_relative);
 	set_missile_speed(missile_speed);

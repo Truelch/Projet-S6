@@ -5,7 +5,7 @@ Missile::Missile(): Displayable() {
 	//
 }
 
-Missile::Missile(float x, float y, float rotation, float x_dest, float y_dest, float move_speed, const char * filename, Scene * scene, float range_max, int damage): Displayable(x, y, rotation, filename, scene)
+Missile::Missile(float x, float y, float rotation, float x_dest, float y_dest, float move_speed, const char * filename, Scene * scene, Layer * layer, float range_max, int damage): Displayable(x, y, rotation, filename, scene, layer)
 {
 	set_x_dest(x_dest);
 	set_y_dest(y_dest);

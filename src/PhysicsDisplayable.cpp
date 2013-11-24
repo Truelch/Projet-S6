@@ -1,10 +1,10 @@
 #include "PhysicsDisplayable.h"
 
-PhysicsDisplayable::PhysicsDisplayable():Displayable(CCPhysicsSprite::create()) {
+PhysicsDisplayable::PhysicsDisplayable():Displayable(CCPhysicsSprite::create(), NULL) {
 	_physicsSprite = (CCPhysicsSprite *)getSprite();
 }
 
-PhysicsDisplayable::PhysicsDisplayable(float x, float y, float rotation, const char * filename, Scene * scene, b2Body * body):Displayable(scene,CCPhysicsSprite::create(filename)) {
+PhysicsDisplayable::PhysicsDisplayable(float x, float y, float rotation, const char * filename, Scene * scene, Layer * layer, b2Body * body): Displayable(scene,CCPhysicsSprite::create(filename),layer) {
 	_physicsSprite = (CCPhysicsSprite *)(getSprite());
 	_physicsSprite->setB2Body(body);
 	_physicsSprite->setPTMRatio(PTM_RATIO);
@@ -12,7 +12,7 @@ PhysicsDisplayable::PhysicsDisplayable(float x, float y, float rotation, const c
 	_physicsSprite->setRotation(rotation);
 }
 
-PhysicsDisplayable::PhysicsDisplayable(Scene * scene, CCPhysicsSprite * physicsSprite):Displayable(scene,physicsSprite), _physicsSprite(physicsSprite) {
+PhysicsDisplayable::PhysicsDisplayable(Scene * scene, CCPhysicsSprite * physicsSprite, Layer * layer):Displayable(scene,physicsSprite,layer), _physicsSprite(physicsSprite) {
 }
 
 PhysicsDisplayable::~PhysicsDisplayable() {

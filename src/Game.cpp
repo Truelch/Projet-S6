@@ -24,9 +24,9 @@ Game::Game(): Scene()
 	Player * joueur1 = new Player("joueur1", Player::blue, 1, 1);
 	Player * joueur2 = new Player("joueur2", Player::red, 2, 2);
 
-	_display_layer->get_unit_layer()->add_unit(new Unit(250,200,250,200,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur1));
-	_display_layer->get_unit_layer()->add_unit(new Unit(400,200,400,200,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur1));
-	_display_layer->get_unit_layer()->add_unit(new Unit(100,200,100,200,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur2));
+	_display_layer->get_unit_layer()->add_unit(250,200,250,200,-90,5,5.0f,1.0f,"tank01.png", "tank",100,100,100,100,100,100,100,100, joueur1);
+	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"tank01.png", "tank",100,100,100,100,100,100,100,100, joueur1);
+	_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"tank01.png", "tank",100,100,100,100,100,100,100,100, joueur2);
 
 	/*
 	MapTile * tile = new MapTile(200,200,"000.png",this);
@@ -41,7 +41,7 @@ Game::Game(): Scene()
 	_hud_layer->setZOrder(2);
 	addChild(_hud_layer);
 
-	_hud = new Hud(256,180,"hud.png", this);
+	_hud = new Hud(256,180,"hud.png", this, _hud_layer);
 	_hud_layer->addChild(_hud->getSprite(),0);
 
 	this->schedule( schedule_selector( Game::update ), 1.0 / 50 );	
@@ -80,11 +80,6 @@ void Game::update(float dt)
 	}
 
 	getWorld()->Step(dt, 8, 1);
-
-	if(_display_layer->get_unit_layer()->get_unit(0)->getPhysicsSprite()->getPositionX()<100) {
-		//_display_layer->get_unit_layer()->remove_unit(_display_layer->get_unit_layer()->get_unit(0));
-		getEventHandler()->on_unit_destroyed(_display_layer->get_unit_layer()->get_unit(0));
-	}
 }
 
 
