@@ -19,6 +19,7 @@ class UnitContainer {
 		void add_unit(Unit * unit);
 		void remove_unit(int index);
 		void remove_unit(Unit * unit);
+		bool contain_unit(Unit * unit);
 		int get_number_unit();
 
 		static void on_unit_destroyed(Unit * unit); //reservé au destructeur de Unit

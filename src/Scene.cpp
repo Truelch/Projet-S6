@@ -4,6 +4,8 @@
 #include "CCArmature/external_tool/GLES-Render.h"
 
 Scene::Scene(): CCScene() {
+	_event_handler = new EventHandler(); 
+
 	//box2d world
 	b2Vec2 gravity;
 	gravity.Set(0.0f, 0.0f);
@@ -26,4 +28,5 @@ Scene::Scene(): CCScene() {
 
 Scene::~Scene() {
 	delete _world;
+	delete _event_handler;
 }

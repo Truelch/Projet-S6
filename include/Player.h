@@ -7,9 +7,11 @@
 
 #include <string>
 
+#include "EventReceiver.h"
+
 using namespace std;
 
-class Player
+class Player: public EventReceiver
 {
 	public:
 		typedef enum {

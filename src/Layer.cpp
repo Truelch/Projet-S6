@@ -9,13 +9,13 @@
 using namespace std;
 
 
-Layer::Layer(): CCLayer(), _scene(NULL)
+Layer::Layer(): CCLayer(), EventReceiver(), _scene(NULL)
 {
 	std::cout << "Constructeur de Layer" << std::endl;
 	init();
 }
 
-Layer::Layer(Scene * scene): CCLayer(), _scene(scene)
+Layer::Layer(Scene * scene): CCLayer(), EventReceiver(scene->getEventHandler()), _scene(scene)
 {
 	std::cout << "Constructeur de Layer" << std::endl;
 	init();

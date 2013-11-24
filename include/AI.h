@@ -4,9 +4,11 @@
 #include <iostream>
 #include <string>
 
+#include "EventReceiver.h"
+
 using namespace std;
 
-class AI {
+class AI : public EventReceiver {
 	public:
 		typedef enum {
 			easy,

@@ -32,6 +32,10 @@ void UnitContainer::remove_unit(Unit * unit) {
 	_unit_list.erase(std::remove(_unit_list.begin(), _unit_list.end(), unit), _unit_list.end());
 }
 
+bool UnitContainer::contain_unit(Unit * unit) {
+	return std::find(_unit_list.begin(), _unit_list.end(), unit) != _unit_list.end();
+}
+
 int UnitContainer::get_number_unit() {
 	return (int)(_unit_list.size());
 }

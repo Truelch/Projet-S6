@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
+#include "EventHandler.h"
 
 #define PTM_RATIO 32
 #define COEFF     2.1
@@ -19,8 +20,9 @@ class Scene : public cocos2d::CCScene
 		virtual void ccTouchesCancelled(cocos2d::CCSet* touches, cocos2d::CCEvent* event) = 0;
 
 		b2World * getWorld() { return _world; }
+		EventHandler * getEventHandler() { return _event_handler; }
 	private:
-
+		EventHandler * _event_handler;
 		b2World * _world;
 };
 

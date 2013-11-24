@@ -19,5 +19,5 @@ Displayable::Displayable(Scene * scene, CCSprite * sprite): _sprite(sprite), _sc
 }
 
 Displayable::~Displayable() {
-	if(_sprite) delete _sprite;
+	//if(_sprite) delete _sprite;
 }

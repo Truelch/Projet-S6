@@ -6,10 +6,9 @@
 #include <string>
 
 #include "Moveable.h"
-#include "Stat.h"
-#include "Player.h"
 
-using namespace std;
+class Player;
+class Stat;
 
 class Unit : public Moveable
 {

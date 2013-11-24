@@ -6,8 +6,6 @@
 
 #include "PhysicsDisplayable.h"
 
-using namespace cocos2d;
-
 class Moveable : public PhysicsDisplayable
 {
 	public:

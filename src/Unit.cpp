@@ -1,9 +1,12 @@
+
 #include "Unit.h"
 
 #include "UnitContainer.h"
+#include "Stat.h"
+#include "Player.h"
 
 
-Unit::Unit(): Moveable() {
+Unit::Unit(): Moveable(), _player(NULL) {
 	//
 }
 
@@ -42,3 +45,4 @@ Stat * Unit::get_stat()
 {
 	return _stat;
 }
+

@@ -16,9 +16,11 @@ PhysicsDisplayable::PhysicsDisplayable(Scene * scene, CCPhysicsSprite * physicsS
 }
 
 PhysicsDisplayable::~PhysicsDisplayable() {
+	/*
 	if(_physicsSprite) {
 		getScene()->getWorld()->DestroyBody(_physicsSprite->getB2Body());
 		delete _physicsSprite;
 		setSprite(NULL);
 	}
+	*/
 }

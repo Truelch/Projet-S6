@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Unit.h"
+#include "Player.h"
 
 
 USING_NS_CC;
@@ -79,6 +80,11 @@ void Game::update(float dt)
 	}
 
 	getWorld()->Step(dt, 8, 1);
+
+	if(_display_layer->get_unit_layer()->get_unit(0)->getPhysicsSprite()->getPositionX()<100) {
+		//_display_layer->get_unit_layer()->remove_unit(_display_layer->get_unit_layer()->get_unit(0));
+		getEventHandler()->on_unit_destroyed(_display_layer->get_unit_layer()->get_unit(0));
+	}
 }
 
 
