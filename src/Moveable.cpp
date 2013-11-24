@@ -119,8 +119,7 @@ void Moveable::move(float dt)
 			}
 		}
 		if(_mode_restore_position || !_rest) goToDestination();
-		else /*applyFixture(dt);*/ 
-		getPhysicsSprite()->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
+		else getPhysicsSprite()->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
 	}
 
 	/*

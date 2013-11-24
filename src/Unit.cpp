@@ -1,5 +1,7 @@
 #include "Unit.h"
 
+#include "UnitContainer.h"
+
 
 Unit::Unit(): Moveable() {
 	//
@@ -20,6 +22,7 @@ Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float m
 }
 
 Unit::~Unit() {
+	UnitContainer::on_unit_destroyed(this);
 }
 
 // --- METHODES ---

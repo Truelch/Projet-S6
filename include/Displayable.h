@@ -19,6 +19,9 @@ class Displayable
 
 		Scene * getScene() { return _scene; }
 		CCSprite * getSprite() { return _sprite; }
+
+		void setScene(Scene * scene) { _scene = scene; }
+		void setSprite(CCSprite * sprite) { _sprite = sprite; }
 	private:
 		CCSprite * _sprite;
 		Scene * _scene;

@@ -27,11 +27,13 @@ Game::Game(): Scene()
 	_display_layer->get_unit_layer()->add_unit(new Unit(400,200,400,200,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur1));
 	_display_layer->get_unit_layer()->add_unit(new Unit(100,200,100,200,-90,5,5.0f,1.0f,"tank01.png", this, "tank",100,100,100,100,100,100,100,100, joueur2));
 
+	/*
 	MapTile * tile = new MapTile(200,200,"000.png",this);
 	_display_layer->get_tile_layer()->addChild(tile->getSprite());
 
 	Building * building = new Building(tile, "ram01.png", this, 0, 0);
 	_display_layer->get_building_layer()->addChild(building->getSprite());
+	*/
 
 	_hud_layer = new Layer(this);
 	//_hud_layer->setTouchEnabled(true);
