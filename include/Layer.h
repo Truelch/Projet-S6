@@ -11,7 +11,7 @@ class Scene;
 
 USING_NS_CC;
 
-class Layer : public cocos2d::CCLayer, public EventReceiver
+class Layer : public cocos2d::CCLayer
 {
 	public:
 

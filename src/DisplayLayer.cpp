@@ -194,7 +194,7 @@ int DisplayLayer::init_file(string filename)
 			//Faut-il donner le chemin vers l'image ou seulement le nom de fichier de l'image ?
 			x = (1/COEFF)*_tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
 			y = (1/COEFF)*_tile_size*j;
-			_background_map_tile_matrix[j].push_back(new MapTile(x,y,"tiles/000.png",get_scene())); //Cela marche-t-il ?
+			_background_map_tile_matrix[j].push_back(new MapTile(x,y,"tiles/000.png",get_scene(),this)); //Cela marche-t-il ?
 			_background_layer->addChild((_background_map_tile_matrix[j][i])->getSprite());
 		}
 	}
