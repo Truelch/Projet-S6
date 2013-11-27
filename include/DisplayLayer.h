@@ -21,8 +21,8 @@
 typedef vector<vector<MapTile *> > MapTileMatrix;
 typedef vector<vector<MapTile *> >::iterator MapTileMatrixIt;
 
-typedef vector<vector<int> > IntMatrix;
-typedef vector<vector<int> >::iterator IntMatrixIt;
+typedef vector<vector<std::string> > StringMatrix;
+typedef vector<vector<std::string> >::iterator StringMatrixIt;
 
 using namespace std;
 
@@ -62,7 +62,7 @@ class DisplayLayer : public Layer
 		UnitLayer * _unit_layer;       //z = 6
 		MissileLayer *     _missile_layer;    //z = 7
 		
-		IntMatrix _int_matrix;
+		StringMatrix _string_matrix;
 		MapTileMatrix _map_tile_matrix; //=> _tile_layer
 		MapTileMatrix _background_map_tile_matrix; //=> _background_layer	
 

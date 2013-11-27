@@ -11,7 +11,7 @@ DisplayLayer::DisplayLayer(): Layer()
 	_tile_size = 124;
 	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
-	init_file("map/map1");
+	std::cout << "retour init_file : " << init_file("map/map1") << std::endl;
 }
 
 
@@ -20,7 +20,7 @@ DisplayLayer::DisplayLayer(Scene * scene): Layer(scene)
 	_tile_size = 124;
 	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
-	init_file("map/map1");
+	std::cout << "retour init_file : " << init_file("map/map1") << std::endl;
 	
 }
 
@@ -142,12 +142,12 @@ int DisplayLayer::init_file(string filename)
 	 * 
 	 */
 	
-	unsigned int i,j,x,y, nombreLigne=0, int_tile;
+	unsigned int i,j,x,y, nombreLigne=0;
 	int findIndex;
 	istringstream buffer;
-	string line;
+	std::string line, tileString;
 
-	_int_matrix.clear();
+	_string_matrix.clear();
 	
 	ifstream fileMap;
 	fileMap.open(filename.c_str());
@@ -155,29 +155,39 @@ int DisplayLayer::init_file(string filename)
 	if(!fileMap.is_open()) return EXIT_FAILURE;
 
 	if(fileMap.eof()) return EXIT_FAILURE;
-	fileMap >> line;
+	std::getline(fileMap, line);
 	findIndex=line.find(',');
 	if(findIndex==-1) return EXIT_FAILURE;
 	buffer.str(line.substr(0,findIndex));
-	//_map_height
 	buffer >> _map_height;
 	buffer.clear();
 	buffer.str(line.substr(findIndex+1));
-	//_map_width
 	buffer >> _map_width;
 	buffer.clear();
-	fileMap >> line;
+	std::getline(fileMap, line);
 	while(!fileMap.eof()) {
-		if(line.size()!=_map_width) return EXIT_FAILURE;
-		_int_matrix.insert(_int_matrix.begin(),vector<int>());
-		for(i=0;i<_map_width;i++) {
-			buffer.str(string(1,line[i]));
-			buffer >> int_tile;
-			buffer.clear();
-			_int_matrix[0].push_back(int_tile);
+		_string_matrix.insert(_string_matrix.begin(),vector<std::string>());
+
+		for(i=2;i<line.size();i+=4) {
+			if(i!=2 && line[i-3]!=' ') return EXIT_FAILURE;
+			tileString = line.substr(i-2,3);
+			if(tileString[0]<'a' || tileString[0]>'z') {
+				if(tileString[0]>='A' && tileString[0]<='Z') {
+					tileString[0]+='a'-'A';
+				}
+				else return EXIT_FAILURE;
+			}
+			for(j=1;j<3;j++) {
+				if(tileString[j]<'0' || tileString[j]>'9') return EXIT_FAILURE;
+			}
+			std::cout << nombreLigne << "," << _string_matrix[0].size() << " " << tileString << std::endl;
+			_string_matrix[0].push_back(tileString);
 		}
+
+		if(_string_matrix[0].size()!=_map_width) return EXIT_FAILURE;
+
 		nombreLigne++;
-		fileMap >> line;
+		std::getline(fileMap, line);
 	}
 	if(nombreLigne!=_map_height) return EXIT_FAILURE;
 	
