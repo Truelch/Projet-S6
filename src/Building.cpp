@@ -4,11 +4,11 @@ Building::Building(): PhysicsDisplayable() {
 	//
 }
 
-Building::Building(int x, int y, const char * filename, Scene * scene, Layer * layer, float x_rally_point, float y_rally_point): PhysicsDisplayable(scene,CCPhysicsSprite::create(filename),layer), _rally_point(CCPoint(x_rally_point,y_rally_point))
+Building::Building(int x, int y, const char * filename, Scene * scene, Layer * layer, float x_rally_point, float y_rally_point): PhysicsDisplayable(PhysicsDisplayable::buildingType, scene,CCPhysicsSprite::create(filename),layer), _rally_point(CCPoint(x_rally_point,y_rally_point))
 {
 }
 
-Building::Building(MapTile * mapTile, const char * filename, Scene * scene, Layer * layer, float x_rally_point, float y_rally_point): PhysicsDisplayable(scene,CCPhysicsSprite::create(filename),layer), _rally_point(CCPoint(x_rally_point,y_rally_point))
+Building::Building(MapTile * mapTile, const char * filename, Scene * scene, Layer * layer, float x_rally_point, float y_rally_point): PhysicsDisplayable(PhysicsDisplayable::buildingType, scene,CCPhysicsSprite::create(filename),layer), _rally_point(CCPoint(x_rally_point,y_rally_point))
 {
 	CCPoint position = mapTile->getSprite()->getOffsetPosition();
 	b2BodyDef bodyDef;

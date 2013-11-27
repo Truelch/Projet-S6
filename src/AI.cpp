@@ -1,12 +1,12 @@
 #include "AI.h"
 
-AI::AI() 
+AI::AI(): EventReceiver()
 {
 	//
 	std::cout << "Constructeur d'AI" << std::endl;
 }
 
-AI::AI(Difficulty difficulty)
+AI::AI(Scene * scene, Difficulty difficulty): EventReceiver(scene->getEventHandler()), _scene(scene)
 {
 	//
 	std::cout << "Constructeur d'AI" << std::endl;
@@ -36,7 +36,7 @@ AI::AI(Difficulty difficulty)
 	}	
 }
 
-AI::AI(AI::PlayStyle play_style, float coeff_ressource, float dt_time, bool omniscience)
+AI::AI(Scene * scene, AI::PlayStyle play_style, float coeff_ressource, float dt_time, bool omniscience): EventReceiver(scene->getEventHandler()), _scene(scene)
 {
 	std::cout << "Constructeur d'AI" << std::endl;
 	set_play_style(play_style);

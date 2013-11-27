@@ -10,10 +10,10 @@
 
 using namespace std;
 
-Moveable::Moveable(): PhysicsDisplayable(), _type(UnitType), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false) {
+Moveable::Moveable(): PhysicsDisplayable(), _type(unitType), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false) {
 }
 
-Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer): PhysicsDisplayable(scene,CCPhysicsSprite::create(filename), layer), _type(type), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false)
+Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer): PhysicsDisplayable(PhysicsDisplayable::moveableType, scene,CCPhysicsSprite::create(filename), layer), _type(type), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false)
 {
 	b2Vec2 vecteur_path;
 	bodyInit(x,y,rotation,hitboxRadius);
@@ -177,8 +177,19 @@ void Moveable::move(float dt)
 	*/
 }
 
-void Moveable::on_contact(Moveable * moveable) {
-	if(!_tenir_position) {
+void Moveable::on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB) {
+	Moveable * moveable = NULL;
+	if(physicsDisplayableA==this) {
+		if(physicsDisplayableB->getType()==PhysicsDisplayable::moveableType) {
+			moveable = (Moveable *)physicsDisplayableB;
+		}
+	}
+	else if(physicsDisplayableB==this) {
+		if(physicsDisplayableA->getType()==PhysicsDisplayable::moveableType) {
+			moveable = (Moveable *)physicsDisplayableA;
+		}
+	}
+	if(moveable && !_tenir_position) {
 		if(_rest && moveable->_mode_restore_position) {
 			b2Vec2 vecteur_unitaire(getSprite()->getPositionX()-moveable->getSprite()->getPositionX(), getSprite()->getPositionY()-moveable->getSprite()->getPositionY());
 			vecteur_unitaire.Normalize();

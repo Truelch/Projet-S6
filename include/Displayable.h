@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Scene.h"
+#include "EventReceiver.h"
 
 class Layer;
 
@@ -10,12 +11,11 @@ USING_NS_CC;
 
 using namespace cocos2d;
 
-class Displayable
+class Displayable : public EventReceiver
 {
 	public:
 		Displayable();
-		Displayable(CCSprite * sprite, Layer * layer);
-		Displayable(float x, float y, float rotation, const char * filename, Scene * _scene, Layer * layer);
+		Displayable(float x, float y, float rotation, const char * filename, Scene * scene, Layer * layer);
 		Displayable(Scene * _scene, CCSprite * sprite, Layer * layer);
 		virtual ~Displayable();
 

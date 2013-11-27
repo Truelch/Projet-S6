@@ -3,13 +3,13 @@
 #include "ContactListener.h"
 
 void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold) {
-	Moveable *moveableA, *moveableB;
 
-	moveableA = (Moveable *)(contact->GetFixtureA()->GetBody()->GetUserData());
-	moveableB = (Moveable *)(contact->GetFixtureB()->GetBody()->GetUserData());
+	PhysicsDisplayable *physicsDisplayableA, *physicsDisplayableB;
 
-	if(moveableA && moveableA->getType()==Moveable::UnitType) ((Unit *)moveableA)->on_contact(moveableB);
-	if(moveableB && moveableB->getType()==Moveable::UnitType) ((Unit *)moveableB)->on_contact(moveableA);
+	physicsDisplayableA = (PhysicsDisplayable *)(contact->GetFixtureA()->GetBody()->GetUserData());
+	physicsDisplayableB = (PhysicsDisplayable *)(contact->GetFixtureB()->GetBody()->GetUserData());
 
+	_scene->getEventHandler()->on_physics_displayable_contact(physicsDisplayableA, physicsDisplayableB);
+	
 	B2_NOT_USED(oldManifold);
 }

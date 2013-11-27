@@ -18,11 +18,11 @@ Game::Game(): Scene()
 	//_display_layer->setZOrder(1);
 	addChild(_display_layer);
 
-	_contactListener = new ContactListener();
+	_contactListener = new ContactListener(this);
 	getWorld()->SetContactListener(_contactListener);
 
-	Player * joueur1 = new Player("joueur1", Player::blue, 1, 1);
-	Player * joueur2 = new Player("joueur2", Player::red, 2, 2);
+	Player * joueur1 = new Player(this, "joueur1", Player::blue, 1, 1);
+	Player * joueur2 = new Player(this, "joueur2", Player::red, 2, 2);
 
 	_display_layer->get_unit_layer()->add_unit(250,200,250,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, joueur1);
 	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, joueur1);

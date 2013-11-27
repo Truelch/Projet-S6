@@ -11,7 +11,7 @@ Unit::Unit(): Moveable(), _player(NULL) {
 	//
 }
 
-Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, int prod_time, Player * player): Moveable(Moveable::UnitType, x, y, x_dest, y_dest, rotation, move_speed, 0.7f, groundFixture, density, filename, scene, layer), _player(player)
+Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, int prod_time, Player * player): Moveable(Moveable::unitType, x, y, x_dest, y_dest, rotation, move_speed, 0.7f, groundFixture, density, filename, scene, layer), _player(player)
 {
 	_stat = new Stat();
 	_stat->set_name(name);
@@ -32,14 +32,23 @@ Unit::~Unit() {
 }
 
 // --- METHODES ---
-void Unit::on_contact(Moveable * moveable) {
-	Unit * unit;
-	if(moveable->getType()==Moveable::UnitType) {
-		unit = (Unit *)moveable;
+void Unit::on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB) {
+	Unit * unit = NULL;
+	if(physicsDisplayableA==this) {
+		if(physicsDisplayableB->getType()==PhysicsDisplayable::moveableType && ((Moveable *)(physicsDisplayableB))->getType()==Moveable::unitType) {
+			unit = (Unit *)physicsDisplayableB;
+		}
+	}
+	else if(physicsDisplayableB==this) {
+		if(physicsDisplayableA->getType()==PhysicsDisplayable::moveableType && ((Moveable *)(physicsDisplayableA))->getType()==Moveable::unitType) {
+			unit = (Unit *)physicsDisplayableA;
+		}
+	}
+	if(unit) {
 		if(unit->getPlayer()==_player) set_tenir_position(false);
 		else set_tenir_position(true);
 	}
-	Moveable::on_contact(moveable);
+	Moveable::on_physics_displayable_contact(physicsDisplayableA, physicsDisplayableB);
 }
 
 // --- GET ---

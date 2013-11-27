@@ -10,7 +10,7 @@ class Moveable : public PhysicsDisplayable
 {
 	public:
 		typedef enum {
-			UnitType,
+			unitType,
 		} MoveableType;
 
 	private:
@@ -54,7 +54,7 @@ class Moveable : public PhysicsDisplayable
 		void set_move_speed(float move_speed);
 		void set_tenir_position(bool tenir_position);
 
-		virtual void on_contact(Moveable * moveable);
+		virtual void on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB);
 		
 };
 

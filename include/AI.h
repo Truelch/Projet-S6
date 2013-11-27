@@ -5,6 +5,7 @@
 #include <string>
 
 #include "EventReceiver.h"
+#include "Scene.h"
 
 using namespace std;
 
@@ -34,10 +35,12 @@ class AI : public EventReceiver {
 		float      _dt_time;         //temps min entre chaque action. Ex : facile : 2 sec ; normal : 0.5 ; difficile : 0	
 		bool       _omniscience;     //true : l'AI sait tout ce qui se passe et ne fait pas de décisions aléatoires (pour le scout et assauts de début de partie par ex)
 
+		Scene * _scene;
+
 	public:
 		AI(); //constructeur par défaut
-		AI(Difficulty difficulty); //remplit tous les paramètres en fonction du string d'entrée
-		AI(PlayStyle play_style, float coeff_ressource, float dt_time, bool omniscience); //version + souple permettant de tout remplir à la main dans le cadre d'une AI paramétrable en détails
+		AI(Scene * scene, Difficulty difficulty); //remplit tous les paramètres en fonction du string d'entrée
+		AI(Scene * scene, PlayStyle play_style, float coeff_ressource, float dt_time, bool omniscience); //version + souple permettant de tout remplir à la main dans le cadre d'une AI paramétrable en détails
 								 //ou alors appeler le constructeur défaut et remplir avec des set ? Non, en fait c'est une mauvaise idée.
 			
 		// --- METHODES ---

@@ -22,7 +22,7 @@ class Unit : public Moveable
 		virtual ~Unit();
 		
 		// --- METHODES ---
-		virtual void on_contact(Moveable * moveable);
+		virtual void on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB);
 	
 		// --- GET ---
 		Stat * get_stat();

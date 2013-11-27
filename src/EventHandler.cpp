@@ -27,3 +27,10 @@ void EventHandler::on_moveable_destination_reched(Moveable * moveable) {
 		_receiver_list[i]->on_moveable_destination_reched(moveable);
 	}
 }
+
+void EventHandler::on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB) {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->on_physics_displayable_contact(physicsDisplayableA, physicsDisplayableB);
+	}
+}

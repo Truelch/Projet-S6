@@ -1,11 +1,11 @@
 #include "Player.h"
 
-Player::Player()
+Player::Player(): EventReceiver(), _scene(NULL)
 {
 	//
 }
 
-Player::Player(string name, Color color, int player_number, int team_number): _name(name), _color(color), _player_number(player_number), _team_number(team_number)
+Player::Player(Scene * scene, string name, Color color, int player_number, int team_number):EventReceiver(scene->getEventHandler()), _name(name), _color(color), _player_number(player_number), _team_number(team_number), _scene(scene)
 {
 	//
 }

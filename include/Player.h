@@ -8,6 +8,7 @@
 #include <string>
 
 #include "EventReceiver.h"
+#include "Scene.h"
 
 using namespace std;
 
@@ -32,10 +33,11 @@ class Player: public EventReceiver
 		Color _color;
 		int    _player_number;
 		int    _team_number;
+		Scene * _scene;
 		
 	public:
 		Player();
-		Player(string name, Color color, int player_number, int team_number);
+		Player(Scene * scene, string name, Color color, int player_number, int team_number);
 		
 		//Unit*  _unit_selection;
 		//Il faudra que je retrouve comment bien initialiser le pointeur. Est ce que ça doit être un container ??
