@@ -11,7 +11,6 @@ DisplayLayer::DisplayLayer(): Layer()
 	_tile_size = 124;
 	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
-	std::cout << "retour init_file : " << init_file("map/map1") << std::endl;
 }
 
 
@@ -20,7 +19,6 @@ DisplayLayer::DisplayLayer(Scene * scene): Layer(scene)
 	_tile_size = 124;
 	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
-	std::cout << "retour init_file : " << init_file("map/map1") << std::endl;
 	
 }
 
@@ -180,7 +178,6 @@ int DisplayLayer::init_file(string filename)
 			for(j=1;j<3;j++) {
 				if(tileString[j]<'0' || tileString[j]>'9') return EXIT_FAILURE;
 			}
-			std::cout << nombreLigne << "," << _string_matrix[0].size() << " " << tileString << std::endl;
 			_string_matrix[0].push_back(tileString);
 		}
 
