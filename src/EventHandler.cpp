@@ -20,3 +20,10 @@ void EventHandler::on_unit_destroyed(Unit * unit) {
 		_receiver_list[i]->on_unit_destroyed(unit);
 	}
 }
+
+void EventHandler::on_moveable_destination_reched(Moveable * moveable) {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->on_moveable_destination_reched(moveable);
+	}
+}

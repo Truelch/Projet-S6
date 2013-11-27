@@ -10,14 +10,23 @@
 
 using namespace std;
 
-Moveable::Moveable(): PhysicsDisplayable(), _type(UnitType), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false) {
+Moveable::Moveable(): PhysicsDisplayable(), _type(UnitType), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false) {
 }
 
-Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer): PhysicsDisplayable(scene,CCPhysicsSprite::create(filename), layer), _type(type), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false)
+Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer): PhysicsDisplayable(scene,CCPhysicsSprite::create(filename), layer), _type(type), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false)
 {
+	b2Vec2 vecteur_path;
 	bodyInit(x,y,rotation,hitboxRadius);
-	set_destination(x_dest,y_dest);
 	set_move_speed(move_speed);	
+	_destination = getSprite()->getPosition();
+	
+	vecteur_path.Set(_destination.x - getSprite()->getPositionX(), _destination.y - getSprite()->getPositionY());
+	if(vecteur_path.Length()<0.000001) {
+		_rest=true;
+	}
+	else {
+		set_destination(x_dest,y_dest);
+	}
 }
 
 Moveable::~Moveable() {
@@ -77,6 +86,10 @@ void Moveable::goToDestination() {
 	}
 	else { 
 		getPhysicsSprite()->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
+		if(_move_in_progress) {
+			getScene()->getEventHandler()->on_moveable_destination_reched(this);
+		}
+		_move_in_progress=false;
 		_rest=true;
 		_mode_restore_position=false;
 	}
@@ -195,6 +208,7 @@ float Moveable::get_move_speed()
 void Moveable::set_destination(float x_dest,float y_dest)
 {
 	_rest=false;
+	_move_in_progress=true;
 	_mode_restore_position=false;
 	_destination.x = x_dest;
 	_destination.y = y_dest;

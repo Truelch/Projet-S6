@@ -18,7 +18,7 @@ STATICLIBS += \
 	$(LIB_DIR)/libbox2d.a \
 	$(LIB_DIR)/libchipmunk.a
 
-SHAREDLIBS += -lcocos2d -lX11
+SHAREDLIBS += -lcocos2d -lX11 -lXrandr
 COCOS_LIBS = $(LIB_DIR)/libcocos2d.so $(LIB_DIR)/libglfw.so.3
 
 $(TARGET): $(OBJECTS) $(STATICLIBS) $(COCOS_LIBS) $(CORE_MAKEFILE_LIST)

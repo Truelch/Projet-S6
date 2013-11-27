@@ -30,6 +30,7 @@ class Moveable : public PhysicsDisplayable
 		void applyFixture(float dt);
 
 		bool _tenir_position;
+		bool _move_in_progress;
 		
 	public:
 		Moveable();

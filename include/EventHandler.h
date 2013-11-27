@@ -5,6 +5,7 @@
 
 class EventReceiver;
 class Unit;
+class Moveable;
 
 class EventHandler {
 	public:
@@ -14,6 +15,7 @@ class EventHandler {
 		void removeReceiver(EventReceiver * eventReceiver);
 
 		void on_unit_destroyed(Unit * unit);
+		void on_moveable_destination_reched(Moveable * moveable);
 
 	private:
 		std::vector<EventReceiver *> _receiver_list;
