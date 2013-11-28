@@ -6,6 +6,7 @@
 
 #include "EventReceiver.h"
 #include "Scene.h"
+#include "Player.h"
 
 using namespace std;
 

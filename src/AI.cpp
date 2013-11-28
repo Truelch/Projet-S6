@@ -1,4 +1,5 @@
 #include "AI.h"
+#include "Stat.h"
 
 AI::AI(): EventReceiver()
 {
@@ -119,19 +120,19 @@ void AI::AI_monitor()
 	int i;
 	float percent_of_life;
 	//Boucle for traversant les unités du joueur
-	for(i=0;i<player->get_number_unit();i++)
+	for(i=0;i<_player->get_unit_container().get_number_unit();i++)
 	{
 		//Vérification si l'unité est en état de se battre
-		percent_of_life = i->get_pv()/(float)i->get_pv_max();
+		percent_of_life = _player->get_unit_container().get_unit(i)->get_stat()->get_hp()/(float)_player->get_unit_container().get_unit(i)->get_stat()->get_hp_max();
 		if (percent_of_life > _percent_life_min) //Unité en état de combattre
 		{
 			//Calcul de scout_value, def_value, att_value et capture_value (ce dernier vérifiant la distance de l'unité à un élément capurable ?
-			//scout_value = i->get
+			//scout_value = _player->get_unit_container().get_unit(i)->get
 		}
 		
-		else //pv trop faibles
+		else //hp trop faibles
 		{
-			//retreat(i); //set_destination(x_QG,y_QG); + impossible de lui redonner d'autres ordres
+			//retreat(_player->get_unit_container().get_unit(i)); //set_destination(x_QG,y_QG); + impossible de lui redonner d'autres ordres
 		}
 	}
 	
@@ -139,7 +140,7 @@ void AI::AI_monitor()
 
 float need_scout()
 {
-	float need_scout;
+	float need_scout=0.0;
 	
 	//
 	
