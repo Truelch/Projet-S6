@@ -10,7 +10,7 @@ SOURCES = $(shell ls src/*.cpp)
 COCOS_ROOT = cocos2d-x-2.1.5
 include $(COCOS_ROOT)/cocos2dx/proj.linux/cocos2dx.mk
 
-CXXFLAGS+= -g
+CXXFLAGS+= -g -std=c++11
 
 STATICLIBS += \
 	$(STATICLIBS_DIR)/libcurl.a \
