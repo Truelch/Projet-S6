@@ -9,6 +9,7 @@
 
 #include "EventReceiver.h"
 #include "Scene.h"
+#include "UnitContainer.h"
 
 using namespace std;
 
@@ -29,11 +30,14 @@ class Player: public EventReceiver
 		
 	private:
 		//ATTRIBUTS
-		string _name;
-		Color _color;
-		int    _player_number;
-		int    _team_number;
+		string  _name;
+		Color   _color;
+		int     _player_number;
+		int     _team_number;
 		Scene * _scene;
+		// --
+		UnitContainer              _unit_container;       //Contient toutes les unités du joueur
+		std::vector<UnitContainer> _control_group_vector; //Contient 10 slots de groupes d'unités
 		
 	public:
 		Player();
@@ -49,13 +53,15 @@ class Player: public EventReceiver
 		Color get_color();
 		int    get_player_number();
 		int    get_team_number();
-			
+		// --
+		UnitContainer&              get_unit_container();
+		std::vector<UnitContainer>&	get_control_group_vector();	
 		
 		//SET
 		void set_name(string name);
 		void set_color(Color color);
 		void set_player_number(int player_number); //Eviter son utilisation
-		void set_team_number(int team_number); //Eviter son utilisation	
+		void set_team_number(int team_number);     //Eviter son utilisation	
 };
 
 #endif

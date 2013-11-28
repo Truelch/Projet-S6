@@ -5,6 +5,16 @@
 #include <sstream>
 #include <iostream>
 #include <string>
+#include <map>
+
+
+typedef struct {
+	std::string sprite;
+	bool        crossUp;
+	bool        crossDown;
+	bool        crossRight;
+	bool        crossLeft;
+} Cle;
 
 DisplayLayer::DisplayLayer(): Layer()
 {
@@ -14,11 +24,12 @@ DisplayLayer::DisplayLayer(): Layer()
 }
 
 
-DisplayLayer::DisplayLayer(Scene * scene): Layer(scene)
+DisplayLayer::DisplayLayer(Scene * scene, std::string filename): Layer(scene)
 {
 	_tile_size = 124;
 	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
+	init_file(filename);
 	
 }
 
@@ -144,8 +155,15 @@ int DisplayLayer::init_file(string filename)
 	int findIndex;
 	istringstream buffer;
 	std::string line, tileString;
+	
+	std::map<std::string,Cle> sprite_map;
+	std::string img_filename;   //pour la texture d'un tile donné
+	StringMatrix string_matrix;
+	
+	sprite_map["s00"]= {"tiles/ground/000.png",true,true,true,true};	
+	sprite_map["f00"]= {"tiles/cliff/000.png",false,false,false,false};
 
-	_string_matrix.clear();
+	string_matrix.clear();
 	
 	ifstream fileMap;
 	fileMap.open(filename.c_str());
@@ -164,7 +182,7 @@ int DisplayLayer::init_file(string filename)
 	buffer.clear();
 	std::getline(fileMap, line);
 	while(!fileMap.eof()) {
-		_string_matrix.insert(_string_matrix.begin(),vector<std::string>());
+		string_matrix.insert(string_matrix.begin(),vector<std::string>());
 
 		for(i=2;i<line.size();i+=4) {
 			if(i!=2 && line[i-3]!=' ') return EXIT_FAILURE;
@@ -178,10 +196,10 @@ int DisplayLayer::init_file(string filename)
 			for(j=1;j<3;j++) {
 				if(tileString[j]<'0' || tileString[j]>'9') return EXIT_FAILURE;
 			}
-			_string_matrix[0].push_back(tileString);
+			string_matrix[0].push_back(tileString);
 		}
 
-		if(_string_matrix[0].size()!=_map_width) return EXIT_FAILURE;
+		if(string_matrix[0].size()!=_map_width) return EXIT_FAILURE;
 
 		nombreLigne++;
 		std::getline(fileMap, line);
@@ -195,14 +213,14 @@ int DisplayLayer::init_file(string filename)
 	
 	for(j=0;j<_map_height;j++)
 	{
-		_background_map_tile_matrix.push_back(vector<MapTile *>());
+		_background_layer->get_map_tile_matrix().push_back(vector<MapTile *>());
 		for(i=0;i<_map_width;i++)
 		{
 			//Faut-il donner le chemin vers l'image ou seulement le nom de fichier de l'image ?
 			x = (1/COEFF)*_tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
 			y = (1/COEFF)*_tile_size*j;
-			_background_map_tile_matrix[j].push_back(new MapTile(x,y,"tiles/000.png",get_scene(),this)); //Cela marche-t-il ?
-			_background_layer->addChild((_background_map_tile_matrix[j][i])->getSprite());
+			_background_layer->get_map_tile_matrix()[j].push_back(new MapTile(x,y,"tiles/000.png",get_scene(),_background_layer)); //Cela marche-t-il ?
+			_background_layer->addChild((_background_layer->get_map_tile_matrix()[j][i])->getSprite());
 		}
 	}
 	//_background_layer->addChild(new MapTile(0,0,"000.png"));
@@ -225,16 +243,23 @@ int DisplayLayer::init_file(string filename)
 	// => Réglé : on est dans DisplayLayer maintenant
 	
 	// --- TILES ---
-	/*
-	for(y=0;y<_map_height;y++)
+	
+	for(j=0;j<_map_height;j++)
 	{
-		for(x=0;x<_map_width;x++)
+		_tile_layer->get_map_tile_matrix().push_back(vector<MapTile *>());
+		for(i=0;i<_map_width;i++)
 		{
-			//On créé un Tile et on l'ajoute en tant que child dans le Tile Layer
-			_tile_layer->addChild(_map_tile_matrix[y][x]); // Cela marche-t-il ?
+			//Faut-il donner le chemin vers l'image ou seulement le nom de fichier de l'image ?
+			img_filename = sprite_map[string_matrix[j][i]].sprite;
+			
+			x = (1/COEFF)*_tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
+			y = (1/COEFF)*_tile_size*j;
+			
+			_tile_layer->get_map_tile_matrix()[j].push_back(new MapTile(x,y,img_filename.c_str(),get_scene(),_tile_layer)); //Cela marche-t-il ?
+			_tile_layer->addChild((_background_layer->get_map_tile_matrix()[j][i])->getSprite());
 		}
 	}
-	*/
+	
 	//On aurait également besoin de quelque chose semblable à un dictionnaire en Python; associant un identifiant à un élément stocké.
 	//Par exemple id = 1 renvoie un Tile avec l'image 01.png, son type de collisions etc.
 	

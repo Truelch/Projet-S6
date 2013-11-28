@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Layer.h"
+#include "MapTile.h"
 
 using namespace std;
 
@@ -16,9 +17,12 @@ class TileLayer : public Layer
 		TileLayer();
 		TileLayer(Scene * scene);
 		// --- METHODES ---
-	
+		
 		// --- GET ---
-
+		std::vector<std::vector<MapTile *> >& get_map_tile_matrix();
+		
+	private:
+		std::vector<std::vector<MapTile *> > _map_tile_matrix;
 };
 
 #endif

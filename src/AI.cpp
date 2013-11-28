@@ -73,6 +73,10 @@ bool AI::get_omniscience()
 	return _omniscience;
 }
 
+float AI::get_percent_life_min()
+{
+	return _percent_life_min;
+}
 
 // --- SET ---
 
@@ -104,5 +108,41 @@ void AI::set_omniscience(bool omniscience)
 	_omniscience = omniscience;
 }
 
+void AI::set_percent_life_min(float percent_life_min)
+{
+	_percent_life_min = percent_life_min;
+}
 
 // --- METHODES ---
+void AI::AI_monitor()
+{
+	int i;
+	float percent_of_life;
+	//Boucle for traversant les unités du joueur
+	for(i=0;i<player->get_number_unit();i++)
+	{
+		//Vérification si l'unité est en état de se battre
+		percent_of_life = i->get_pv()/(float)i->get_pv_max();
+		if (percent_of_life > _percent_life_min) //Unité en état de combattre
+		{
+			//Calcul de scout_value, def_value, att_value et capture_value (ce dernier vérifiant la distance de l'unité à un élément capurable ?
+			//scout_value = i->get
+		}
+		
+		else //pv trop faibles
+		{
+			//retreat(i); //set_destination(x_QG,y_QG); + impossible de lui redonner d'autres ordres
+		}
+	}
+	
+}
+
+float need_scout()
+{
+	float need_scout;
+	
+	//
+	
+	return need_scout;
+}
+

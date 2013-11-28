@@ -30,7 +30,7 @@ class DisplayLayer : public Layer
 {
 	public:
 		DisplayLayer();
-		DisplayLayer(Scene * scene);
+		DisplayLayer(Scene * scene, std::string filename);
 		~DisplayLayer();
 
 		virtual void draw();
@@ -50,26 +50,26 @@ class DisplayLayer : public Layer
 		
 		// --- METHODES ---
 		void init2();
-		int init_file(string filename);
+		int init_file(std::string filename);
 		
 	private:
-		LayerRGBA * _black_layer;      //z = 0
-		TileLayer * _background_layer; //z = 1
-		LayerRGBA * _opacity_layer;    //z = 2
-		TileLayer * _tile_layer;       //z = 3
-		DoodadLayer *     _doodad_layer;     //z = 4
-		BuildingLayer *		_building_layer;   //z = 5
-		UnitLayer * _unit_layer;       //z = 6
-		MissileLayer *     _missile_layer;    //z = 7
+		LayerRGBA *      _black_layer;      //z = 0
+		TileLayer *      _background_layer; //z = 1
+		LayerRGBA *      _opacity_layer;    //z = 2
+		TileLayer *      _tile_layer;       //z = 3
+		DoodadLayer *    _doodad_layer;     //z = 4
+		BuildingLayer *	 _building_layer;   //z = 5
+		UnitLayer *      _unit_layer;       //z = 6
+		MissileLayer *   _missile_layer;    //z = 7
 		
-		StringMatrix _string_matrix;
-		MapTileMatrix _map_tile_matrix; //=> _tile_layer
-		MapTileMatrix _background_map_tile_matrix; //=> _background_layer	
+		//StringMatrix _string_matrix;
+		//MapTileMatrix _map_tile_matrix;            //=> _tile_layer
+		//MapTileMatrix _background_map_tile_matrix; //=> _background_layer	
 
 		unsigned int _map_width;
 		unsigned int _map_height;
 		
-		unsigned int _tile_size;
+		unsigned int _tile_size; //= 128px
 };
 
 #endif

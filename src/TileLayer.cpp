@@ -14,6 +14,10 @@ TileLayer::TileLayer(Scene * scene): Layer(scene)
 
 
 // --- GET ---
+std::vector<std::vector<MapTile *> >& TileLayer::get_map_tile_matrix()
+{
+	return _map_tile_matrix;
+}
 
 // --- SET ---
 

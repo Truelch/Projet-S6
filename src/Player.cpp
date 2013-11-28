@@ -34,6 +34,16 @@ int Player::get_team_number()
 	return _team_number;
 }
 
+UnitContainer& Player::get_unit_container()
+{
+	return _unit_container;
+}
+
+std::vector<UnitContainer>&	Player::get_control_group_vector()
+{
+	return _control_group_vector;
+}
+
 // --- SET ---
 
 void Player::set_name(string name)
