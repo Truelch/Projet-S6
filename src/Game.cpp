@@ -4,13 +4,14 @@
 
 #include "Unit.h"
 #include "Player.h"
+#include "EGLView.h"
 
 
 USING_NS_CC;
 
 using namespace std;
 
-Game::Game(): Scene()
+Game::Game(): Scene(), _scroll_left(false), _scroll_right(false), _scroll_up(false), _scroll_down(false)
 {
 	std::cout << "Constructeur de Game" << std::endl;
 	_display_layer = new DisplayLayer(this,"map/map1");
@@ -74,6 +75,33 @@ DisplayLayer * Game::get_display_layer()
 void Game::update(float dt)
 {
 	int i;
+	float x,y,z;
+
+	if(_scroll_left) {
+		_display_layer->getCamera()->getCenterXYZ(&x,&y,&z);
+		_display_layer->getCamera()->setCenterXYZ(x-10,y,z);
+		_display_layer->getCamera()->getEyeXYZ(&x,&y,&z);
+		_display_layer->getCamera()->setEyeXYZ(x-10,y,z);
+	}
+	if(_scroll_right) {
+		_display_layer->getCamera()->getCenterXYZ(&x,&y,&z);
+		_display_layer->getCamera()->setCenterXYZ(x+10,y,z);
+		_display_layer->getCamera()->getEyeXYZ(&x,&y,&z);
+		_display_layer->getCamera()->setEyeXYZ(x+10,y,z);
+	}
+	if(_scroll_up) {
+		_display_layer->getCamera()->getCenterXYZ(&x,&y,&z);
+		_display_layer->getCamera()->setCenterXYZ(x,y+10,z);
+		_display_layer->getCamera()->getEyeXYZ(&x,&y,&z);
+		_display_layer->getCamera()->setEyeXYZ(x,y+10,z);
+	}
+	if(_scroll_down) {
+		_display_layer->getCamera()->getCenterXYZ(&x,&y,&z);
+		_display_layer->getCamera()->setCenterXYZ(x,y-10,z);
+		_display_layer->getCamera()->getEyeXYZ(&x,&y,&z);
+		_display_layer->getCamera()->setEyeXYZ(x,y-10,z);
+	}
+
 	for(i=0;i<_display_layer->get_unit_layer()->get_number_unit();i++)
 	{
 		_display_layer->get_unit_layer()->get_unit(i)->move(dt);
@@ -82,7 +110,7 @@ void Game::update(float dt)
 	getWorld()->Step(dt, 8, 1);
 }
 
-
+/*
 void Game::ccTouchesBegan(CCSet* touches, CCEvent* event) {
 	CCPoint destination = ((CCTouch *)(*(touches->begin())))->getLocation();
 	//le hud va de (27,0) a (452,100)
@@ -92,14 +120,44 @@ void Game::ccTouchesBegan(CCSet* touches, CCEvent* event) {
 }
 
 void Game::ccTouchesMoved(CCSet* touches, CCEvent* event) {
-	/*CCPoint p = ((CCTouch *)(*(touches->begin())))->getLocation();
-	(*_displayables.begin())->setPosition(p);*/
+	//CCPoint p = ((CCTouch *)(*(touches->begin())))->getLocation();
+	//(*_displayables.begin())->setPosition(p);
 }
 
 void Game::ccTouchesEnded(CCSet* touches, CCEvent* event) {
 }
 
 void Game::ccTouchesCancelled(CCSet* touches, CCEvent* event) {
+}
+*/
+
+
+void Game::mouse_left_button_down( int x, int y ) {
+	float cocos_x, cocos_y;
+	float offset_x,offset_y,offset_z;
+
+	_display_layer->getCamera()->getCenterXYZ(&offset_x,&offset_y,&offset_z);
+	x+=offset_x*2.4;
+	y-=offset_y*2.4;
+
+	coordinateOpenglToCocos2dx(x,y,cocos_x,cocos_y);
+	if(_display_layer->get_unit_layer()->get_number_unit()>0) {
+		_display_layer->get_unit_layer()->get_unit(0)->set_destination(cocos_x,cocos_y);
+	}
+}
+
+void Game::mouse_move( int x, int y) {
+	if(x<50) _scroll_left = true;
+	else _scroll_left = false;
+
+	if(x>EGLView::sharedOpenGLView()->getViewPortRect().getMaxX()-114) _scroll_right = true;
+	else _scroll_right = false;
+
+	if(y<50) _scroll_up = true;
+	else _scroll_up = false;
+
+	if(y>EGLView::sharedOpenGLView()->getViewPortRect().getMaxY()-50) _scroll_down = true;
+	else _scroll_down = false;
 }
 
 

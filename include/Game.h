@@ -38,10 +38,8 @@ class Game : public Scene
 		//Faire bouger l'unite
 		virtual void update(float dt); //le virtual (qui n'est que dans le .h d'ailleurs) sert à indiquer qu'on surcharge une methode existante
 		
-		virtual void ccTouchesBegan(CCSet* touches, CCEvent* event);
-		virtual void ccTouchesMoved(CCSet* touches, CCEvent* event);
-		virtual void ccTouchesEnded(CCSet* touches, CCEvent* event);
-		virtual void ccTouchesCancelled(CCSet* touches, CCEvent* event);
+		virtual void mouse_left_button_down( int x, int y );
+		virtual void mouse_move( int x, int y);
 		
 	private:
 		int _map_width;
@@ -53,6 +51,11 @@ class Game : public Scene
 
 		Layer * _hud_layer;
 		Hud * _hud;
+
+		bool _scroll_left;
+		bool _scroll_right;
+		bool _scroll_up;
+		bool _scroll_down;
 };
 
 #endif

@@ -24,11 +24,6 @@ class Layer : public cocos2d::CCLayer
 		// a selector callback
 		void menuCloseCallback(CCObject* pSender);
 
-		virtual void ccTouchesBegan(CCSet* touches, CCEvent* event);
-		virtual void ccTouchesMoved(CCSet* touches, CCEvent* event);
-		virtual void ccTouchesEnded(CCSet* touches, CCEvent* event);
-		virtual void ccTouchesCancelled(CCSet* touches, CCEvent* event);
-		
 		// --- GET ---
 		
 		Scene * get_scene() { return _scene; }

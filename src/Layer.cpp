@@ -70,19 +70,3 @@ void Layer::menuCloseCallback(CCObject* pSender)
 #endif
 }
 
-
-void Layer::ccTouchesBegan(CCSet* touches, CCEvent* event) {
-	_scene->ccTouchesBegan(touches, event);
-}
-
-void Layer::ccTouchesMoved(CCSet* touches, CCEvent* event) {
-	_scene->ccTouchesMoved(touches, event);
-}
-
-void Layer::ccTouchesEnded(CCSet* touches, CCEvent* event) {
-	_scene->ccTouchesEnded(touches, event);
-}
-
-void Layer::ccTouchesCancelled(CCSet* touches, CCEvent* event) {
-	_scene->ccTouchesCancelled(touches, event);
-}
