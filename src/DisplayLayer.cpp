@@ -14,6 +14,7 @@ typedef struct {
 	bool        crossDown;
 	bool        crossRight;
 	bool        crossLeft;
+	bool        building;
 } Cle;
 
 DisplayLayer::DisplayLayer(): Layer()
@@ -60,7 +61,7 @@ void DisplayLayer::draw()
 }
 
 // --- GET ---
-TileLayer * DisplayLayer::get_background_layer()
+BackgroundLayer * DisplayLayer::get_background_layer()
 {
 	return _background_layer;
 }
@@ -109,9 +110,9 @@ void DisplayLayer::init2()
 	addChild(_black_layer);
 		
 	// --- Layer de Background avec Tiles ---
-	_background_layer = new TileLayer(get_scene());
+	_background_layer = new BackgroundLayer(get_scene());
 	_background_layer->setZOrder(1);
-	addChild(_background_layer);
+	//addChild(_background_layer);
 	
 	// --- Layer d'Opacité ---
 	_opacity_layer = new LayerRGBA(get_scene());
@@ -158,10 +159,12 @@ int DisplayLayer::init_file(string filename)
 	
 	std::map<std::string,Cle> sprite_map;
 	std::string img_filename;   //pour la texture d'un tile donné
+	bool crossUp, crossDown, crossRight, crossLeft;
 	StringMatrix string_matrix;
 	
-	sprite_map["s00"]= {"tiles/ground/000.png",true,true,true,true};	
-	sprite_map["f00"]= {"tiles/cliff/000.png",false,false,false,false};
+	sprite_map["s00"]= {"tiles/ground/000.png",true,true,true,true,false};
+	sprite_map["f00"]= {"tiles/cliff/000.png",false,false,false,false,false};
+	sprite_map["d00"]= {"tiles/ground/000.png",true,true,true,true,true};
 
 	string_matrix.clear();
 	
@@ -213,14 +216,14 @@ int DisplayLayer::init_file(string filename)
 	
 	for(j=0;j<_map_height;j++)
 	{
-		_background_layer->get_map_tile_matrix().push_back(vector<MapTile *>());
+		_background_layer->get_map_displayable_matrix().push_back(vector<MapDisplayable *>());
 		for(i=0;i<_map_width;i++)
 		{
 			//Faut-il donner le chemin vers l'image ou seulement le nom de fichier de l'image ?
 			x = (1/COEFF)*_tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
 			y = (1/COEFF)*_tile_size*j;
-			_background_layer->get_map_tile_matrix()[j].push_back(new MapTile(x,y,"tiles/000.png",get_scene(),_background_layer)); //Cela marche-t-il ?
-			_background_layer->addChild((_background_layer->get_map_tile_matrix()[j][i])->getSprite());
+			_background_layer->get_map_displayable_matrix()[j].push_back(new MapDisplayable(x,y,"tiles/000.png",get_scene(),_background_layer)); //Cela marche-t-il ?
+			_background_layer->addChild((_background_layer->get_map_displayable_matrix()[j][i])->getSprite());
 		}
 	}
 	//_background_layer->addChild(new MapTile(0,0,"000.png"));
@@ -251,12 +254,16 @@ int DisplayLayer::init_file(string filename)
 		{
 			//Faut-il donner le chemin vers l'image ou seulement le nom de fichier de l'image ?
 			img_filename = sprite_map[string_matrix[j][i]].sprite;
+			crossUp = sprite_map[string_matrix[j][i]].crossUp && j!=_map_height-1;
+			crossDown = sprite_map[string_matrix[j][i]].crossDown && j!=0;
+			crossRight = sprite_map[string_matrix[j][i]].crossRight && i!=_map_width-1;
+			crossLeft = sprite_map[string_matrix[j][i]].crossLeft && i!=0;
 			
 			x = (1/COEFF)*_tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
 			y = (1/COEFF)*_tile_size*j;
 			
-			_tile_layer->get_map_tile_matrix()[j].push_back(new MapTile(x,y,img_filename.c_str(),get_scene(),_tile_layer)); //Cela marche-t-il ?
-			_tile_layer->addChild((_background_layer->get_map_tile_matrix()[j][i])->getSprite());
+			_tile_layer->get_map_tile_matrix()[j].push_back(new MapTile(x,y,img_filename.c_str(),get_scene(),_tile_layer,crossUp,crossDown,crossRight,crossLeft)); //Cela marche-t-il ?
+			_tile_layer->addChild((_tile_layer->get_map_tile_matrix()[j][i])->getSprite());
 		}
 	}
 	

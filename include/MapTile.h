@@ -1,31 +1,18 @@
-#ifndef MAPTILE_H
-#define MAPTILE_H
+#ifndef MAP_TILE_H
+#define MAP_TILE_H
 
-#include "cocos2d.h"
-#include "Displayable.h"
+#include "MapDisplayable.h"
 
-// LA CLASSE TILE EXISTE DEJA DANS COCOS2D 
-
-using namespace cocos2d;
-
-class MapTile : public Displayable
-{
+class MapTile : public MapDisplayable {
 	public:
 		MapTile();
-		MapTile(float x, float y, const char * filename, Scene * scene, Layer * layer);
-		
-		// --- Attributs ---
+		MapTile(float x, float y, const char * filename, Scene * scene, Layer * layer, bool crossUp = true, bool crossDown = true, bool crossRight = true, bool crossLeft = true);
 
-		
-		// --- METHODES ---
-		
-		
-		// --- GET ---
-
-		
-		// --- SET ---
-
-		
+	private:
+		bool _crossUp;
+		bool _crossDown;
+		bool _crossRight;
+		bool _crossLeft;
 };
 
 #endif

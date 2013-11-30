@@ -8,6 +8,7 @@
 
 #include "Layer.h"
 #include "TileLayer.h"
+#include "BackgroundLayer.h"
 #include "LayerRGBA.h"
 #include "UnitLayer.h"
 #include "DoodadLayer.h"
@@ -37,14 +38,14 @@ class DisplayLayer : public Layer
 
 	
 		// --- GET ---
-		LayerRGBA *     get_black_layer();
-		TileLayer *     get_background_layer();
-		LayerRGBA *     get_opacity_layer();
-		TileLayer *     get_tile_layer();
-		DoodadLayer *   get_doodad_layer();
-		BuildingLayer * get_building_layer();
-		UnitLayer *     get_unit_layer();
-		MissileLayer *  get_missile_layer();
+		LayerRGBA *       get_black_layer();
+		BackgroundLayer * get_background_layer();
+		LayerRGBA *       get_opacity_layer();
+		TileLayer *       get_tile_layer();
+		DoodadLayer *     get_doodad_layer();
+		BuildingLayer *   get_building_layer();
+		UnitLayer *       get_unit_layer();
+		MissileLayer *    get_missile_layer();
 		
 		// --- SET ---
 		
@@ -53,14 +54,14 @@ class DisplayLayer : public Layer
 		int init_file(std::string filename);
 		
 	private:
-		LayerRGBA *      _black_layer;      //z = 0
-		TileLayer *      _background_layer; //z = 1
-		LayerRGBA *      _opacity_layer;    //z = 2
-		TileLayer *      _tile_layer;       //z = 3
-		DoodadLayer *    _doodad_layer;     //z = 4
-		BuildingLayer *	 _building_layer;   //z = 5
-		UnitLayer *      _unit_layer;       //z = 6
-		MissileLayer *   _missile_layer;    //z = 7
+		LayerRGBA *        _black_layer;      //z = 0
+		BackgroundLayer *  _background_layer; //z = 1
+		LayerRGBA *        _opacity_layer;    //z = 2
+		TileLayer *        _tile_layer;       //z = 3
+		DoodadLayer *      _doodad_layer;     //z = 4
+		BuildingLayer *	   _building_layer;   //z = 5
+		UnitLayer *        _unit_layer;       //z = 6
+		MissileLayer *     _missile_layer;    //z = 7
 		
 		//StringMatrix _string_matrix;
 		//MapTileMatrix _map_tile_matrix;            //=> _tile_layer

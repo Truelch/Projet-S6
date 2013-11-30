@@ -7,7 +7,7 @@ Displayable::Displayable(): EventReceiver() {
 }
 
 Displayable::Displayable(float x, float y, float rotation, const char * filename, Scene * scene, Layer * layer): EventReceiver(scene->getEventHandler()), _scene(scene), _layer(layer) {
-	_sprite = CCSprite::create(filename);
+	 _sprite = CCSprite::create(filename);
 	_sprite->setPosition(ccp(x,y)); //cpp(x,y) = CCPointMake((float)x, (float)y) 
 	_sprite->setRotation(rotation);
 }
