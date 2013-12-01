@@ -145,6 +145,16 @@ void DisplayLayer::init2()
 	addChild(_missile_layer);
 }
 
+void DisplayLayer::coordonate_tile_to_cocos2dx(int x, int y, float& cocos_x, float& cocos_y) {
+	cocos_x = (_tile_size*x)/COEFF;
+	cocos_y = (_tile_size*y)/COEFF;
+}
+
+void DisplayLayer::coordonate_cocos2dx_to_tile(float cocos_x, float cocos_y, int& x, int& y) {
+	x = (int)floor((cocos_x*COEFF+_tile_size/2)/_tile_size);
+	y = (int)floor((cocos_y*COEFF+_tile_size/2)/_tile_size);
+}
+
 int DisplayLayer::init_file(string filename)
 {
 	/*

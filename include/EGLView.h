@@ -3,7 +3,8 @@
 
 #include "cocos2d.h"
 
-void coordinateOpenglToCocos2dx(int x, int y, float& cocos_x, float& cocos_y);
+void coordinateOpenglToCocos2dx(int opengl_x, int opengl_y, float& cocos_x, float& cocos_y);
+void coordinateCocos2dxToOpengl(float cocos_x, float cocos_y, int& opengl_x, int& opengl_y);
 
 class EGLView : public cocos2d::CCEGLView {
 	public:

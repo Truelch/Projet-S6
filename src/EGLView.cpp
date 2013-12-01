@@ -2,10 +2,16 @@
 #include "GL/glfw.h"
 #include "Scene.h"
 
-void coordinateOpenglToCocos2dx(int x, int y, float& cocos_x, float& cocos_y) {
+void coordinateOpenglToCocos2dx(int opengl_x, int opengl_y, float& cocos_x, float& cocos_y) {
 	EGLView* pEGLView = EGLView::sharedOpenGLView();
-	cocos_x = ((float)x/pEGLView->getFrameZoomFactor() - pEGLView->getViewPortRect().origin.x) / pEGLView->getScaleX();
-	cocos_y = ((pEGLView->getViewPortRect().getMaxY()-(float)y)/pEGLView->getFrameZoomFactor() - pEGLView->getViewPortRect().origin.y) / pEGLView->getScaleY();
+	cocos_x = ((float)opengl_x/pEGLView->getFrameZoomFactor() - pEGLView->getViewPortRect().origin.x) / pEGLView->getScaleX();
+	cocos_y = ((pEGLView->getViewPortRect().getMaxY()-(float)opengl_y)/pEGLView->getFrameZoomFactor() - pEGLView->getViewPortRect().origin.y) / pEGLView->getScaleY();
+}
+
+void coordinateCocos2dxToOpengl(float cocos_x, float cocos_y, int& opengl_x, int& opengl_y) {
+	EGLView* pEGLView = EGLView::sharedOpenGLView();
+	opengl_x = (int)((cocos_x*pEGLView->getScaleX()+pEGLView->getViewPortRect().origin.x)*pEGLView->getFrameZoomFactor());
+	opengl_y = (int)(pEGLView->getViewPortRect().getMaxY()-(cocos_y*pEGLView->getScaleY()+pEGLView->getViewPortRect().origin.y)*pEGLView->getFrameZoomFactor());
 }
 
 void mouse_button_event(int iMouseID,int iMouseState) {
@@ -37,8 +43,13 @@ void mouse_pos_event(int x,int y) {
 
 void key_event_handle(int iKeyID,int iKeyState) {
 	Scene * scene = (Scene *)cocos2d::CCDirector::sharedDirector()->getRunningScene();
-	if( iKeyState==GLFW_PRESS && scene ) {
-		scene->key_press(iKeyID);
+	if(scene) {
+		if( iKeyState==GLFW_PRESS ) {
+			scene->key_press(iKeyID);
+		}
+		else if( iKeyState==GLFW_RELEASE ) {
+			scene->key_release(iKeyID);
+		}
 	}
 }
 

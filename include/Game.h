@@ -40,6 +40,8 @@ class Game : public Scene
 		
 		virtual void mouse_left_button_down( int x, int y );
 		virtual void mouse_move( int x, int y);
+		virtual void key_press(int key);
+		virtual void key_release(int key);
 		
 	private:
 		int _map_width;
@@ -52,10 +54,14 @@ class Game : public Scene
 		Layer * _hud_layer;
 		Hud * _hud;
 
-		bool _scroll_left;
-		bool _scroll_right;
-		bool _scroll_up;
-		bool _scroll_down;
+		bool _scroll_left_mouse;
+		bool _scroll_right_mouse;
+		bool _scroll_up_mouse;
+		bool _scroll_down_mouse;
+		bool _scroll_left_key;
+		bool _scroll_right_key;
+		bool _scroll_up_key;
+		bool _scroll_down_key;
 };
 
 #endif

@@ -5,13 +5,14 @@
 #include "Unit.h"
 #include "Player.h"
 #include "EGLView.h"
+#include "GL/glfw.h"
 
 
 USING_NS_CC;
 
 using namespace std;
 
-Game::Game(): Scene(), _scroll_left(false), _scroll_right(false), _scroll_up(false), _scroll_down(false)
+Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _scroll_up_mouse(false), _scroll_down_mouse(false), _scroll_left_key(false), _scroll_right_key(false), _scroll_up_key(false), _scroll_down_key(false)
 {
 	std::cout << "Constructeur de Game" << std::endl;
 	_display_layer = new DisplayLayer(this,"map/map1");
@@ -76,30 +77,53 @@ void Game::update(float dt)
 {
 	int i;
 	float x,y,z;
+	int tile_x, tile_y;
+	CCSize size;
 
-	if(_scroll_left) {
-		_display_layer->getCamera()->getCenterXYZ(&x,&y,&z);
-		_display_layer->getCamera()->setCenterXYZ(x-10,y,z);
-		_display_layer->getCamera()->getEyeXYZ(&x,&y,&z);
-		_display_layer->getCamera()->setEyeXYZ(x-10,y,z);
+	if(_scroll_left_mouse || _scroll_right_mouse || _scroll_up_mouse || _scroll_down_mouse || _scroll_left_key || _scroll_right_key || _scroll_up_key || _scroll_down_key) {
+		size = CCDirector::sharedDirector()->getWinSize();
+		_display_layer->coordonate_cocos2dx_to_tile(size.width/2.0+x,(size.height+100)/2.0+y,tile_x,tile_y);
 	}
-	if(_scroll_right) {
+	if(_scroll_left_mouse || _scroll_left_key) {
 		_display_layer->getCamera()->getCenterXYZ(&x,&y,&z);
-		_display_layer->getCamera()->setCenterXYZ(x+10,y,z);
-		_display_layer->getCamera()->getEyeXYZ(&x,&y,&z);
-		_display_layer->getCamera()->setEyeXYZ(x+10,y,z);
+		x-=10;
+		_display_layer->coordonate_cocos2dx_to_tile(size.width/2.0+x,(size.height+100)/2.0+y,tile_x,tile_y);
+		if(tile_x>=0) {
+			_display_layer->getCamera()->setCenterXYZ(x,y,z);
+			_display_layer->getCamera()->getEyeXYZ(&x,&y,&z);
+			_display_layer->getCamera()->setEyeXYZ(x-10,y,z);
+		}
+
 	}
-	if(_scroll_up) {
+	if(_scroll_right_mouse || _scroll_right_key) {
 		_display_layer->getCamera()->getCenterXYZ(&x,&y,&z);
-		_display_layer->getCamera()->setCenterXYZ(x,y+10,z);
-		_display_layer->getCamera()->getEyeXYZ(&x,&y,&z);
-		_display_layer->getCamera()->setEyeXYZ(x,y+10,z);
+		x+=10;
+		_display_layer->coordonate_cocos2dx_to_tile(size.width/2.0+x,(size.height+100)/2.0+y,tile_x,tile_y);
+		if(tile_x<_display_layer->get_map_width()) {
+			_display_layer->getCamera()->setCenterXYZ(x,y,z);
+			_display_layer->getCamera()->getEyeXYZ(&x,&y,&z);
+			_display_layer->getCamera()->setEyeXYZ(x+10,y,z);
+		}
 	}
-	if(_scroll_down) {
+	if(_scroll_up_mouse || _scroll_up_key) {
 		_display_layer->getCamera()->getCenterXYZ(&x,&y,&z);
-		_display_layer->getCamera()->setCenterXYZ(x,y-10,z);
-		_display_layer->getCamera()->getEyeXYZ(&x,&y,&z);
-		_display_layer->getCamera()->setEyeXYZ(x,y-10,z);
+		y+=10;
+		_display_layer->coordonate_cocos2dx_to_tile(size.width/2.0+x,(size.height+100)/2.0+y,tile_x,tile_y);
+		if(tile_y<_display_layer->get_map_height()) {
+			_display_layer->getCamera()->setCenterXYZ(x,y,z);
+			_display_layer->getCamera()->getEyeXYZ(&x,&y,&z);
+			_display_layer->getCamera()->setEyeXYZ(x,y+10,z);
+		}
+	}
+	if(_scroll_down_mouse || _scroll_down_key) {
+		_display_layer->getCamera()->getCenterXYZ(&x,&y,&z);
+		y-=10;
+		_display_layer->coordonate_cocos2dx_to_tile(size.width/2.0+x,(size.height+100)/2.0+y,tile_x,tile_y);
+		if(tile_y>=0) {
+			_display_layer->getCamera()->setCenterXYZ(x,y,z);
+			_display_layer->getCamera()->getEyeXYZ(&x,&y,&z);
+			_display_layer->getCamera()->setEyeXYZ(x,y-10,z);
+		}
 	}
 
 	for(i=0;i<_display_layer->get_unit_layer()->get_number_unit();i++)
@@ -113,7 +137,6 @@ void Game::update(float dt)
 /*
 void Game::ccTouchesBegan(CCSet* touches, CCEvent* event) {
 	CCPoint destination = ((CCTouch *)(*(touches->begin())))->getLocation();
-	//le hud va de (27,0) a (452,100)
 	if(_display_layer->get_unit_layer()->get_number_unit()>0) {
 		_display_layer->get_unit_layer()->get_unit(0)->set_destination(destination.x,destination.y);
 	}
@@ -136,28 +159,52 @@ void Game::mouse_left_button_down( int x, int y ) {
 	float cocos_x, cocos_y;
 	float offset_x,offset_y,offset_z;
 
-	_display_layer->getCamera()->getCenterXYZ(&offset_x,&offset_y,&offset_z);
-	x+=offset_x*2.4;
-	y-=offset_y*2.4;
+	//le hud va de (27,0) a (452,100) en coordonnee cocos
 
+	_display_layer->getCamera()->getCenterXYZ(&offset_x,&offset_y,&offset_z);
 	coordinateOpenglToCocos2dx(x,y,cocos_x,cocos_y);
+
+	cocos_x+=offset_x;
+	cocos_y+=offset_y;
+
+	CCSize size = CCDirector::sharedDirector()->getWinSize();
+	int tile_x, tile_y;
+	_display_layer->coordonate_cocos2dx_to_tile(size.width/2.0+offset_x,(size.height+100)/2.0+offset_y,tile_x,tile_y);
+	std::cout << size.width/2.0+offset_x << "\t" << size.height/2.0+offset_y << "\t" << tile_x << "," << tile_y << std::endl;
+	_display_layer->coordonate_cocos2dx_to_tile(cocos_x,cocos_y,tile_x,tile_y);
+	std::cout << cocos_x << "\t" << cocos_y << "\t" << tile_x << "," << tile_y << std::endl;
+	std::cout << std::endl;
+
 	if(_display_layer->get_unit_layer()->get_number_unit()>0) {
 		_display_layer->get_unit_layer()->get_unit(0)->set_destination(cocos_x,cocos_y);
 	}
 }
 
 void Game::mouse_move( int x, int y) {
-	if(x<50) _scroll_left = true;
-	else _scroll_left = false;
+	if(x<50) _scroll_left_mouse = true;
+	else _scroll_left_mouse = false;
 
-	if(x>EGLView::sharedOpenGLView()->getViewPortRect().getMaxX()-114) _scroll_right = true;
-	else _scroll_right = false;
+	if(x>EGLView::sharedOpenGLView()->getViewPortRect().getMaxX()-114) _scroll_right_mouse = true;
+	else _scroll_right_mouse = false;
 
-	if(y<50) _scroll_up = true;
-	else _scroll_up = false;
+	if(y<50) _scroll_up_mouse = true;
+	else _scroll_up_mouse = false;
 
-	if(y>EGLView::sharedOpenGLView()->getViewPortRect().getMaxY()-50) _scroll_down = true;
-	else _scroll_down = false;
+	if(y>EGLView::sharedOpenGLView()->getViewPortRect().getMaxY()-50) _scroll_down_mouse = true;
+	else _scroll_down_mouse = false;
 }
 
+void Game::key_press(int key) {
+	if(key==GLFW_KEY_LEFT) _scroll_left_key=true;
+	else if(key==GLFW_KEY_RIGHT) _scroll_right_key=true;
+	else if(key==GLFW_KEY_UP) _scroll_up_key=true;
+	else if(key==GLFW_KEY_DOWN) _scroll_down_key=true;
+}
+
+void Game::key_release(int key) {
+	if(key==GLFW_KEY_LEFT) _scroll_left_key=false;
+	else if(key==GLFW_KEY_RIGHT) _scroll_right_key=false;
+	else if(key==GLFW_KEY_UP) _scroll_up_key=false;
+	else if(key==GLFW_KEY_DOWN) _scroll_down_key=false;
+}
 

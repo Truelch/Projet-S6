@@ -46,11 +46,17 @@ class DisplayLayer : public Layer
 		BuildingLayer *   get_building_layer();
 		UnitLayer *       get_unit_layer();
 		MissileLayer *    get_missile_layer();
+
+		int get_tile_size() { return (int)_tile_size; }
+		int get_map_width() { return (int)_map_width; }
+		int get_map_height() { return (int)_map_height; }
 		
 		// --- SET ---
 		
 		// --- METHODES ---
 		void init2();
+		void coordonate_tile_to_cocos2dx(int x, int y, float& cocos_x, float& cocos_y);
+		void coordonate_cocos2dx_to_tile(float cocos_x, float cocos_y, int& x, int& y);
 		int init_file(std::string filename);
 		
 	private:
