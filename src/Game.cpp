@@ -170,10 +170,7 @@ void Game::mouse_left_button_down( int x, int y ) {
 	CCSize size = CCDirector::sharedDirector()->getWinSize();
 	int tile_x, tile_y;
 	_display_layer->coordonate_cocos2dx_to_tile(size.width/2.0+offset_x,(size.height+100)/2.0+offset_y,tile_x,tile_y);
-	std::cout << size.width/2.0+offset_x << "\t" << size.height/2.0+offset_y << "\t" << tile_x << "," << tile_y << std::endl;
 	_display_layer->coordonate_cocos2dx_to_tile(cocos_x,cocos_y,tile_x,tile_y);
-	std::cout << cocos_x << "\t" << cocos_y << "\t" << tile_x << "," << tile_y << std::endl;
-	std::cout << std::endl;
 
 	if(_display_layer->get_unit_layer()->get_number_unit()>0) {
 		_display_layer->get_unit_layer()->get_unit(0)->set_destination(cocos_x,cocos_y);
