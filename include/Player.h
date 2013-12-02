@@ -27,6 +27,12 @@ class Player: public EventReceiver
 			brown,
 			pink,
 		} Color;
+
+		typedef struct {
+			bool discovered;
+			bool visible;
+			Container<Unit> range_unit_list;
+		} TileInfo;
 		
 	private:
 		//ATTRIBUTS
@@ -42,6 +48,8 @@ class Player: public EventReceiver
 		
 		// --
 		//BuildingContainer          _building_container;
+		
+		std::vector<std::vector<TileInfo> > _map_tile_info;
 		
 		
 	public:

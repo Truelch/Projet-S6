@@ -5,7 +5,7 @@ Stat::Stat() {
 	//
 }
 
-Stat::Stat(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, const char * filename, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, string armor_type, int prod_time)
+Stat::Stat(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, const char * filename, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, string armor_type, int prod_time, float sight)
 {
 	set_name(name);
 	set_hp(hp);
@@ -17,6 +17,7 @@ Stat::Stat(float x, float y, float x_dest, float y_dest, float rotation, float m
 	set_armor(armor);
 	set_armor_type(armor_type);
 	set_prod_time(prod_time);
+	set_sight(sight);
 }
 
 // --- METHODES ---
@@ -73,6 +74,11 @@ int Stat::get_prod_time()
 	return _prod_time;
 }
 
+float Stat::set_sight()
+{
+	return _sight;
+}
+
 
 // --- SET ---
 
@@ -124,4 +130,9 @@ void Stat::set_armor_type(string type_armor)
 void Stat::set_prod_time(int prod_time)
 {
 	_prod_time = prod_time;
+}
+
+void Stat::set_sight(float sight)
+{
+	_sight = sight;
 }
