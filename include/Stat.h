@@ -12,7 +12,7 @@ class Stat
 {
 	public:
 		Stat();
-		Stat(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, const char * filename, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, string armor_type, int prod_time);
+		Stat(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, const char * filename, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, string armor_type, int prod_time, float sight);
 		
 		// --- METHODES ---
 
@@ -28,6 +28,7 @@ class Stat
 		int get_armor();
 		string get_type_armor();
 		int get_prod_time();
+		float get_sight();
 
 		// --- SET ---
 		void set_name(string name);
@@ -40,6 +41,7 @@ class Stat
 		void set_armor(int armor);
 		void set_armor_type(string armor_type);
 		void set_prod_time(int prod_time);
+		void set_sight(float sight);
 	
 	private:		
 		// --- ATTRIBUTS ---
@@ -53,6 +55,7 @@ class Stat
 		int _armor;
 		string _type_armor;
 		int _prod_time;
+		float _sight;
 		
 };
 
