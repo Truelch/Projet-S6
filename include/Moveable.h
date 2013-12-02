@@ -14,6 +14,8 @@ class Moveable : public PhysicsDisplayable
 		} MoveableType;
 
 	private:
+		int _tile_x;
+		int _tile_y;
 		CCPoint _destination;
 		float   _move_speed;
 
@@ -31,6 +33,9 @@ class Moveable : public PhysicsDisplayable
 
 		bool _tenir_position;
 		bool _move_in_progress;
+
+	protected:
+		virtual void updateCoordonates();
 		
 	public:
 		Moveable();
@@ -48,6 +53,8 @@ class Moveable : public PhysicsDisplayable
 		bool get_rest() { return _rest; }
 		bool get_mode_restore_position() { return _mode_restore_position; }
 		bool get_tenir_position() { return _tenir_position; }
+		int get_tile_x() { return _tile_x; }
+		int get_tile_y() { return _tile_y; }
 		
 		// --- SET ---
 		void set_destination(float x_dest, float y_dest);

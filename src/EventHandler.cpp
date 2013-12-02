@@ -34,3 +34,10 @@ void EventHandler::on_physics_displayable_contact(PhysicsDisplayable * physicsDi
 		_receiver_list[i]->on_physics_displayable_contact(physicsDisplayableA, physicsDisplayableB);
 	}
 }
+
+void EventHandler::unit_change_map_tile(MapTile * map_tile, Unit * unit) {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->unit_change_map_tile(map_tile, unit);
+	}
+}

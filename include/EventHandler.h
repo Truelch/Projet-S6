@@ -7,6 +7,7 @@ class EventReceiver;
 class Unit;
 class Moveable;
 class PhysicsDisplayable;
+class MapTile;
 
 class EventHandler {
 	public:
@@ -18,6 +19,7 @@ class EventHandler {
 		void on_unit_destroyed(Unit * unit);
 		void on_moveable_destination_reched(Moveable * moveable);
 		void on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB);
+		void unit_change_map_tile(MapTile * map_tile, Unit * unit);
 
 	private:
 		std::vector<EventReceiver *> _receiver_list;

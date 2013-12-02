@@ -32,6 +32,21 @@ Unit::~Unit() {
 	getGame()->getEventHandler()->on_unit_destroyed(this);
 }
 
+void Unit::updateCoordonates() {
+	int old_tile_x=get_tile_x(), old_tile_y=get_tile_y();
+
+	Moveable::updateCoordonates();
+
+	if(old_tile_x!=get_tile_x() || old_tile_y!=get_tile_y()) {
+		if(old_tile_x!=-1 && old_tile_y!=-1) {
+			getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[old_tile_y][old_tile_x]->get_unit_container().remove_unit(this);
+		}
+		getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[get_tile_x()][get_tile_y()]->get_unit_container().add_unit(this);
+		getGame()->getEventHandler()->unit_change_map_tile(getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[get_tile_y()][get_tile_x()], this);
+	}
+
+}
+
 // --- METHODES ---
 void Unit::on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB) {
 	Unit * unit = NULL;

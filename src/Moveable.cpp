@@ -20,6 +20,10 @@ Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_de
 	bodyInit(x,y,rotation,hitboxRadius);
 	set_move_speed(move_speed);	
 	_destination = getSprite()->getPosition();
+
+	_tile_x=-1;
+	_tile_y=-1;
+	updateCoordonates();
 	
 	vecteur_path.Set(_destination.x - getSprite()->getPositionX(), _destination.y - getSprite()->getPositionY());
 	if(vecteur_path.Length()<0.000001) {
@@ -31,6 +35,11 @@ Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_de
 }
 
 Moveable::~Moveable() {
+}
+
+void Moveable::updateCoordonates() {
+	CCPoint position = getSprite()->getPosition();
+	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(position.x, position.y, _tile_x, _tile_y);
 }
 
 void Moveable::bodyInit(int x, int y, int rotation, float hitboxRadius) {
@@ -135,6 +144,8 @@ void Moveable::move(float dt)
 		if(_mode_restore_position || !_rest) goToDestination();
 		else getPhysicsSprite()->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
 	}
+
+	updateCoordonates();
 
 	/*
 	//Coeff unité de temps
