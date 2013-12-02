@@ -35,9 +35,9 @@ void EventHandler::on_physics_displayable_contact(PhysicsDisplayable * physicsDi
 	}
 }
 
-void EventHandler::unit_change_map_tile(MapTile * map_tile, Unit * unit) {
+void EventHandler::unit_change_map_tile(int x, int y, Unit * unit) {
 	unsigned int i;
 	for(i=0; i<_receiver_list.size(); i++) {
-		_receiver_list[i]->unit_change_map_tile(map_tile, unit);
+		_receiver_list[i]->unit_change_map_tile(x, y, unit);
 	}
 }

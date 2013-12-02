@@ -42,7 +42,7 @@ void Unit::updateCoordonates() {
 			getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[old_tile_y][old_tile_x]->get_unit_container().remove_unit(this);
 		}
 		getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[get_tile_x()][get_tile_y()]->get_unit_container().add_unit(this);
-		getGame()->getEventHandler()->unit_change_map_tile(getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[get_tile_y()][get_tile_x()], this);
+		getGame()->getEventHandler()->unit_change_map_tile(get_tile_x(), get_tile_y(), this);
 	}
 
 }
