@@ -74,7 +74,7 @@ int Stat::get_prod_time()
 	return _prod_time;
 }
 
-float Stat::set_sight()
+float Stat::get_sight()
 {
 	return _sight;
 }
