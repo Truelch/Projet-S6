@@ -19,7 +19,9 @@ class MissileLayer : public Layer
 		// --- METHODES ---
 	
 		// --- GET ---
-
+		
+	private:
+		
 };
 
 #endif

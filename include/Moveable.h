@@ -38,7 +38,7 @@ class Moveable : public PhysicsDisplayable
 
 		// --- METHODES ---
 		void bodyInit(int x,int y, int rotation, float hitboxRadius);
-		void move(float dt);
+		virtual void update(float dt);
 		
 		// --- GET ---
 		CCPoint get_destination();

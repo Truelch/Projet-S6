@@ -128,7 +128,7 @@ void Game::update(float dt)
 
 	for(i=0;i<_display_layer->get_unit_layer()->get_number_unit();i++)
 	{
-		_display_layer->get_unit_layer()->get_unit(i)->move(dt);
+		_display_layer->get_unit_layer()->get_unit(i)->update(dt);
 	}
 
 	getWorld()->Step(dt, 8, 1);

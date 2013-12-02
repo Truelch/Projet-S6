@@ -1,11 +1,11 @@
 #include "Player.h"
 
-Player::Player(): EventReceiver(), _scene(NULL)
+Player::Player(): EventReceiver(), _game(NULL)
 {
 	//
 }
 
-Player::Player(Scene * scene, string name, Color color, int player_number, int team_number):EventReceiver(scene->getEventHandler()), _name(name), _color(color), _player_number(player_number), _team_number(team_number), _scene(scene)
+Player::Player(Game * game, string name, Color color, int player_number, int team_number):EventReceiver(game->getEventHandler()), _name(name), _color(color), _player_number(player_number), _team_number(team_number), _game(game)
 {
 	//
 }
@@ -42,9 +42,9 @@ std::vector<Container<Unit>>&	Player::get_control_group_vector()
 	return _control_group_vector;
 }
 
-Scene * Player::get_scene()
+Game * Player::get_game()
 {
-	return _scene;
+	return _game;
 }
 
 // --- SET ---
