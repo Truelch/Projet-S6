@@ -161,28 +161,28 @@ void AI::affecting_order()
 	// ------------------------------------
 	// --- ORDRE AFFECTE A CHAQUE UNITE ---
 	// ------------------------------------
-	for(i=0;i<_player->get_unit_container().get_number_unit();i++)
+	for(i=0;i<_player->get_unit_container().get_number_t();i++)
 	{
 		//Vérification si l'unité est en état de se battre
-		percent_of_life = _player->get_unit_container().get_unit(i)->get_stat()->get_hp()/(float)_player->get_unit_container().get_unit(i)->get_stat()->get_hp_max();
+		percent_of_life = _player->get_unit_container().get_t(i)->get_stat()->get_hp()/(float)_player->get_unit_container().get_t(i)->get_stat()->get_hp_max();
 		if (percent_of_life > _percent_life_min) //Unité en état de combattre
 		{
 			// --- SCOUT ---
 			//Calcul de scout_value, def_value, att_value et capture_value (ce dernier vérifiant la distance de l'unité à un élément capurable ?
 			need_scout  = compute_need_scout();
-			scout_value = (_player->get_unit_container().get_unit(i)->get_ai_stat()->get_scout()) * need_scout;
+			scout_value = (_player->get_unit_container().get_t(i)->get_ai_stat()->get_scout()) * need_scout;
 			
 			// --- CAPTURE ---
 			need_capture  = compute_need_capture();
-			capture_value = (_player->get_unit_container().get_unit(i)->get_ai_stat()->get_capture()) * need_capture;
+			capture_value = (_player->get_unit_container().get_t(i)->get_ai_stat()->get_capture()) * need_capture;
 			
 			// --- ATTACK ---
 			need_attack   = compute_need_attack();
-			attack_value  = (_player->get_unit_container().get_unit(i)->get_ai_stat()->get_attack()) * need_attack;
+			attack_value  = (_player->get_unit_container().get_t(i)->get_ai_stat()->get_attack()) * need_attack;
 						
 			// --- DEFENSE ---
 			need_defense  = compute_need_capture();
-			defense_value = (_player->get_unit_container().get_unit(i)->get_ai_stat()->get_defense()) * need_defense;
+			defense_value = (_player->get_unit_container().get_t(i)->get_ai_stat()->get_defense()) * need_defense;
 			
 			// --- CALCUL DU MAX(SCOUT, CAPTURE, ATTACK, DEFENSE) ---
 			max = need_scout;
@@ -209,30 +209,30 @@ void AI::affecting_order()
 			
 			if      (order == "scout")   
 			{
-				//_player->get_unit_container().get_unit(i)->scout();
+				//_player->get_unit_container().get_t(i)->scout();
 				//Comportement d'unité ; Rajouter un attribut pour le comportement intelligent d'une unité
 				
 			}   
 			
 			else if (order == "capture") 
 			{
-				//_player->get_unit_container().get_unit(i)->capture();
+				//_player->get_unit_container().get_t(i)->capture();
 			}
 			
 			else if (order == "attack")  
 			{
-				//_player->get_unit_container().get_unit(i)->attack();
+				//_player->get_unit_container().get_t(i)->attack();
 			}
 			
 			else if (order == "defense") 
 			{
-				//_player->get_unit_container().get_unit(i)->defense();
+				//_player->get_unit_container().get_t(i)->defense();
 			}
 		}
 		
 		else //hp trop faibles
 		{
-			//retreat(_player->get_unit_container().get_unit(i)); //set_destination(x_QG,y_QG); + impossible de lui redonner d'autres ordres
+			//retreat(_player->get_unit_container().get_t(i)); //set_destination(x_QG,y_QG); + impossible de lui redonner d'autres ordres
 			
 		}
 	}

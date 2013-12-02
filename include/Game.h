@@ -62,6 +62,9 @@ class Game : public Scene
 		bool _scroll_right_key;
 		bool _scroll_up_key;
 		bool _scroll_down_key;
+
+		Player * _main_player;
+		vector<Player *> _player_list;
 };
 
 #endif

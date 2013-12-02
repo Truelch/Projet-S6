@@ -1,7 +1,7 @@
 
 #include "Unit.h"
 
-#include "UnitContainer.h"
+#include "Container.h"
 #include "Stat.h"
 #include "Player.h"
 #include "Layer.h"
@@ -28,7 +28,7 @@ Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float m
 }
 
 Unit::~Unit() {
-	UnitContainer::on_unit_destroyed(this);
+	Container<Unit>::on_destroyed(this);
 	getLayer()->removeChild(getPhysicsSprite());
 	getGame()->getEventHandler()->on_unit_destroyed(this);
 }
@@ -40,9 +40,9 @@ void Unit::updateCoordonates() {
 
 	if(old_tile_x!=get_tile_x() || old_tile_y!=get_tile_y()) {
 		if(old_tile_x!=-1 && old_tile_y!=-1) {
-			getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[old_tile_y][old_tile_x]->get_unit_container().remove_unit(this);
+			getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[old_tile_y][old_tile_x]->get_unit_container().remove_t(this);
 		}
-		getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[get_tile_x()][get_tile_y()]->get_unit_container().add_unit(this);
+		getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[get_tile_x()][get_tile_y()]->get_unit_container().add_t(this);
 		getGame()->getEventHandler()->unit_change_map_tile(get_tile_x(), get_tile_y(), this);
 	}
 
