@@ -17,6 +17,7 @@ class Moveable : public PhysicsDisplayable
 		bool _rest;
 		float _groundFixture;
 		float _density;
+		float _hitboxRadius
 
 		float _time_before_restore_position;
 		bool _mode_restore_position;
@@ -44,6 +45,7 @@ class Moveable : public PhysicsDisplayable
 		float   get_move_speed();
 		bool get_rest() { return _rest; }
 		bool get_mode_restore_position() { return _mode_restore_position; }
+		float get_hitboxRadius() { return _hitboxRadius; }
 
 		bool get_hold_position() { return _hold_position; }
 		int get_tile_x() { return _tile_x; }
