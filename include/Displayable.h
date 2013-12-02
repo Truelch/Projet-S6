@@ -14,6 +14,22 @@ using namespace cocos2d;
 class Displayable : public EventReceiver
 {
 	public:
+		typedef enum {
+			displayableType,
+			corpseType,
+			hudType,
+			mapDisplayableType,
+			mapTileType,
+			missileType,
+			physicsDisplayableType,
+			buildingType,
+			moveableType,
+			unitType,
+			powerNodeType,
+			turretType,
+		} DisplayableType;
+
+	public:
 		Displayable();
 		Displayable(float x, float y, float rotation, const char * filename, Game * game, Layer * layer);
 		Displayable(Game * _game, CCSprite * sprite, Layer * layer);
@@ -22,6 +38,7 @@ class Displayable : public EventReceiver
 		Game * getGame() { return _game; }
 		CCSprite * getSprite() { return _sprite; }
 		Layer * getLayer() { return _layer; }
+		virtual DisplayableType getType() { return displayableType; }
 
 		void setGame(Game * game) { _game = game; }
 		void setSprite(CCSprite * sprite) { _sprite = sprite; }

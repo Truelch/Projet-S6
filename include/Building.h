@@ -16,6 +16,7 @@ class Building : public PhysicsDisplayable
 		
 		// --- GET ---
 		CCPoint get_rally_point() { return _rally_point; }
+		virtual Displayable::DisplayableType getType() { return Displayable::buildingType; }
 		
 		// --- SET ---
 		void set_rally_point(float x_rally_point, float y_rally_point) {

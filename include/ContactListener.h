@@ -6,7 +6,7 @@
 #include <iostream>
 
 #include "Scene.h"
-#include "PhysicsDisplayable.h"
+#include "Displayable.h"
 
 class ContactListener : public b2ContactListener {
 	public:

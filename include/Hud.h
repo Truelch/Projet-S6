@@ -21,6 +21,7 @@ class Hud : public Displayable
 		// --- METHODES ---
 		
 		// --- GET ---
+		virtual Displayable::DisplayableType getType() { return Displayable::hudType; }
 		
 		// --- SET ---
 		

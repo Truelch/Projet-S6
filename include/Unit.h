@@ -24,11 +24,12 @@ class Unit : public Moveable
 		virtual ~Unit();
 		
 		// --- METHODES ---
-		virtual void on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB);
+		virtual void on_displayable_contact(Displayable * displayableA, Displayable * displayableB);
 	
 		// --- GET ---
 		Stat * get_stat();
 		Player * getPlayer() { return _player; }
+		virtual Displayable::DisplayableType getType() { return Displayable::unitType; }
 
 		// --- SET ---
 		void setPlayer(Player * player) { _player = player; }

@@ -21,6 +21,7 @@ class MapDisplayable : public Displayable
 		
 		
 		// --- GET ---
+		virtual Displayable::DisplayableType getType() { return Displayable::mapDisplayableType; }
 
 		
 		// --- SET ---

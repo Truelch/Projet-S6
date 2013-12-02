@@ -13,7 +13,7 @@ MapTile::MapTile(): MapDisplayable(), _crossUp(true), _crossDown(true), _crossRi
 MapTile::MapTile(float x, float y, const char * filename, Game * game, Layer * layer, bool crossUp, bool crossDown, bool crossRight, bool crossLeft): MapDisplayable(x,y,filename,game,layer), _crossUp(crossUp), _crossDown(crossDown), _crossRight(crossRight), _crossLeft(crossLeft), _building(NULL) {
 	CCRect rect = getSprite()->getTextureRect();
 	b2BodyDef groundBodyDef;
-	groundBodyDef.userData = NULL;
+	groundBodyDef.userData = this;
 	groundBodyDef.position.Set(0, 0); // bottom-left corner
 	b2Body* groundBody = getGame()->getWorld()->CreateBody(&groundBodyDef);
 	b2EdgeShape groundBox;

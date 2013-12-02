@@ -11,10 +11,10 @@
 
 using namespace std;
 
-Moveable::Moveable(): PhysicsDisplayable(), _type(unitType), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false) {
+Moveable::Moveable(): PhysicsDisplayable(), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false) {
 }
 
-Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Game * game, Layer * layer): PhysicsDisplayable(PhysicsDisplayable::moveableType, game,CCPhysicsSprite::create(filename), layer), _type(type), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false)
+Moveable::Moveable(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Game * game, Layer * layer): PhysicsDisplayable(game,CCPhysicsSprite::create(filename), layer), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false)
 {
 	b2Vec2 vecteur_path;
 	bodyInit(x,y,rotation,hitboxRadius);
@@ -189,16 +189,16 @@ void Moveable::move(float dt)
 	*/
 }
 
-void Moveable::on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB) {
+void Moveable::on_displayable_contact(Displayable * displayableA, Displayable * displayableB) {
 	Moveable * moveable = NULL;
-	if(physicsDisplayableA==this) {
-		if(physicsDisplayableB->getType()==PhysicsDisplayable::moveableType) {
-			moveable = (Moveable *)physicsDisplayableB;
+	if(displayableA==this) {
+		if(displayableB->getType()==Displayable::moveableType || displayableB->getType()==Displayable::unitType) {
+			moveable = (Moveable *)displayableB;
 		}
 	}
-	else if(physicsDisplayableB==this) {
-		if(physicsDisplayableA->getType()==PhysicsDisplayable::moveableType) {
-			moveable = (Moveable *)physicsDisplayableA;
+	else if(displayableB==this) {
+		if(displayableA->getType()==Displayable::moveableType || displayableA->getType()==Displayable::unitType) {
+			moveable = (Moveable *)displayableA;
 		}
 	}
 	if(moveable && !_tenir_position) {

@@ -17,6 +17,7 @@ class PowerNode : public Displayable
 		
 		
 		// --- GET ---
+		virtual Displayable::DisplayableType getType() { return Displayable::powerNodeType; }
 		
 		
 		// --- SET ---

@@ -12,7 +12,7 @@ Unit::Unit(): Moveable(), _player(NULL) {
 	//
 }
 
-Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename, Game * game, Layer * layer, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, int prod_time, Player * player): Moveable(Moveable::unitType, x, y, x_dest, y_dest, rotation, move_speed, 0.7f, groundFixture, density, filename, game, layer), _player(player)
+Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename, Game * game, Layer * layer, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, int prod_time, Player * player): Moveable(x, y, x_dest, y_dest, rotation, move_speed, 0.7f, groundFixture, density, filename, game, layer), _player(player)
 {
 	_stat = new Stat();
 	_stat->set_name(name);
@@ -48,23 +48,23 @@ void Unit::updateCoordonates() {
 }
 
 // --- METHODES ---
-void Unit::on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB) {
+void Unit::on_displayable_contact(Displayable * displayableA, Displayable * displayableB) {
 	Unit * unit = NULL;
-	if(physicsDisplayableA==this) {
-		if(physicsDisplayableB->getType()==PhysicsDisplayable::moveableType && ((Moveable *)(physicsDisplayableB))->getType()==Moveable::unitType) {
-			unit = (Unit *)physicsDisplayableB;
+	if(displayableA==this) {
+		if(displayableB->getType()==Displayable::unitType) {
+			unit = (Unit *)displayableB;
 		}
 	}
-	else if(physicsDisplayableB==this) {
-		if(physicsDisplayableA->getType()==PhysicsDisplayable::moveableType && ((Moveable *)(physicsDisplayableA))->getType()==Moveable::unitType) {
-			unit = (Unit *)physicsDisplayableA;
+	else if(displayableB==this) {
+		if(displayableA->getType()==Displayable::unitType) {
+			unit = (Unit *)displayableA;
 		}
 	}
 	if(unit) {
 		if(unit->getPlayer()==_player) set_tenir_position(false);
 		else set_tenir_position(true);
 	}
-	Moveable::on_physics_displayable_contact(physicsDisplayableA, physicsDisplayableB);
+	Moveable::on_displayable_contact(displayableA, displayableB);
 }
 
 // --- GET ---

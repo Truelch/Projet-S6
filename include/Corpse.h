@@ -20,6 +20,7 @@ class Corpse : public Displayable
 		
 		
 		// --- GET ---
+		virtual Displayable::DisplayableType getType() { return Displayable::corpseType; }
 
 		
 		// --- SET ---

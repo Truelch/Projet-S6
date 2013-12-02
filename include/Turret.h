@@ -20,6 +20,7 @@ class Turret : public Displayable
 		float get_missile_speed();
 		int get_damage();
 		float get_cooldown();
+		virtual Displayable::DisplayableType getType() { return Displayable::turretType; }
 		
 		// --- SET ---
 		void set_relative_position(float x_relative, float y_relative);

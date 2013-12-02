@@ -13,6 +13,7 @@ class MapTile : public MapDisplayable {
 
 		Building * get_building() { return _building; }
 		UnitContainer& get_unit_container() { return _unit_container; }
+		virtual Displayable::DisplayableType getType() { return Displayable::mapTileType; }
 
 		void set_building( Building * building ) { _building = building; }
 
