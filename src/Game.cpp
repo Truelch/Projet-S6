@@ -45,7 +45,6 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	addChild(_hud_layer);
 
 	_hud = new Hud(256,180,"hud.png", this, _hud_layer);
-	_hud_layer->addChild(_hud->getSprite(),0);
 
 	this->schedule( schedule_selector( Game::update ), 1.0 / 50 );	
 }

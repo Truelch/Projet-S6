@@ -234,7 +234,6 @@ int DisplayLayer::init_file(string filename)
 			x = (1/COEFF)*_tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
 			y = (1/COEFF)*_tile_size*j;
 			_background_layer->get_map_displayable_matrix()[j].push_back(new MapDisplayable(x,y,"tiles/000.png",get_game(),_background_layer)); //Cela marche-t-il ?
-			_background_layer->addChild((_background_layer->get_map_displayable_matrix()[j][i])->getSprite());
 		}
 	}
 	//_background_layer->addChild(new MapTile(0,0,"000.png"));
@@ -278,7 +277,7 @@ int DisplayLayer::init_file(string filename)
 				_building_layer->get_building_list().push_back(new Building(_tile_layer->get_map_tile_matrix()[j][i],building_sprite.c_str(),get_game(),_building_layer,x,y));
 		}
 	}
-	
+
 	//On aurait également besoin de quelque chose semblable à un dictionnaire en Python; associant un identifiant à un élément stocké.
 	//Par exemple id = 1 renvoie un Tile avec l'image 01.png, son type de collisions etc.
 	
