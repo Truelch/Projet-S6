@@ -3,7 +3,7 @@
 //=> pour les sqrt
 #include <iostream>
 #include "Box2D/Box2D.h"
-#include "Scene.h"
+#include "Game.h"
 
 #include <math.h>
 
@@ -11,15 +11,19 @@
 
 using namespace std;
 
-Moveable::Moveable(): PhysicsDisplayable(), _type(unitType), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _hold_position(false), _move_in_progress(false) {
+Moveable::Moveable(): PhysicsDisplayable(), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _hold_position(false), _move_in_progress(false) {
 }
 
-Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer): PhysicsDisplayable(PhysicsDisplayable::moveableType, scene,CCPhysicsSprite::create(filename), layer), _type(type), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _hold_position(false), _move_in_progress(false)
+Moveable::Moveable(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Game * game, Layer * layer): PhysicsDisplayable(game,CCPhysicsSprite::create(filename), layer), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _hold_position(false), _move_in_progress(false)
 {
 	b2Vec2 vecteur_path;
 	bodyInit(x,y,rotation,hitboxRadius);
 	set_move_speed(move_speed);	
 	_destination = getSprite()->getPosition();
+
+	_tile_x=-1;
+	_tile_y=-1;
+	updateCoordonates();
 	
 	vecteur_path.Set(_destination.x - getSprite()->getPositionX(), _destination.y - getSprite()->getPositionY());
 	if(vecteur_path.Length()<0.000001) {
@@ -33,6 +37,11 @@ Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_de
 Moveable::~Moveable() {
 }
 
+void Moveable::updateCoordonates() {
+	CCPoint position = getSprite()->getPosition();
+	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(position.x, position.y, _tile_x, _tile_y);
+}
+
 void Moveable::bodyInit(int x, int y, int rotation, float hitboxRadius) {
 	b2BodyDef bodyDef;
 	bodyDef.userData = this;
@@ -40,7 +49,7 @@ void Moveable::bodyInit(int x, int y, int rotation, float hitboxRadius) {
 	bodyDef.position.Set(x/PTM_RATIO, y/PTM_RATIO);
 	bodyDef.fixedRotation = true;
 
-	b2Body *body = getScene()->getWorld()->CreateBody(&bodyDef);
+	b2Body *body = getGame()->getWorld()->CreateBody(&bodyDef);
 
 	// Define another box shape for our dynamic body.
 	b2CircleShape dynamicBox;
@@ -88,7 +97,7 @@ void Moveable::goToDestination() {
 	else { 
 		getPhysicsSprite()->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
 		if(_move_in_progress) {
-			getScene()->getEventHandler()->on_moveable_destination_reched(this);
+			getGame()->getEventHandler()->on_moveable_destination_reched(this);
 		}
 		_move_in_progress=false;
 		_rest=true;
@@ -136,6 +145,8 @@ void Moveable::move(float dt)
 		else getPhysicsSprite()->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
 	}
 
+	updateCoordonates();
+
 	/*
 	//Coeff unité de temps
 	//float coeff = 50;
@@ -178,16 +189,16 @@ void Moveable::move(float dt)
 	*/
 }
 
-void Moveable::on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB) {
+void Moveable::on_displayable_contact(Displayable * displayableA, Displayable * displayableB) {
 	Moveable * moveable = NULL;
-	if(physicsDisplayableA==this) {
-		if(physicsDisplayableB->getType()==PhysicsDisplayable::moveableType) {
-			moveable = (Moveable *)physicsDisplayableB;
+	if(displayableA==this) {
+		if(displayableB->getType()==Displayable::moveableType || displayableB->getType()==Displayable::unitType) {
+			moveable = (Moveable *)displayableB;
 		}
 	}
-	else if(physicsDisplayableB==this) {
-		if(physicsDisplayableA->getType()==PhysicsDisplayable::moveableType) {
-			moveable = (Moveable *)physicsDisplayableA;
+	else if(displayableB==this) {
+		if(displayableA->getType()==Displayable::moveableType || displayableA->getType()==Displayable::unitType) {
+			moveable = (Moveable *)displayableA;
 		}
 	}
 	if(moveable && !_hold_position) {

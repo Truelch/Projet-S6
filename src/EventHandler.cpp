@@ -28,9 +28,16 @@ void EventHandler::on_moveable_destination_reched(Moveable * moveable) {
 	}
 }
 
-void EventHandler::on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB) {
+void EventHandler::on_displayable_contact(Displayable * displayableA, Displayable * displayableB) {
 	unsigned int i;
 	for(i=0; i<_receiver_list.size(); i++) {
-		_receiver_list[i]->on_physics_displayable_contact(physicsDisplayableA, physicsDisplayableB);
+		_receiver_list[i]->on_displayable_contact(displayableA, displayableB);
+	}
+}
+
+void EventHandler::unit_change_map_tile(int x, int y, Unit * unit) {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->unit_change_map_tile(x, y, unit);
 	}
 }

@@ -8,6 +8,7 @@
 
 #include "Layer.h"
 #include "TileLayer.h"
+#include "BackgroundLayer.h"
 #include "LayerRGBA.h"
 #include "UnitLayer.h"
 #include "DoodadLayer.h"
@@ -30,37 +31,43 @@ class DisplayLayer : public Layer
 {
 	public:
 		DisplayLayer();
-		DisplayLayer(Scene * scene, std::string filename);
+		DisplayLayer(Game * game);
 		~DisplayLayer();
 
 		virtual void draw();
 
 	
 		// --- GET ---
-		LayerRGBA *     get_black_layer();
-		TileLayer *     get_background_layer();
-		LayerRGBA *     get_opacity_layer();
-		TileLayer *     get_tile_layer();
-		DoodadLayer *   get_doodad_layer();
-		BuildingLayer * get_building_layer();
-		UnitLayer *     get_unit_layer();
-		MissileLayer *  get_missile_layer();
+		LayerRGBA *       get_black_layer();
+		BackgroundLayer * get_background_layer();
+		LayerRGBA *       get_opacity_layer();
+		TileLayer *       get_tile_layer();
+		DoodadLayer *     get_doodad_layer();
+		BuildingLayer *   get_building_layer();
+		UnitLayer *       get_unit_layer();
+		MissileLayer *    get_missile_layer();
+
+		int get_tile_size() { return (int)_tile_size; }
+		int get_map_width() { return (int)_map_width; }
+		int get_map_height() { return (int)_map_height; }
 		
 		// --- SET ---
 		
 		// --- METHODES ---
 		void init2();
-		int  init_file(std::string filename);
+		void coordonate_tile_to_cocos2dx(int x, int y, float& cocos_x, float& cocos_y);
+		void coordonate_cocos2dx_to_tile(float cocos_x, float cocos_y, int& x, int& y);
+		int init_file(std::string filename);
 		
 	private:
-		LayerRGBA *      _black_layer;      //z = 0
-		TileLayer *      _background_layer; //z = 1
-		LayerRGBA *      _opacity_layer;    //z = 2
-		TileLayer *      _tile_layer;       //z = 3
-		DoodadLayer *    _doodad_layer;     //z = 4
-		BuildingLayer *	 _building_layer;   //z = 5
-		UnitLayer *      _unit_layer;       //z = 6
-		MissileLayer *   _missile_layer;    //z = 7
+		LayerRGBA *        _black_layer;      //z = 0
+		BackgroundLayer *  _background_layer; //z = 1
+		LayerRGBA *        _opacity_layer;    //z = 2
+		TileLayer *        _tile_layer;       //z = 3
+		DoodadLayer *      _doodad_layer;     //z = 4
+		BuildingLayer *	   _building_layer;   //z = 5
+		UnitLayer *        _unit_layer;       //z = 6
+		MissileLayer *     _missile_layer;    //z = 7
 		
 		//StringMatrix _string_matrix;
 		//MapTileMatrix _map_tile_matrix;            //=> _tile_layer

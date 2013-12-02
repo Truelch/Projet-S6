@@ -15,7 +15,7 @@ class MissileLayer : public Layer
 {
 	public:
 		MissileLayer();
-		MissileLayer(Scene * scene);
+		MissileLayer(Game * game);
 		// --- METHODES ---
 	
 		// --- GET ---

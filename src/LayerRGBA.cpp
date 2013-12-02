@@ -1,19 +1,19 @@
 #include "LayerRGBA.h"
 
-#include "Scene.h"
+#include "Game.h"
 #include "TileLayer.h"
 #include <iostream>
 
 using namespace std;
 
 
-LayerRGBA::LayerRGBA(): CCLayerRGBA(), _scene(NULL)
+LayerRGBA::LayerRGBA(): CCLayerRGBA(), _game(NULL)
 {
 	std::cout << "Constructeur de LayerRGBA" << std::endl;
 	init();
 }
 
-LayerRGBA::LayerRGBA(Scene * scene): CCLayerRGBA(), _scene(scene)
+LayerRGBA::LayerRGBA(Game * game): CCLayerRGBA(), _game(game)
 {
 	std::cout << "Constructeur de LayerRGBA" << std::endl;
 	init();

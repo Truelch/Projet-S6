@@ -10,7 +10,7 @@ class Turret : public Displayable
 {
 	public:
 		Turret();
-		Turret(float x, float y, float rotation, const char * filename, Scene * scene, Layer * layer, float x_relative, float y_relative, float missile_speed, int damage, float cooldown, float range_max, Unit * unit);
+		Turret(float x, float y, float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, float missile_speed, int damage, float cooldown, float range_max, Unit * unit);
 		//~Turret(); //Besoin ?
 				
 		// --- GET ---
@@ -19,6 +19,7 @@ class Turret : public Displayable
 		int    get_damage();
 		float  get_cooldown();
 		float  get_range_max();
+		virtual Displayable::DisplayableType getType() { return Displayable::turretType; }
 		
 		// --- SET ---
 		void set_relative_position(float x_relative, float y_relative);

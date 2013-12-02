@@ -5,6 +5,7 @@
 #include "Stat.h"
 #include "Player.h"
 #include "Layer.h"
+#include "Game.h"
 
 
 Unit::Unit(): Moveable(), _player(NULL) 
@@ -12,7 +13,7 @@ Unit::Unit(): Moveable(), _player(NULL)
 	//
 }
 
-Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, int prod_time, Player * player): Moveable(Moveable::unitType, x, y, x_dest, y_dest, rotation, move_speed, 0.7f, groundFixture, density, filename, scene, layer), _player(player)
+Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename, Game * game, Layer * layer, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, int prod_time, Player * player): Moveable(x, y, x_dest, y_dest, rotation, move_speed, 0.7f, groundFixture, density, filename, game, layer), _player(player)
 {
 	_stat = new Stat();
 	_stat->set_name(name);
@@ -29,7 +30,22 @@ Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float m
 Unit::~Unit() {
 	UnitContainer::on_unit_destroyed(this);
 	getLayer()->removeChild(getPhysicsSprite());
-	getScene()->getEventHandler()->on_unit_destroyed(this);
+	getGame()->getEventHandler()->on_unit_destroyed(this);
+}
+
+void Unit::updateCoordonates() {
+	int old_tile_x=get_tile_x(), old_tile_y=get_tile_y();
+
+	Moveable::updateCoordonates();
+
+	if(old_tile_x!=get_tile_x() || old_tile_y!=get_tile_y()) {
+		if(old_tile_x!=-1 && old_tile_y!=-1) {
+			getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[old_tile_y][old_tile_x]->get_unit_container().remove_unit(this);
+		}
+		getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[get_tile_x()][get_tile_y()]->get_unit_container().add_unit(this);
+		getGame()->getEventHandler()->unit_change_map_tile(get_tile_x(), get_tile_y(), this);
+	}
+
 }
 
 // --- GET ---
@@ -45,24 +61,23 @@ AIStat * Unit::get_ai_stat()
 }
 
 // --- METHODES ---
-
-void Unit::on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB) {
+void Unit::on_displayable_contact(Displayable * displayableA, Displayable * displayableB) {
 	Unit * unit = NULL;
-	if(physicsDisplayableA==this) {
-		if(physicsDisplayableB->getType()==PhysicsDisplayable::moveableType && ((Moveable *)(physicsDisplayableB))->getType()==Moveable::unitType) {
-			unit = (Unit *)physicsDisplayableB;
+	if(displayableA==this) {
+		if(displayableB->getType()==Displayable::unitType) {
+			unit = (Unit *)displayableB;
 		}
 	}
-	else if(physicsDisplayableB==this) {
-		if(physicsDisplayableA->getType()==PhysicsDisplayable::moveableType && ((Moveable *)(physicsDisplayableA))->getType()==Moveable::unitType) {
-			unit = (Unit *)physicsDisplayableA;
+	else if(displayableB==this) {
+		if(displayableA->getType()==Displayable::unitType) {
+			unit = (Unit *)displayableA;
 		}
 	}
 	if(unit) {
 		if(unit->getPlayer()==_player) set_hold_position(false);
 		else set_hold_position(true);
 	}
-	Moveable::on_physics_displayable_contact(physicsDisplayableA, physicsDisplayableB);
+	Moveable::on_displayable_contact(displayableA, displayableB);
 }
 
 

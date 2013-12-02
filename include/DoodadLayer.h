@@ -15,7 +15,7 @@ class DoodadLayer : public Layer
 {
 	public:
 		DoodadLayer();
-		DoodadLayer(Scene * scene);
+		DoodadLayer(Game * game);
 		// --- METHODES ---
 	
 		// --- GET ---

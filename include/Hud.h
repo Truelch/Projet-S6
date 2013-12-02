@@ -6,11 +6,13 @@
 
 using namespace cocos2d;
 
+class Game;
+
 class Hud : public Displayable
 {
 	public:
 		Hud();
-		Hud(float x, float y, const char * filename, Scene * scene, Layer * layer);
+		Hud(float x, float y, const char * filename, Game * game, Layer * layer);
 		
 		// --- ATTRIBUTS ---
 		//Lui ajouter un container de Boutons
@@ -19,6 +21,7 @@ class Hud : public Displayable
 		// --- METHODES ---
 		
 		// --- GET ---
+		virtual Displayable::DisplayableType getType() { return Displayable::hudType; }
 		
 		// --- SET ---
 		

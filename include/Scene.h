@@ -7,7 +7,6 @@
 #include "DisplayLayer.h"
 
 #define PTM_RATIO 32
-#define COEFF     2.1
 
 class Scene : public cocos2d::CCScene
 {
@@ -15,10 +14,13 @@ class Scene : public cocos2d::CCScene
 		Scene();
 		virtual ~Scene();
 
-		virtual void ccTouchesBegan(cocos2d::CCSet* touches, cocos2d::CCEvent* event) = 0;
-		virtual void ccTouchesMoved(cocos2d::CCSet* touches, cocos2d::CCEvent* event) = 0;
-		virtual void ccTouchesEnded(cocos2d::CCSet* touches, cocos2d::CCEvent* event) = 0;
-		virtual void ccTouchesCancelled(cocos2d::CCSet* touches, cocos2d::CCEvent* event) = 0;
+		virtual void mouse_left_button_down( int opengl_x, int opengl_y ) {}
+		virtual void mouse_left_button_up( int opengl_x, int opengl_y ) {}
+		virtual void mouse_right_button_down( int opengl_x, int opengl_y ) {}
+		virtual void mouse_right_button_up( int opengl_x, int opengl_y ) {}
+		virtual void mouse_move( int opengl_x, int opengl_y) {}
+		virtual void key_press(int key) {}
+		virtual void key_release(int key) {}
 
 		b2World * getWorld() { return _world; }
 		EventHandler * getEventHandler() { return _event_handler; }

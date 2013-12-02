@@ -8,16 +8,11 @@
 
 class Moveable : public PhysicsDisplayable
 {
-	public:
-		typedef enum {
-			unitType,
-		} MoveableType;
-
 	private:
+		int _tile_x;
+		int _tile_y;
 		CCPoint _destination;
 		float   _move_speed;
-
-		MoveableType _type;
 
 		bool _rest;
 		float _groundFixture;
@@ -31,10 +26,13 @@ class Moveable : public PhysicsDisplayable
 
 		bool _hold_position;
 		bool _move_in_progress;
+
+	protected:
+		virtual void updateCoordonates();
 		
 	public:
 		Moveable();
-		Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer);
+		Moveable(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Game * game, Layer * layer);
 		virtual ~Moveable();
 
 		// --- METHODES ---
@@ -44,17 +42,20 @@ class Moveable : public PhysicsDisplayable
 		// --- GET ---
 		CCPoint get_destination();
 		float   get_move_speed();
-		MoveableType getType() { return _type; }
 		bool get_rest() { return _rest; }
 		bool get_mode_restore_position() { return _mode_restore_position; }
+
 		bool get_hold_position() { return _hold_position; }
+		int get_tile_x() { return _tile_x; }
+		int get_tile_y() { return _tile_y; }
+		virtual Displayable::DisplayableType getType() { return Displayable::moveableType; }
 		
 		// --- SET ---
 		void set_destination(float x_dest, float y_dest);
 		void set_move_speed(float move_speed);
 		void set_hold_position(bool hold_position);
 
-		virtual void on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB);
+		virtual void on_displayable_contact(Displayable * displayableA, Displayable * displayableB);
 		
 };
 

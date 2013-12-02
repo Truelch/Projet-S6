@@ -5,6 +5,7 @@
 
 #include "Game.h"
 #include "AppMacros.h"
+#include "EGLView.h"
 
 USING_NS_CC;
 using namespace std;
@@ -21,7 +22,7 @@ AppDelegate::~AppDelegate()
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
     CCDirector* pDirector = CCDirector::sharedDirector();
-    CCEGLView* pEGLView = CCEGLView::sharedOpenGLView();
+    EGLView* pEGLView = EGLView::sharedOpenGLView();
 
     pDirector->setOpenGLView(pEGLView);
 

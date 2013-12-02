@@ -8,7 +8,7 @@
 #include <map>
 
 #include "Scene.h"
-
+#define COEFF     2.1
 
 typedef struct {
 	std::string sprite;
@@ -16,7 +16,9 @@ typedef struct {
 	bool        crossDown;
 	bool        crossRight;
 	bool        crossLeft;
-} Cle;
+	bool        building;
+	std::string building_sprite;
+} TileID;
 
 DisplayLayer::DisplayLayer(): Layer()
 {
@@ -26,13 +28,11 @@ DisplayLayer::DisplayLayer(): Layer()
 }
 
 
-DisplayLayer::DisplayLayer(Scene * scene, std::string filename): Layer(scene)
+DisplayLayer::DisplayLayer(Game * game): Layer(game)
 {
 	_tile_size = 124;
 	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
-	init_file(filename);
-	
 }
 
 DisplayLayer::~DisplayLayer() {
@@ -56,13 +56,13 @@ void DisplayLayer::draw()
 	/*
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
 	kmGLPushMatrix();
-	get_scene()->getWorld()->DrawDebugData();
+	get_game()->getWorld()->DrawDebugData();
 	kmGLPopMatrix();
 	*/
 }
 
 // --- GET ---
-TileLayer * DisplayLayer::get_background_layer()
+BackgroundLayer * DisplayLayer::get_background_layer()
 {
 	return _background_layer;
 }
@@ -106,44 +106,54 @@ MissileLayer * DisplayLayer::get_missile_layer()
 void DisplayLayer::init2()
 {
 	// --- Layer de Background noir ---
-	_black_layer = new LayerRGBA(get_scene());
+	_black_layer = new LayerRGBA(get_game());
 	_black_layer->setZOrder(0);
 	addChild(_black_layer);
 		
 	// --- Layer de Background avec Tiles ---
-	_background_layer = new TileLayer(get_scene());
+	_background_layer = new BackgroundLayer(get_game());
 	_background_layer->setZOrder(1);
-	addChild(_background_layer);
+	//addChild(_background_layer);
 	
 	// --- Layer d'Opacité ---
-	_opacity_layer = new LayerRGBA(get_scene());
+	_opacity_layer = new LayerRGBA(get_game());
 	_opacity_layer->setZOrder(2);
 	addChild(_opacity_layer);	
 	
 	// --- Layer des Tiles ---
-	_tile_layer = new TileLayer(get_scene());
+	_tile_layer = new TileLayer(get_game());
 	_tile_layer->setZOrder(3);
 	addChild(_tile_layer);
 	
 	// --- Layer des Doodads ---
-	_doodad_layer = new DoodadLayer(get_scene());
+	_doodad_layer = new DoodadLayer(get_game());
 	_doodad_layer->setZOrder(4);
 	addChild(_doodad_layer);
 	
 	// --- Layer des Unités ---
-	_building_layer = new BuildingLayer(get_scene());
+	_building_layer = new BuildingLayer(get_game());
 	_building_layer->setZOrder(5);
 	addChild(_building_layer);
 	
 	// --- Layer des Unités ---
-	_unit_layer = new UnitLayer(get_scene());
+	_unit_layer = new UnitLayer(get_game());
 	_unit_layer->setZOrder(6);
 	addChild(_unit_layer);
 	
 	// --- Layer des Missiles ---
-	_missile_layer = new MissileLayer(get_scene());
+	_missile_layer = new MissileLayer(get_game());
 	_missile_layer->setZOrder(7);
 	addChild(_missile_layer);
+}
+
+void DisplayLayer::coordonate_tile_to_cocos2dx(int x, int y, float& cocos_x, float& cocos_y) {
+	cocos_x = (_tile_size*x)/COEFF;
+	cocos_y = (_tile_size*y)/COEFF;
+}
+
+void DisplayLayer::coordonate_cocos2dx_to_tile(float cocos_x, float cocos_y, int& x, int& y) {
+	x = (int)floor((cocos_x*COEFF+_tile_size/2)/_tile_size);
+	y = (int)floor((cocos_y*COEFF+_tile_size/2)/_tile_size);
 }
 
 int DisplayLayer::init_file(string filename)
@@ -153,17 +163,20 @@ int DisplayLayer::init_file(string filename)
 	 * 
 	 */
 	
-	unsigned int i,j,x,y, nombreLigne=0;
+	unsigned int i,j, nombreLigne=0;
+	float x,y;
 	int findIndex;
 	istringstream buffer;
 	std::string line, tileString;
 	
-	std::map<std::string,Cle> sprite_map;
-	std::string img_filename;   //pour la texture d'un tile donné
+	std::map<std::string,TileID> sprite_map;
+	std::string img_filename, building_sprite;
+	bool crossUp, crossDown, crossRight, crossLeft;
 	StringMatrix string_matrix;
 	
-	sprite_map["s00"]= {"tiles/ground/000.png",true,true,true,true};	
-	sprite_map["f00"]= {"tiles/cliff/000.png",false,false,false,false};
+	sprite_map["s00"]= {"tiles/ground/000.png",true,true,true,true,false,""};
+	sprite_map["f00"]= {"tiles/cliff/000.png",false,false,false,false,false,""};
+	sprite_map["b00"]= {"tiles/ground/000.png",true,true,true,true,true,"buildings/ram01.png"};
 
 	string_matrix.clear();
 	
@@ -215,14 +228,13 @@ int DisplayLayer::init_file(string filename)
 	
 	for(j=0;j<_map_height;j++)
 	{
-		_background_layer->get_map_tile_matrix().push_back(vector<MapTile *>());
+		_background_layer->get_map_displayable_matrix().push_back(vector<MapDisplayable *>());
 		for(i=0;i<_map_width;i++)
 		{
 			//Faut-il donner le chemin vers l'image ou seulement le nom de fichier de l'image ?
 			x = (1/COEFF)*_tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
 			y = (1/COEFF)*_tile_size*j;
-			_background_layer->get_map_tile_matrix()[j].push_back(new MapTile(x,y,"tiles/000.png",get_scene(),_background_layer)); //Cela marche-t-il ?
-			_background_layer->addChild((_background_layer->get_map_tile_matrix()[j][i])->getSprite());
+			_background_layer->get_map_displayable_matrix()[j].push_back(new MapDisplayable(x,y,"tiles/000.png",get_game(),_background_layer)); //Cela marche-t-il ?
 		}
 	}
 	//_background_layer->addChild(new MapTile(0,0,"000.png"));
@@ -253,15 +265,20 @@ int DisplayLayer::init_file(string filename)
 		{
 			//Faut-il donner le chemin vers l'image ou seulement le nom de fichier de l'image ?
 			img_filename = sprite_map[string_matrix[j][i]].sprite;
+			crossUp = sprite_map[string_matrix[j][i]].crossUp && j!=_map_height-1;
+			crossDown = sprite_map[string_matrix[j][i]].crossDown && j!=0;
+			crossRight = sprite_map[string_matrix[j][i]].crossRight && i!=_map_width-1;
+			crossLeft = sprite_map[string_matrix[j][i]].crossLeft && i!=0;
+			building_sprite = sprite_map[string_matrix[j][i]].building_sprite;
 			
-			x = (1/COEFF)*_tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
-			y = (1/COEFF)*_tile_size*j;
+			coordonate_tile_to_cocos2dx(i,j,x,y);
 			
-			_tile_layer->get_map_tile_matrix()[j].push_back(new MapTile(x,y,img_filename.c_str(),get_scene(),_tile_layer)); //Cela marche-t-il ?
-			_tile_layer->addChild((_background_layer->get_map_tile_matrix()[j][i])->getSprite());
+			_tile_layer->get_map_tile_matrix()[j].push_back(new MapTile(x,y,img_filename.c_str(),get_game(),_tile_layer,crossUp,crossDown,crossRight,crossLeft)); //Cela marche-t-il ?
+			if(sprite_map[string_matrix[j][i]].building)
+				_building_layer->get_building_list().push_back(new Building(_tile_layer->get_map_tile_matrix()[j][i],building_sprite.c_str(),get_game(),_building_layer,x,y));
 		}
 	}
-	
+
 	//On aurait également besoin de quelque chose semblable à un dictionnaire en Python; associant un identifiant à un élément stocké.
 	//Par exemple id = 1 renvoie un Tile avec l'image 01.png, son type de collisions etc.
 	

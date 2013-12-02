@@ -4,7 +4,8 @@
 class EventHandler;
 class Unit;
 class Moveable;
-class PhysicsDisplayable;
+class Displayable;
+class MapTile;
 
 class EventReceiver {
 	public:
@@ -14,7 +15,8 @@ class EventReceiver {
 
 		virtual void on_unit_destroyed(Unit * unit) {}
 		virtual void on_moveable_destination_reched(Moveable * moveable) {}
-		virtual void on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB) {}
+		virtual void on_displayable_contact(Displayable * displayableA, Displayable * displayableB) {}
+		virtual void unit_change_map_tile(int x, int y, Unit * unit) {}
 
 	private:
 		EventHandler * _eventHandler;
