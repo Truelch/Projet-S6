@@ -7,7 +7,7 @@ TileLayer::TileLayer(): Layer()
 }
 
 
-TileLayer::TileLayer(Scene * scene): Layer(scene)
+TileLayer::TileLayer(Game * game): Layer(game)
 {
 	std::cout << "Constructeur de TileLayer" << std::endl;
 }

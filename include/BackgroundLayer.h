@@ -9,7 +9,7 @@
 class BackgroundLayer : public Layer {
 	public:
 		BackgroundLayer();
-		BackgroundLayer(Scene * scene);
+		BackgroundLayer(Game * game);
 
 
 		std::vector<std::vector<MapDisplayable *>>& get_map_displayable_matrix();

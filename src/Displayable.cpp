@@ -1,18 +1,20 @@
 #include "Displayable.h"
 
+#include "Game.h"
+
 Displayable::Displayable(): EventReceiver() {
-	_scene = NULL;
+	_game = NULL;
 	_sprite = CCSprite::create();
 	_layer = NULL;
 }
 
-Displayable::Displayable(float x, float y, float rotation, const char * filename, Scene * scene, Layer * layer): EventReceiver(scene->getEventHandler()), _scene(scene), _layer(layer) {
-	 _sprite = CCSprite::create(filename);
+Displayable::Displayable(float x, float y, float rotation, const char * filename, Game * game, Layer * layer): EventReceiver(game->getEventHandler()), _game(game), _layer(layer) {
+	_sprite = CCSprite::create(filename);
 	_sprite->setPosition(ccp(x,y)); //cpp(x,y) = CCPointMake((float)x, (float)y) 
 	_sprite->setRotation(rotation);
 }
 
-Displayable::Displayable(Scene * scene, CCSprite * sprite, Layer * layer): EventReceiver(scene->getEventHandler()), _sprite(sprite), _scene(scene), _layer(layer) {
+Displayable::Displayable(Game * game, CCSprite * sprite, Layer * layer): EventReceiver(game->getEventHandler()), _sprite(sprite), _game(game), _layer(layer) {
 }
 
 Displayable::~Displayable() {

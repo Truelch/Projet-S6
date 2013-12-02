@@ -5,7 +5,7 @@ BackgroundLayer::BackgroundLayer(): Layer() {
 
 }
 
-BackgroundLayer::BackgroundLayer(Scene * scene): Layer(scene) {
+BackgroundLayer::BackgroundLayer(Game * game): Layer(game) {
 
 }
 

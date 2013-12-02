@@ -7,7 +7,7 @@ BuildingLayer::BuildingLayer(): Layer()
 }
 
 
-BuildingLayer::BuildingLayer(Scene * scene): Layer(scene)
+BuildingLayer::BuildingLayer(Game * game): Layer(game)
 {
 	std::cout << "Constructeur de BuildingLayer" << std::endl;
 }

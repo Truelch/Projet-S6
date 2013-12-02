@@ -15,8 +15,8 @@ class PhysicsDisplayable : public Displayable {
 		} PhysicsDisplayableType;
 
 		PhysicsDisplayable();
-		PhysicsDisplayable(PhysicsDisplayableType type, float x, float y, float rotation, const char * filename, Scene * scene, Layer * layer, b2Body * body);
-		PhysicsDisplayable(PhysicsDisplayableType type, Scene * scene, CCPhysicsSprite * physicsSprite, Layer * layer);
+		PhysicsDisplayable(PhysicsDisplayableType type, float x, float y, float rotation, const char * filename, Game * game, Layer * layer, b2Body * body);
+		PhysicsDisplayable(PhysicsDisplayableType type, Game * game, CCPhysicsSprite * physicsSprite, Layer * layer);
 		virtual ~PhysicsDisplayable();
 
 		CCPhysicsSprite * getPhysicsSprite() { return _physicsSprite; }

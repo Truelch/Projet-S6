@@ -3,6 +3,7 @@
 //=> pour les sqrt
 #include <iostream>
 #include "Box2D/Box2D.h"
+#include "Game.h"
 
 #include <math.h>
 
@@ -13,7 +14,7 @@ using namespace std;
 Moveable::Moveable(): PhysicsDisplayable(), _type(unitType), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false) {
 }
 
-Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer): PhysicsDisplayable(PhysicsDisplayable::moveableType, scene,CCPhysicsSprite::create(filename), layer), _type(type), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false)
+Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Game * game, Layer * layer): PhysicsDisplayable(PhysicsDisplayable::moveableType, game,CCPhysicsSprite::create(filename), layer), _type(type), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false)
 {
 	b2Vec2 vecteur_path;
 	bodyInit(x,y,rotation,hitboxRadius);
@@ -39,7 +40,7 @@ void Moveable::bodyInit(int x, int y, int rotation, float hitboxRadius) {
 	bodyDef.position.Set(x/PTM_RATIO, y/PTM_RATIO);
 	bodyDef.fixedRotation = true;
 
-	b2Body *body = getScene()->getWorld()->CreateBody(&bodyDef);
+	b2Body *body = getGame()->getWorld()->CreateBody(&bodyDef);
 
 	// Define another box shape for our dynamic body.
 	b2CircleShape dynamicBox;
@@ -87,7 +88,7 @@ void Moveable::goToDestination() {
 	else { 
 		getPhysicsSprite()->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
 		if(_move_in_progress) {
-			getScene()->getEventHandler()->on_moveable_destination_reched(this);
+			getGame()->getEventHandler()->on_moveable_destination_reched(this);
 		}
 		_move_in_progress=false;
 		_rest=true;

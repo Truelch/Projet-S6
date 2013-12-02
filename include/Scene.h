@@ -6,7 +6,6 @@
 #include "EventHandler.h"
 
 #define PTM_RATIO 32
-#define COEFF     2.1
 
 class Scene : public cocos2d::CCScene
 {

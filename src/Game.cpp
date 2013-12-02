@@ -15,7 +15,8 @@ using namespace std;
 Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _scroll_up_mouse(false), _scroll_down_mouse(false), _scroll_left_key(false), _scroll_right_key(false), _scroll_up_key(false), _scroll_down_key(false)
 {
 	std::cout << "Constructeur de Game" << std::endl;
-	_display_layer = new DisplayLayer(this,"map/map1");
+	_display_layer = new DisplayLayer(this);
+	_display_layer->init_file("map/map1");
 	_display_layer->setTouchEnabled(true);
 	//_display_layer->setZOrder(1);
 	addChild(_display_layer);

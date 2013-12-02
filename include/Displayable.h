@@ -2,10 +2,10 @@
 #define DISPLAYABLE_H
 
 #include "cocos2d.h"
-#include "Scene.h"
 #include "EventReceiver.h"
 
 class Layer;
+class Game;
 
 USING_NS_CC;
 
@@ -15,20 +15,20 @@ class Displayable : public EventReceiver
 {
 	public:
 		Displayable();
-		Displayable(float x, float y, float rotation, const char * filename, Scene * scene, Layer * layer);
-		Displayable(Scene * _scene, CCSprite * sprite, Layer * layer);
+		Displayable(float x, float y, float rotation, const char * filename, Game * game, Layer * layer);
+		Displayable(Game * _game, CCSprite * sprite, Layer * layer);
 		virtual ~Displayable();
 
-		Scene * getScene() { return _scene; }
+		Game * getGame() { return _game; }
 		CCSprite * getSprite() { return _sprite; }
 		Layer * getLayer() { return _layer; }
 
-		void setScene(Scene * scene) { _scene = scene; }
+		void setGame(Game * game) { _game = game; }
 		void setSprite(CCSprite * sprite) { _sprite = sprite; }
 		void setLayer(Layer * layer) { _layer = layer; }
 	private:
 		CCSprite * _sprite;
-		Scene * _scene;
+		Game * _game;
 		Layer * _layer;
 };
 

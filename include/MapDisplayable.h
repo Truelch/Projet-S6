@@ -12,7 +12,7 @@ class MapDisplayable : public Displayable
 {
 	public:
 		MapDisplayable();
-		MapDisplayable(float x, float y, const char * filename, Scene * scene, Layer * layer);
+		MapDisplayable(float x, float y, const char * filename, Game * game, Layer * layer);
 		
 		// --- Attributs ---
 

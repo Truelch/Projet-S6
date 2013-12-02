@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 
+#define COEFF     2.1
 
 typedef struct {
 	std::string sprite;
@@ -15,7 +16,8 @@ typedef struct {
 	bool        crossRight;
 	bool        crossLeft;
 	bool        building;
-} Cle;
+	std::string building_sprite;
+} TileID;
 
 DisplayLayer::DisplayLayer(): Layer()
 {
@@ -25,13 +27,11 @@ DisplayLayer::DisplayLayer(): Layer()
 }
 
 
-DisplayLayer::DisplayLayer(Scene * scene, std::string filename): Layer(scene)
+DisplayLayer::DisplayLayer(Game * game): Layer(game)
 {
 	_tile_size = 124;
 	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
-	init_file(filename);
-	
 }
 
 DisplayLayer::~DisplayLayer() {
@@ -55,7 +55,7 @@ void DisplayLayer::draw()
 	/*
 	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
 	kmGLPushMatrix();
-	get_scene()->getWorld()->DrawDebugData();
+	get_game()->getWorld()->DrawDebugData();
 	kmGLPopMatrix();
 	*/
 }
@@ -105,42 +105,42 @@ MissileLayer * DisplayLayer::get_missile_layer()
 void DisplayLayer::init2()
 {
 	// --- Layer de Background noir ---
-	_black_layer = new LayerRGBA(get_scene());
+	_black_layer = new LayerRGBA(get_game());
 	_black_layer->setZOrder(0);
 	addChild(_black_layer);
 		
 	// --- Layer de Background avec Tiles ---
-	_background_layer = new BackgroundLayer(get_scene());
+	_background_layer = new BackgroundLayer(get_game());
 	_background_layer->setZOrder(1);
 	//addChild(_background_layer);
 	
 	// --- Layer d'Opacité ---
-	_opacity_layer = new LayerRGBA(get_scene());
+	_opacity_layer = new LayerRGBA(get_game());
 	_opacity_layer->setZOrder(2);
 	addChild(_opacity_layer);	
 	
 	// --- Layer des Tiles ---
-	_tile_layer = new TileLayer(get_scene());
+	_tile_layer = new TileLayer(get_game());
 	_tile_layer->setZOrder(3);
 	addChild(_tile_layer);
 	
 	// --- Layer des Doodads ---
-	_doodad_layer = new DoodadLayer(get_scene());
+	_doodad_layer = new DoodadLayer(get_game());
 	_doodad_layer->setZOrder(4);
 	addChild(_doodad_layer);
 	
 	// --- Layer des Unités ---
-	_building_layer = new BuildingLayer(get_scene());
+	_building_layer = new BuildingLayer(get_game());
 	_building_layer->setZOrder(5);
 	addChild(_building_layer);
 	
 	// --- Layer des Unités ---
-	_unit_layer = new UnitLayer(get_scene());
+	_unit_layer = new UnitLayer(get_game());
 	_unit_layer->setZOrder(6);
 	addChild(_unit_layer);
 	
 	// --- Layer des Missiles ---
-	_missile_layer = new MissileLayer(get_scene());
+	_missile_layer = new MissileLayer(get_game());
 	_missile_layer->setZOrder(7);
 	addChild(_missile_layer);
 }
@@ -162,19 +162,20 @@ int DisplayLayer::init_file(string filename)
 	 * 
 	 */
 	
-	unsigned int i,j,x,y, nombreLigne=0;
+	unsigned int i,j, nombreLigne=0;
+	float x,y;
 	int findIndex;
 	istringstream buffer;
 	std::string line, tileString;
 	
-	std::map<std::string,Cle> sprite_map;
-	std::string img_filename;   //pour la texture d'un tile donné
+	std::map<std::string,TileID> sprite_map;
+	std::string img_filename, building_sprite;
 	bool crossUp, crossDown, crossRight, crossLeft;
 	StringMatrix string_matrix;
 	
-	sprite_map["s00"]= {"tiles/ground/000.png",true,true,true,true,false};
-	sprite_map["f00"]= {"tiles/cliff/000.png",false,false,false,false,false};
-	sprite_map["d00"]= {"tiles/ground/000.png",true,true,true,true,true};
+	sprite_map["s00"]= {"tiles/ground/000.png",true,true,true,true,false,""};
+	sprite_map["f00"]= {"tiles/cliff/000.png",false,false,false,false,false,""};
+	sprite_map["b00"]= {"tiles/ground/000.png",true,true,true,true,true,"buildings/ram01.png"};
 
 	string_matrix.clear();
 	
@@ -232,7 +233,7 @@ int DisplayLayer::init_file(string filename)
 			//Faut-il donner le chemin vers l'image ou seulement le nom de fichier de l'image ?
 			x = (1/COEFF)*_tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
 			y = (1/COEFF)*_tile_size*j;
-			_background_layer->get_map_displayable_matrix()[j].push_back(new MapDisplayable(x,y,"tiles/000.png",get_scene(),_background_layer)); //Cela marche-t-il ?
+			_background_layer->get_map_displayable_matrix()[j].push_back(new MapDisplayable(x,y,"tiles/000.png",get_game(),_background_layer)); //Cela marche-t-il ?
 			_background_layer->addChild((_background_layer->get_map_displayable_matrix()[j][i])->getSprite());
 		}
 	}
@@ -268,12 +269,13 @@ int DisplayLayer::init_file(string filename)
 			crossDown = sprite_map[string_matrix[j][i]].crossDown && j!=0;
 			crossRight = sprite_map[string_matrix[j][i]].crossRight && i!=_map_width-1;
 			crossLeft = sprite_map[string_matrix[j][i]].crossLeft && i!=0;
+			building_sprite = sprite_map[string_matrix[j][i]].building_sprite;
 			
-			x = (1/COEFF)*_tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
-			y = (1/COEFF)*_tile_size*j;
+			coordonate_tile_to_cocos2dx(i,j,x,y);
 			
-			_tile_layer->get_map_tile_matrix()[j].push_back(new MapTile(x,y,img_filename.c_str(),get_scene(),_tile_layer,crossUp,crossDown,crossRight,crossLeft)); //Cela marche-t-il ?
-			_tile_layer->addChild((_tile_layer->get_map_tile_matrix()[j][i])->getSprite());
+			_tile_layer->get_map_tile_matrix()[j].push_back(new MapTile(x,y,img_filename.c_str(),get_game(),_tile_layer,crossUp,crossDown,crossRight,crossLeft)); //Cela marche-t-il ?
+			if(sprite_map[string_matrix[j][i]].building)
+				_building_layer->get_building_list().push_back(new Building(_tile_layer->get_map_tile_matrix()[j][i],building_sprite.c_str(),get_game(),_building_layer,x,y));
 		}
 	}
 	

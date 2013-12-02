@@ -10,7 +10,7 @@ class Turret : public Displayable
 {
 	public:
 		Turret();
-		Turret(float x, float y, float rotation, const char * filename, Scene * scene, Layer * layer, float x_relative, float y_relative, float missile_speed, int damage, float cooldown);
+		Turret(float x, float y, float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, float missile_speed, int damage, float cooldown);
 		
 		// --- METHODES ---
 		//void fire(); //-> Lance un projectile

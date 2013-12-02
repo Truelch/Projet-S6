@@ -31,7 +31,7 @@ class DisplayLayer : public Layer
 {
 	public:
 		DisplayLayer();
-		DisplayLayer(Scene * scene, std::string filename);
+		DisplayLayer(Game * game);
 		~DisplayLayer();
 
 		virtual void draw();

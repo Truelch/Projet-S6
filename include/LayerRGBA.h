@@ -5,7 +5,7 @@
 #include <vector>
 #include "Displayable.h"
 
-class Scene;
+class Game;
 
 USING_NS_CC;
 
@@ -14,21 +14,21 @@ class LayerRGBA : public cocos2d::CCLayerRGBA
 	public:
 
 		LayerRGBA();
-		LayerRGBA(Scene * scene);
+		LayerRGBA(Game * game);
 
 		virtual bool init();
 
 		// --- GET ---
 		
-		Scene * get_scene() { return _scene; }
+		Game * get_game() { return _game; }
 		//std::vector<Displayable *> get_displayable_list() { return _displayable_list; }
 		
 		// --- SET ---
 		
-		void set_scene(Scene * scene) { _scene = scene; }
+		void set_game(Game * game) { _game = game; }
 	
 	private:
-		Scene * _scene;
+		Game * _game;
 		//std::vector<Displayable *> _displayable_list;
 };
 

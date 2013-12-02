@@ -6,7 +6,7 @@ MapDisplayable::MapDisplayable(): Displayable() {
 
 }
 
-MapDisplayable::MapDisplayable(float x, float y, const char * filename, Scene * scene, Layer * layer): Displayable(x,y,0,filename,scene,layer)
+MapDisplayable::MapDisplayable(float x, float y, const char * filename, Game * game, Layer * layer): Displayable(x,y,0,filename,game,layer)
 {
 	
 }

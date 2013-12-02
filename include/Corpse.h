@@ -11,7 +11,7 @@ class Corpse : public Displayable
 {
 	public:
 		//Corpse();
-		Corpse(float x, float y, const char * filename, Scene * scene, Layer * layer);
+		Corpse(float x, float y, const char * filename, Game * game, Layer * layer);
 		
 		// --- Attributs ---
 

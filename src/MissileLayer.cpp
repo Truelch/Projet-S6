@@ -7,7 +7,7 @@ MissileLayer::MissileLayer(): Layer()
 }
 
 
-MissileLayer::MissileLayer(Scene * scene): Layer(scene)
+MissileLayer::MissileLayer(Game * game): Layer(game)
 {
 	std::cout << "Constructeur de MissileLayer" << std::endl;
 }

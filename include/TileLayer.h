@@ -15,7 +15,7 @@ class TileLayer : public Layer
 {
 	public:
 		TileLayer();
-		TileLayer(Scene * scene);
+		TileLayer(Game * game);
 		// --- METHODES ---
 		
 		// --- GET ---
