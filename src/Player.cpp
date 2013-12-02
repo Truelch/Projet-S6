@@ -2,12 +2,23 @@
 
 Player::Player(): EventReceiver(), _game(NULL)
 {
-	//
+	init();
 }
 
 Player::Player(Game * game, string name, Color color, int player_number, int team_number):EventReceiver(game->getEventHandler()), _name(name), _color(color), _player_number(player_number), _team_number(team_number), _game(game)
 {
-	//
+	init();
+}
+
+void Player::init() {
+	unsigned int i,j;
+
+	for(j=0; j<get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix().size();j++) {
+		_map_tile_info.push_back(std::vector<TileInfo>());
+		for(i=0; i<get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[j].size();i++) {
+			_map_tile_info[j].push_back({false,false,Container<Unit>()});
+		}
+	}
 }
 
 // --- GET ---

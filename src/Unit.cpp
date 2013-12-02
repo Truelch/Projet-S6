@@ -7,6 +7,8 @@
 #include "Layer.h"
 #include "Game.h"
 
+#include <algorithm>
+
 
 Unit::Unit(): Moveable(), _player(NULL) 
 {
@@ -44,9 +46,45 @@ void Unit::updateCoordonates() {
 			getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[old_tile_y][old_tile_x]->get_unit_container().remove_t(this);
 		}
 		getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[get_tile_x()][get_tile_y()]->get_unit_container().add_t(this);
-		getGame()->getEventHandler()->unit_change_map_tile(get_tile_x(), get_tile_y(), this);
+		getGame()->getEventHandler()->on_unit_change_map_tile(get_tile_x(), get_tile_y(), this);
 	}
 
+}
+
+void Unit::update_range_map_tile_list() {
+	vector<MapTile *>::iterator it;
+	for( it=_range_map_tile_list.begin(); it!=_range_map_tile_list.end();  ) {
+		if(map_tile_range(*it)) it++;
+		else {
+			_range_map_tile_list.erase(it);
+			getGame()->getEventHandler()->on_unit_unrange_tile((*it)->get_tile_x(),(*it)->get_tile_y(),this);
+		}
+	}
+
+	CCPoint position = getSprite()->getPosition();
+	int tile_x, tile_y, i,j,k=0;
+	MapTile * map_tile;
+	bool end=false;
+	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(position.x, position.y, tile_x, tile_y);
+
+	while(!end) {
+		end=true;
+		for(i=tile_x-k;i<tile_x+k+1;i++) {
+			for(j=tile_y-k;j<tile_y+k+1;j++) {
+				if(i==tile_x-k || i==tile_x+k || j==tile_y-k || j==tile_y+k) {
+					map_tile = getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[j][i];
+					if(map_tile_range(map_tile)) {
+						end=false;
+						if(std::find(_range_map_tile_list.begin(), _range_map_tile_list.end(), map_tile) == _range_map_tile_list.end()) {
+							_range_map_tile_list.push_back(map_tile);
+							getGame()->getEventHandler()->on_unit_range_tile(i,j,this);
+						}
+					}
+				}
+			}
+		}
+		k+=1;
+	}
 }
 
 // --- GET ---
@@ -83,6 +121,12 @@ void Unit::on_displayable_contact(Displayable * displayableA, Displayable * disp
 
 void Unit::update(float dt) {
 	Moveable::update(dt);
+
+	update_range_map_tile_list();
+}
+
+bool Unit::map_tile_range(MapTile * map_tile) {
+	return getSprite()->getPosition().getDistance(map_tile->getSprite()->getPosition())<_stat->get_sight();
 }
 
 void Unit::check_attack()

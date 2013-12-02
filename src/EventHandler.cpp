@@ -35,9 +35,23 @@ void EventHandler::on_displayable_contact(Displayable * displayableA, Displayabl
 	}
 }
 
-void EventHandler::unit_change_map_tile(int x, int y, Unit * unit) {
+void EventHandler::on_unit_change_map_tile(int x, int y, Unit * unit) {
 	unsigned int i;
 	for(i=0; i<_receiver_list.size(); i++) {
-		_receiver_list[i]->unit_change_map_tile(x, y, unit);
+		_receiver_list[i]->on_unit_change_map_tile(x, y, unit);
+	}
+}
+
+void EventHandler::on_unit_range_tile(int x, int y, Unit * unit) {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->on_unit_range_tile(x, y, unit);
+	}
+}
+
+void EventHandler::on_unit_unrange_tile(int x, int y, Unit * unit) {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->on_unit_unrange_tile(x, y, unit);
 	}
 }

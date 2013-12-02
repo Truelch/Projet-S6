@@ -14,6 +14,8 @@ class MapTile : public MapDisplayable {
 		Building * get_building() { return _building; }
 		Container<Unit>& get_unit_container() { return _unit_container; }
 		virtual Displayable::DisplayableType getType() { return Displayable::mapTileType; }
+		int get_tile_x() { return _tile_x; }
+		int get_tile_y() { return _tile_y; }
 
 		void set_building( Building * building ) { _building = building; }
 
@@ -25,6 +27,8 @@ class MapTile : public MapDisplayable {
 
 		Building * _building;
 		Container<Unit> _unit_container;
+
+		int _tile_x, _tile_y;
 };
 
 #endif

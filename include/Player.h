@@ -55,6 +55,7 @@ class Player: public EventReceiver
 	public:
 		Player();
 		Player(Game * game, string name, Color color, int player_number, int team_number);
+		void init();
 		
 		//Unit*  _unit_selection;
 		//Il faudra que je retrouve comment bien initialiser le pointeur. Est ce que ça doit être un container ??

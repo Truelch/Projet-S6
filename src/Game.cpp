@@ -25,11 +25,13 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	getWorld()->SetContactListener(_contactListener);
 
 	_main_player = new Player(this, "joueur1", Player::blue, 1, 1);
-	_player_list.push_back( new Player(this, "joueur2", Player::red, 2, 2) );
+	//_player_list.push_back( new Player(this, "joueur2", Player::red, 2, 2) );
 
-	_display_layer->get_unit_layer()->add_unit(250,200,250,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _main_player,1);
-	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _main_player,1);
-	_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],1);
+	float x,y;
+	_display_layer->coordonate_tile_to_cocos2dx(4,3,x,y);
+	_display_layer->get_unit_layer()->add_unit(x,y,250,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _main_player,100);
+	//_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _main_player,100);
+	//_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],100);
 
 	/*
 	MapTile * tile = new MapTile(200,200,"000.png",this);
@@ -166,11 +168,6 @@ void Game::mouse_left_button_down( int x, int y ) {
 
 	cocos_x+=offset_x;
 	cocos_y+=offset_y;
-
-	CCSize size = CCDirector::sharedDirector()->getWinSize();
-	int tile_x, tile_y;
-	_display_layer->coordonate_cocos2dx_to_tile(size.width/2.0+offset_x,(size.height+100)/2.0+offset_y,tile_x,tile_y);
-	_display_layer->coordonate_cocos2dx_to_tile(cocos_x,cocos_y,tile_x,tile_y);
 
 	if(_display_layer->get_unit_layer()->get_number_unit()>0) {
 		_display_layer->get_unit_layer()->get_unit(0)->set_destination(cocos_x,cocos_y);
