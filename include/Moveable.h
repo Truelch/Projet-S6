@@ -17,7 +17,7 @@ class Moveable : public PhysicsDisplayable
 		bool _rest;
 		float _groundFixture;
 		float _density;
-		float _hitboxRadius
+		float _hitboxRadius;
 
 		float _time_before_restore_position;
 		bool _mode_restore_position;

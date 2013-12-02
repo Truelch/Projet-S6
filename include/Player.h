@@ -9,7 +9,7 @@
 
 #include "EventReceiver.h"
 #include "Scene.h"
-#include "UnitContainer.h"
+#include "Container.h"
 
 using namespace std;
 
@@ -36,8 +36,8 @@ class Player: public EventReceiver
 		int     _team_number;
 		Scene * _scene;
 		// --
-		UnitContainer              _unit_container;       //Contient toutes les unités du joueur
-		std::vector<UnitContainer> _control_group_vector; //Contient 10 slots de groupes d'unités
+		Container<Unit>              _unit_container;       //Contient toutes les unités du joueur
+		std::vector<Container<Unit>> _control_group_vector; //Contient 10 slots de groupes d'unités
 		//En fait, il faudrait que les groupes de contrôle puissent contenir soit des unités soit des bâtiments !
 		
 		// --
@@ -57,8 +57,8 @@ class Player: public EventReceiver
 		int    get_player_number();
 		int    get_team_number();
 		// --
-		UnitContainer&              get_unit_container();
-		std::vector<UnitContainer>&	get_control_group_vector();
+		Container<Unit>&              get_unit_container();
+		std::vector<Container<Unit>>&	get_control_group_vector();
 		//
 		Scene * get_scene();
 		
