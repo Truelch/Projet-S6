@@ -117,7 +117,7 @@ void Moveable::applyFixture(float dt) {
 	else getPhysicsSprite()->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
 }
 
-void Moveable::move(float dt)
+void Moveable::update(float dt)
 {
 	b2Vec2 vecteur_path, vecteur_vitesse;
 	if(_time_before_restore_position!=-100) {

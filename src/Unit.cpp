@@ -80,6 +80,9 @@ void Unit::on_displayable_contact(Displayable * displayableA, Displayable * disp
 	Moveable::on_displayable_contact(displayableA, displayableB);
 }
 
+void Unit::update(float dt) {
+	Moveable::update(dt);
+}
 
 void Unit::check_attack()
 {

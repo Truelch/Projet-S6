@@ -17,7 +17,7 @@ class Moveable : public PhysicsDisplayable
 		bool _rest;
 		float _groundFixture;
 		float _density;
-		float _hitboxRadius
+		float _hitboxRadius;
 
 		float _time_before_restore_position;
 		bool _mode_restore_position;
@@ -38,7 +38,7 @@ class Moveable : public PhysicsDisplayable
 
 		// --- METHODES ---
 		void bodyInit(int x,int y, int rotation, float hitboxRadius);
-		void move(float dt);
+		virtual void update(float dt);
 		
 		// --- GET ---
 		CCPoint get_destination();

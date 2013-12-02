@@ -21,7 +21,6 @@ class Missile : public Displayable
 	
 		// --- GET ---
 		CCPoint get_origin();
-		CCPoint get_position();
 		CCPoint get_destination();
 		
 		float   get_move_speed();
@@ -32,7 +31,6 @@ class Missile : public Displayable
 
 		// --- SET ---
 		void set_origin(float x_origin, float y_origin);  //Il ne faudrait pas l'utiliser
-		void set_position(float x_pos, float y_pos); 
 		void set_destination(float x_dest, float y_dest); //Il ne faudrait pas l'utiliser
 		
 		void set_move_speed(float move_speed);
@@ -42,21 +40,21 @@ class Missile : public Displayable
 		void set_player(Player * player);
 		
 		// --- METHODES ---
-		void move(float dt);
+		void update(float dt);
 		void check_collision();
 		void deal_dmg(Unit * unit);
 		void check_range();
 		
 	private:
 		// --- ATTRIBUTS ---
-		CCPoint _origin;
-		CCPoint _position;
-		CCPoint _destination;
-		float   _move_speed;
-		float   _range_max;
-		int     _damage;
+		CCPoint      _origin;
+		CCPoint      _destination;
+		float        _move_speed;
+		const char * _filename;
+		float        _range_max;
+		int          _damage;
 		//
-		Player * _player;
+		Player *     _player;
 		
 		
 };

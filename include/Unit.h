@@ -44,6 +44,7 @@ class Unit : public Moveable
 		void setPlayer(Player * player) { _player = player; }
 
 		// --- METHODES ---
+		virtual void update(float dt);
 		void check_attack(); //Vérifie pour chaque tourelle (traverse le container de turret et appelle la méthode check_attack de chaque turret)
 };
 

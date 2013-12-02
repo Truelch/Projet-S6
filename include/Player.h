@@ -8,7 +8,7 @@
 #include <string>
 
 #include "EventReceiver.h"
-#include "Scene.h"
+#include "Game.h"
 #include "UnitContainer.h"
 
 using namespace std;
@@ -34,7 +34,7 @@ class Player: public EventReceiver
 		Color   _color;
 		int     _player_number;
 		int     _team_number;
-		Scene * _scene;
+		Game * _game;
 		// --
 		UnitContainer              _unit_container;       //Contient toutes les unités du joueur
 		std::vector<UnitContainer> _control_group_vector; //Contient 10 slots de groupes d'unités
@@ -46,7 +46,7 @@ class Player: public EventReceiver
 		
 	public:
 		Player();
-		Player(Scene * scene, string name, Color color, int player_number, int team_number);
+		Player(Game * game, string name, Color color, int player_number, int team_number);
 		
 		//Unit*  _unit_selection;
 		//Il faudra que je retrouve comment bien initialiser le pointeur. Est ce que ça doit être un container ??
@@ -60,7 +60,7 @@ class Player: public EventReceiver
 		UnitContainer&              get_unit_container();
 		std::vector<UnitContainer>&	get_control_group_vector();
 		//
-		Scene * get_scene();
+		Game * get_game();
 		
 		//SET
 		void set_name(string name);

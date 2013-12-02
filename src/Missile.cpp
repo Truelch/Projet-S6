@@ -11,16 +11,12 @@ Missile::Missile(): Displayable() {
 Missile::Missile(float x, float y, float rotation, float x_dest, float y_dest, float move_speed, const char * filename, Game * game, Layer * layer, float range_max, int damage,
 				Player * player): Displayable(x, y, rotation, filename, game, layer)
 {
-	/*
-	set_x_dest(x_dest);
-	set_y_dest(y_dest);
-	set_x_origin(x);
-	set_y_origin(y);
-	*/
 	set_destination(x_dest,y_dest);
-	set_origin(x,y); //Lorsque le missile est instancé, son origine vaut sa position
+	set_origin(x,y);                //Lorsque le missile est instancé, son origine vaut sa position
 	set_range_max(range_max);
 	set_damage(damage);
+	set_move_speed(move_speed);
+	set_range_max(range_max);
 	//
 	set_player(player);
 }
@@ -66,12 +62,6 @@ void Missile::set_origin(float x_origin, float y_origin)
 	_origin.y = y_origin;
 }
 
-void Missile::set_position(float x_pos, float y_pos)
-{
-	_position.x = x_pos;
-	_position.y = y_pos;
-}
-
 void Missile::set_destination(float x_dest, float y_dest)
 {
 	_destination.x = x_dest;
@@ -100,7 +90,7 @@ void Missile::set_player(Player * player)
 
 // --- METHODES ---
 
-void Missile::move(float dt)
+void Missile::update(float dt)
 {
 	//Coeff unité de temps
 	//float coeff = 50;
@@ -109,13 +99,13 @@ void Missile::move(float dt)
 	float delta_x = _destination.x - getSprite()->getPositionX();
 	float delta_y = _destination.y - getSprite()->getPositionY();
 	
-	float hyp     = sqrt(delta_x*delta_x + delta_y*delta_y);
+	//float hyp     = sqrt(delta_x*delta_x + delta_y*delta_y);
 	
-	float vect_x  = delta_x / hyp;
-	float vect_y  = delta_y / hyp;
+	//float vect_x  = delta_x / hyp;
+	//float vect_y  = delta_y / hyp;
 	
 	
-	if(delta_x != 0)
+	if(delta_x != 0) //Pour éviter la division par zéro !
 	{
 		float angle;
 		if (delta_x < 0)  angle = -1.* atan(delta_y/delta_x) * (180/PI) + 90;
@@ -123,15 +113,10 @@ void Missile::move(float dt)
 		//float angle = asin(delta_y/hyp) * (180/PI);
 		getSprite()->setRotation(angle); //Il faut appliquer la rotation au Sprite, qui est un attribut de Displayable
 	}
-	
-	//Vecteur unitaire
-	//vector        = CCPoint(vect_x, vect_y);
-	//L'unité se déplace d'un vecteur égal au vecteur unitaire * vitesse
-	//speed_vector  = CCPoint(_move_speed * vect_x, _move_speed * _vect_y);
 
 	//On déplace le projectile
-	_position.x += vect_x; //(dt/coeff);
-	_position.y += vect_y; //(dt/coeff);
+	//_position.x += vect_x*dt; //(dt/coeff);
+	//_position.y += vect_y*dt; //(dt/coeff);
 	//Si la distance entre la position originale et la position actuelle du projectile est supérieure à la portée max
 		
 	//Après le déplacement, vérifier si le projectile n'est pas rentré dans une unité ennemie
@@ -150,21 +135,42 @@ void Missile::check_range()
 void Missile::check_collision()
 {
 	int i = 0;
-	float distance;
+	float distance; //Sert à calculer la distance entre l'origine et la position actuelle, puis la distance entre une unité donnée et le projectile
 	float delta_x, delta_y;
 	//Pour accéder aux container d'unités !	
-	for(i = 0 ; i < _player->get_scene()->get_display_layer()->get_unit_layer()->get_number_unit() ; i++) //Ici
-	{
-		//_player->get_scene()->get_display_layer()->get_unit_layer()->get_unit(i);
-		delta_x = _player->get_scene()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPositionX() - getSprite()->getPositionX(); //Ici
-		delta_y = _player->get_scene()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPositionY() - getSprite()->getPositionY(); //Ici
+	delta_x = - getSprite()->getPositionX(); //Ici
+	delta_y = - getSprite()->getPositionY(); //Ici
 	
-		distance = sqrt(delta_x*delta_x + delta_y*delta_y);
-		
-		if(distance >= _range_max)
+	distance = sqrt(delta_x*delta_x + delta_y*delta_y);	
+	if(distance >= _range_max) //Détruit le projectile s'il est allé trop loin
+	{	
+		//Destruction
+		delete this;
+		return; //Et hop on sort car on n'a plus rien à faire !
+	}
+	else //Sinon on regarde s'il se collisionne avec une unité
+	{
+		for(i = 0 ; i < _player->get_game()->get_display_layer()->get_unit_layer()->get_number_unit() ; i++)
 		{
-			deal_dmg(_player->get_scene()->get_display_layer()->get_unit_layer()->get_unit(i)); //L'unité i se prend le projectile ! Et ici
+			//_player->get_game()->get_display_layer()->get_unit_layer()->get_unit(i);
+			delta_x = _player->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPositionX() - getSprite()->getPositionX();
+			delta_y = _player->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPositionY() - getSprite()->getPositionY();
+		
+			distance = sqrt(delta_x*delta_x + delta_y*delta_y); //Distance entre le projectile et l'unité i
+			if(distance <= _player->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->get_hitboxRadius());
+			{
+				//Explosion !
+				deal_dmg(_player->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)); //L'unité i se prend le projectile !
+				//Destruction
+				delete this;
+				return; //Pour être sur qu'il ne continue pas et éviter le segfault !
+			}
 		}
+		//Ce for ne sera effectif que si aucune unité n'a été trouvée
+		/*for()
+		{
+			
+		}*/
 	}
 }
 
