@@ -4,33 +4,42 @@
 #include "cocos2d.h"
 
 #include <string>
+#include <vector>
 
 #include "Moveable.h"
+#include "AIStat.h"
+#include "Stat.h"
+#include "Turret.h"
+
 
 class Player;
-class Stat;
 
 class Unit : public Moveable
 {
 	private:
 		Player * _player;
-		Stat * _stat;
+		Stat *   _stat;
+		AIStat * _ai_stat;
+		Unit *   _target;
+		vector<Turret *> turret_list; //Non partagabilité => pas de pointeurs mais attribut "direct"
 
 	public:
 		Unit();
-		Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, int prod_time, Player * owner);
+		Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename,
+			Scene * scene, Layer * layer, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, int prod_time, Player * owner);
 		virtual ~Unit();
-		
-		// --- METHODES ---
-		virtual void on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB);
 	
 		// --- GET ---
-		Stat * get_stat();
 		Player * getPlayer() { return _player; }
+		Stat *   get_stat();
+		AIStat * get_ai_stat();
 
 		// --- SET ---
 		void setPlayer(Player * player) { _player = player; }
 
+		// --- METHODES ---
+		virtual void on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB);
+		void check_attack(); //Vérifie pour chaque tourelle (traverse le container de turret et appelle la méthode check_attack de chaque turret)
 };
 
 #endif

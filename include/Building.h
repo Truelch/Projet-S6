@@ -16,7 +16,8 @@ class Building : public PhysicsDisplayable
 		CCPoint get_rally_point() { return _rally_point; }
 		
 		// --- SET ---
-		void set_rally_point(float x_rally_point, float y_rally_point) {
+		void set_rally_point(float x_rally_point, float y_rally_point)
+		{
 			_rally_point.x = x_rally_point;
 			_rally_point.y = y_rally_point;
 		};

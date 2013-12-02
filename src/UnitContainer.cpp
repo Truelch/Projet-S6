@@ -1,5 +1,7 @@
 #include "UnitContainer.h"
 
+#include <algorithm>
+
 std::vector<UnitContainer *> UnitContainer::_instance_list;
 
 UnitContainer::UnitContainer() {

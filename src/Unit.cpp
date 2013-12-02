@@ -7,7 +7,8 @@
 #include "Layer.h"
 
 
-Unit::Unit(): Moveable(), _player(NULL) {
+Unit::Unit(): Moveable(), _player(NULL) 
+{
 	//
 }
 
@@ -31,7 +32,20 @@ Unit::~Unit() {
 	getScene()->getEventHandler()->on_unit_destroyed(this);
 }
 
+// --- GET ---
+
+Stat * Unit::get_stat()
+{
+	return _stat;
+}
+
+AIStat * Unit::get_ai_stat()
+{
+	return _ai_stat;
+}
+
 // --- METHODES ---
+
 void Unit::on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB) {
 	Unit * unit = NULL;
 	if(physicsDisplayableA==this) {
@@ -45,16 +59,23 @@ void Unit::on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayabl
 		}
 	}
 	if(unit) {
-		if(unit->getPlayer()==_player) set_tenir_position(false);
-		else set_tenir_position(true);
+		if(unit->getPlayer()==_player) set_hold_position(false);
+		else set_hold_position(true);
 	}
 	Moveable::on_physics_displayable_contact(physicsDisplayableA, physicsDisplayableB);
 }
 
-// --- GET ---
 
-Stat * Unit::get_stat()
+void Unit::check_attack()
 {
-	return _stat;
+	/*
+	int i = 0;
+	float distance = get_stat()->; //hors de portée => valeur infinie
+	float delta_x, delta_y;
+	//Pour accéder aux container d'unités !	
+	for(i = 0 ; i < _player->get_scene()->get_display_layer()->get_unit_layer()->get_number_unit() ; i++) //Ici
+	{
+		i.check_attack();
+	}
+	*/
 }
-

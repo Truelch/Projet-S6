@@ -10,8 +10,6 @@ Player::Player(Scene * scene, string name, Color color, int player_number, int t
 	//
 }
 
-// --- METHODES ---
-
 // --- GET ---
 
 string Player::get_name()
@@ -44,6 +42,11 @@ std::vector<UnitContainer>&	Player::get_control_group_vector()
 	return _control_group_vector;
 }
 
+Scene * Player::get_scene()
+{
+	return _scene;
+}
+
 // --- SET ---
 
 void Player::set_name(string name)
@@ -64,4 +67,28 @@ void Player::set_player_number(int player_number)
 void Player::set_team_number(int team_number)
 {
 	_team_number = team_number;
+}
+
+// --- METHODES ---
+
+float Player::compute_percent_of_known_map()
+{
+	float percent_of_known_map = 0.0;
+	//Calcul
+	return percent_of_known_map;
+}
+
+int Player::compute_number_player_building()
+{
+	int number_player_building = 0;
+	//Calcul
+	
+	return number_player_building;
+}
+
+bool Player::is_ally(Player * player)
+{
+	bool ally = true;
+	//Boucle de vérification
+	return ally;
 }

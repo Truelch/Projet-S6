@@ -54,6 +54,8 @@ class AI : public EventReceiver {
 		bool       get_omniscience();
 		float      get_percent_life_min();
 		
+		Scene *  get_scene();
+		Player * get_player(); //Comme pour Unit. Mais ne devrait pas plutôt renvoyer une référence ?
 		
 		// --- SET ---
 		void set_difficulty(Difficulty difficulty);	//ne devrait pas être utilisé. si c'est le cas, ce set devrait setter les autres attributs comme avec le constructeur ayant difficulty en entrée	
@@ -63,9 +65,19 @@ class AI : public EventReceiver {
 		void set_omniscience(bool omniscience);
 		void set_percent_life_min(float percent_life_min);
 		
+		void set_scene(Scene * scene);
+		void set_player(Player * player);
+		
 		
 		// --- METHODES ---
-		void AI_monitor();
+		void ai_monitor();
+		void affecting_order();
+		void build_order();
+		
+		float compute_need_scout();
+		float compute_need_capture();
+		float compute_need_attack();
+		float compute_need_defense();
 
 };
 

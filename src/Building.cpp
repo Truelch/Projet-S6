@@ -1,5 +1,8 @@
 #include "Building.h"
 
+#include "Box2D/Box2D.h"
+#include "Scene.h"
+
 Building::Building(): PhysicsDisplayable() {
 	//
 }

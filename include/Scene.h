@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
 #include "EventHandler.h"
+#include "DisplayLayer.h"
 
 #define PTM_RATIO 32
 #define COEFF     2.1
@@ -21,6 +22,10 @@ class Scene : public cocos2d::CCScene
 
 		b2World * getWorld() { return _world; }
 		EventHandler * getEventHandler() { return _event_handler; }
+		
+		//Mon ajout
+		virtual DisplayLayer * get_display_layer() = 0;
+		
 	private:
 		EventHandler * _event_handler;
 		b2World * _world;

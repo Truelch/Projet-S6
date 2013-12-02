@@ -3,6 +3,7 @@
 //=> pour les sqrt
 #include <iostream>
 #include "Box2D/Box2D.h"
+#include "Scene.h"
 
 #include <math.h>
 
@@ -10,10 +11,10 @@
 
 using namespace std;
 
-Moveable::Moveable(): PhysicsDisplayable(), _type(unitType), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false) {
+Moveable::Moveable(): PhysicsDisplayable(), _type(unitType), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _hold_position(false), _move_in_progress(false) {
 }
 
-Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer): PhysicsDisplayable(PhysicsDisplayable::moveableType, scene,CCPhysicsSprite::create(filename), layer), _type(type), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _tenir_position(false), _move_in_progress(false)
+Moveable::Moveable(MoveableType type, float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Scene * scene, Layer * layer): PhysicsDisplayable(PhysicsDisplayable::moveableType, scene,CCPhysicsSprite::create(filename), layer), _type(type), _rest(false), _groundFixture(groundFixture), _density(density), _time_before_restore_position(-100), _mode_restore_position(false), _hold_position(false), _move_in_progress(false)
 {
 	b2Vec2 vecteur_path;
 	bodyInit(x,y,rotation,hitboxRadius);
@@ -119,7 +120,7 @@ void Moveable::move(float dt)
 		}
 	}
 
-	if(_tenir_position) goToDestination();
+	if(_hold_position) goToDestination();
 	else {
 		if(_mode_restore_position) {
 			vecteur_path.Set(_destination.x - getSprite()->getPositionX(), _destination.y - getSprite()->getPositionY());
@@ -189,7 +190,7 @@ void Moveable::on_physics_displayable_contact(PhysicsDisplayable * physicsDispla
 			moveable = (Moveable *)physicsDisplayableA;
 		}
 	}
-	if(moveable && !_tenir_position) {
+	if(moveable && !_hold_position) {
 		if(_rest && moveable->_mode_restore_position) {
 			b2Vec2 vecteur_unitaire(getSprite()->getPositionX()-moveable->getSprite()->getPositionX(), getSprite()->getPositionY()-moveable->getSprite()->getPositionY());
 			vecteur_unitaire.Normalize();
@@ -230,10 +231,10 @@ void Moveable::set_move_speed(float move_speed)
 	_move_speed = move_speed;
 }
 
-void Moveable::set_tenir_position(bool tenir_position) {
-	if(tenir_position) {
+void Moveable::set_hold_position(bool hold_position) {
+	if(hold_position) {
 		_mode_restore_position=false;
-		_tenir_position=true;
+		_hold_position=true;
 	}
-	else _tenir_position=false;
+	else _hold_position=false;
 }

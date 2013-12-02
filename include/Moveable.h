@@ -29,7 +29,7 @@ class Moveable : public PhysicsDisplayable
 		void goToDestination();
 		void applyFixture(float dt);
 
-		bool _tenir_position;
+		bool _hold_position;
 		bool _move_in_progress;
 		
 	public:
@@ -47,12 +47,12 @@ class Moveable : public PhysicsDisplayable
 		MoveableType getType() { return _type; }
 		bool get_rest() { return _rest; }
 		bool get_mode_restore_position() { return _mode_restore_position; }
-		bool get_tenir_position() { return _tenir_position; }
+		bool get_hold_position() { return _hold_position; }
 		
 		// --- SET ---
 		void set_destination(float x_dest, float y_dest);
 		void set_move_speed(float move_speed);
-		void set_tenir_position(bool tenir_position);
+		void set_hold_position(bool hold_position);
 
 		virtual void on_physics_displayable_contact(PhysicsDisplayable * physicsDisplayableA, PhysicsDisplayable * physicsDisplayableB);
 		

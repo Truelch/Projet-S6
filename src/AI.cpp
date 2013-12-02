@@ -1,5 +1,4 @@
 #include "AI.h"
-#include "Stat.h"
 
 AI::AI(): EventReceiver()
 {
@@ -79,6 +78,17 @@ float AI::get_percent_life_min()
 	return _percent_life_min;
 }
 
+Scene* AI::get_scene()
+{
+	return _scene;
+}
+
+Player* AI::get_player()
+{
+	return _player;
+}
+
+
 // --- SET ---
 
 void AI::set_difficulty(AI::Difficulty difficulty)
@@ -114,36 +124,184 @@ void AI::set_percent_life_min(float percent_life_min)
 	_percent_life_min = percent_life_min;
 }
 
+void AI::set_scene(Scene * scene)
+{
+	_scene = scene;
+}
+
+void AI::set_player(Player * player)
+{
+	_player = player;
+}
+
 // --- METHODES ---
-void AI::AI_monitor()
+
+void AI::ai_monitor()
+{
+	// --- Affectation des ordres aux unités ---
+	affecting_order();
+	
+	// --- Ordre de construction des unités ---
+}
+
+
+
+// --- METHODES APPELEES PAR LE MONITOR
+
+void AI::affecting_order()
 {
 	int i;
 	float percent_of_life;
+	float need_scout, need_capture, need_attack, need_defense;
+	float scout_value, capture_value, attack_value, defense_value; //Not used, mais si je commente, marche tjr pas !
+	float max = 0;
+	std::string order = "scout";
+	std::cout << "Scout value : " << scout_value << "Capture value : " << capture_value << "Attack value : " << attack_value << "Defense value : " << defense_value << std::endl;
 	//Boucle for traversant les unités du joueur
+	// ------------------------------------
+	// --- ORDRE AFFECTE A CHAQUE UNITE ---
+	// ------------------------------------
 	for(i=0;i<_player->get_unit_container().get_number_unit();i++)
 	{
 		//Vérification si l'unité est en état de se battre
 		percent_of_life = _player->get_unit_container().get_unit(i)->get_stat()->get_hp()/(float)_player->get_unit_container().get_unit(i)->get_stat()->get_hp_max();
 		if (percent_of_life > _percent_life_min) //Unité en état de combattre
 		{
+			// --- SCOUT ---
 			//Calcul de scout_value, def_value, att_value et capture_value (ce dernier vérifiant la distance de l'unité à un élément capurable ?
-			//scout_value = _player->get_unit_container().get_unit(i)->get
+			need_scout  = compute_need_scout();
+			scout_value = (_player->get_unit_container().get_unit(i)->get_ai_stat()->get_scout()) * need_scout;
+			
+			// --- CAPTURE ---
+			need_capture  = compute_need_capture();
+			capture_value = (_player->get_unit_container().get_unit(i)->get_ai_stat()->get_capture()) * need_capture;
+			
+			// --- ATTACK ---
+			need_attack   = compute_need_attack();
+			attack_value  = (_player->get_unit_container().get_unit(i)->get_ai_stat()->get_attack()) * need_attack;
+						
+			// --- DEFENSE ---
+			need_defense  = compute_need_capture();
+			defense_value = (_player->get_unit_container().get_unit(i)->get_ai_stat()->get_defense()) * need_defense;
+			
+			// --- CALCUL DU MAX(SCOUT, CAPTURE, ATTACK, DEFENSE) ---
+			max = need_scout;
+			
+			
+			
+			if (need_capture > max)
+			{
+				order = "capture";
+			}
+			
+			else if (need_attack > max)
+			{
+				order = "attack";
+			}
+			
+			else if (need_defense > max)
+			{
+				order = "defense";
+			}
+			
+			// --- --- ---
+			
+			
+			if      (order == "scout")   
+			{
+				//_player->get_unit_container().get_unit(i)->scout();
+				//Comportement d'unité ; Rajouter un attribut pour le comportement intelligent d'une unité
+				
+			}   
+			
+			else if (order == "capture") 
+			{
+				//_player->get_unit_container().get_unit(i)->capture();
+			}
+			
+			else if (order == "attack")  
+			{
+				//_player->get_unit_container().get_unit(i)->attack();
+			}
+			
+			else if (order == "defense") 
+			{
+				//_player->get_unit_container().get_unit(i)->defense();
+			}
 		}
 		
 		else //hp trop faibles
 		{
 			//retreat(_player->get_unit_container().get_unit(i)); //set_destination(x_QG,y_QG); + impossible de lui redonner d'autres ordres
+			
 		}
 	}
+}
+
+
+void AI::build_order()
+{
+	//
 	
 }
 
-float need_scout()
+float AI::compute_need_scout()
 {
-	float need_scout=0.0;
+	int number_player_building = _player->compute_number_player_building();
 	
+	float need_scout             = 0.0;
+	//Appel d'une fonction renvoie un float percent_of_map_know = nbrTilesConnus / nbrTotalTiles
+	float percent_of_known_map   = _player->compute_percent_of_known_map(); //Pourcentage de la carte connue 0.0 => 1.0
+	float percent_of_unknown_map = 1 - percent_of_known_map;        //Pourcentage de la carte inconnue
+	
+	float coeff = 10; //coefficient de normalisation avec les valeurs de priorité. Sert à l'ajustement
+	
+	//Faire calcul du nombre de bâtiments neutres connus
+	
+	//Si nbr de bâtiments capturés = 0 (nbr bat == 1 avec le QG) => capture
+	//nbr bâtiments visibles = 0 => priorité absolue (n)
+	if(number_player_building == 0)
+	{
+		need_scout = 10000; //Priorité maximale
+	}
+	else //Calcul normal
+	{
+		need_scout = coeff * percent_of_unknown_map;
+	}
+
 	//
 	
 	return need_scout;
 }
 
+float AI::compute_need_capture()
+{
+	float need_capture = 0.0;
+	
+	//Si nbr bâtiments capturés = 0 => Priorité absolue (n-1)
+	if(1)
+	{
+		need_capture = 1000;
+	}
+	else
+	{
+		//
+	}
+	
+	//
+	return need_capture;
+}
+
+float AI::compute_need_attack()
+{
+	float need_attack = 0.0;
+	//
+	return need_attack;
+}
+
+float AI::compute_need_defense()
+{
+	float need_defense = 0.0;
+	//
+	return need_defense;
+}

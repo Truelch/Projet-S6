@@ -7,6 +7,8 @@
 #include <string>
 #include <map>
 
+#include "Scene.h"
+
 
 typedef struct {
 	std::string sprite;

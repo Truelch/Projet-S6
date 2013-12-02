@@ -50,7 +50,7 @@ class DisplayLayer : public Layer
 		
 		// --- METHODES ---
 		void init2();
-		int init_file(std::string filename);
+		int  init_file(std::string filename);
 		
 	private:
 		LayerRGBA *      _black_layer;      //z = 0

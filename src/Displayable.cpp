@@ -1,5 +1,7 @@
 #include "Displayable.h"
 
+#include "Scene.h"
+
 Displayable::Displayable(): EventReceiver() {
 	_scene = NULL;
 	_sprite = CCSprite::create();

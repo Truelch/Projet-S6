@@ -6,11 +6,11 @@ AIStat::AIStat()
 	//
 }
 
-AIStat::AIStat(float scout, float assault, float defend, float capture, int front_rank, int priority)
+AIStat::AIStat(float scout, float attack, float defense, float capture, int front_rank, int priority)
 {
 	set_scout(scout);
-	set_assault(assault);
-	set_defend(defend);
+	set_attack(attack);
+	set_defense(defense);
 	set_capture(capture);
 	set_front_rank(front_rank);
 	set_priority(priority);	
@@ -25,14 +25,14 @@ float AIStat::get_scout()
 	return _scout;
 }
 
-float AIStat::get_assault()
+float AIStat::get_attack()
 {
-	return _assault;
+	return _attack;
 }
 
-float AIStat::get_defend()
+float AIStat::get_defense()
 {
-	return _defend;
+	return _defense;
 }
 
 float AIStat::get_capture()
@@ -58,14 +58,14 @@ void AIStat::set_scout(float scout)
 	_scout = scout;
 }
 
-void AIStat::set_assault(float assault)
+void AIStat::set_attack(float attack)
 {
-	_assault = assault;
+	_attack = attack;
 }
 
-void AIStat::set_defend(float defend)
+void AIStat::set_defense(float defense)
 {
-	_defend = defend;
+	_defense = defense;
 }
 
 void AIStat::set_capture(float capture)

@@ -49,10 +49,10 @@ class Game : public Scene
 
 		ContactListener * _contactListener;
 		
-		DisplayLayer * _display_layer;
+		DisplayLayer *    _display_layer;
 
-		Layer * _hud_layer;
-		Hud * _hud;
+		Layer *           _hud_layer;
+		Hud *             _hud;
 };
 
 #endif

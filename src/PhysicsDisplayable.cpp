@@ -1,5 +1,7 @@
 #include "PhysicsDisplayable.h"
 
+#include "Scene.h"
+
 PhysicsDisplayable::PhysicsDisplayable():Displayable(NULL, CCPhysicsSprite::create(), NULL), _type(moveableType) {
 	_physicsSprite = (CCPhysicsSprite *)getSprite();
 }
