@@ -19,13 +19,13 @@ Moveable::Moveable(float x, float y, float x_dest, float y_dest, float rotation,
 	b2Vec2 vecteur_path;
 	bodyInit(x,y,rotation,hitboxRadius);
 	set_move_speed(move_speed);	
-	_destination = getSprite()->getPosition();
+	_list_destination.push_back(getSprite()->getPosition());
 
 	_tile_x=-1;
 	_tile_y=-1;
 	updateCoordonates();
 	
-	vecteur_path.Set(_destination.x - getSprite()->getPositionX(), _destination.y - getSprite()->getPositionY());
+	vecteur_path.Set(x_dest - getSprite()->getPositionX(), y_dest - getSprite()->getPositionY());
 	if(vecteur_path.Length()<0.000001) {
 		_rest=true;
 	}
@@ -72,7 +72,7 @@ void Moveable::goToDestination() {
 	b2Vec2 vecteur_path, vecteur_unitaire, vecteur_vitesse;
 	float angle;
 
-	vecteur_path.Set(_destination.x - getSprite()->getPositionX(), _destination.y - getSprite()->getPositionY());
+	vecteur_path.Set(_list_destination[0].x - getSprite()->getPositionX(), _list_destination[0].y - getSprite()->getPositionY());
 	vecteur_unitaire = vecteur_path;
 	vecteur_unitaire.Normalize();
 	vecteur_vitesse=_move_speed*vecteur_unitaire;
@@ -91,8 +91,9 @@ void Moveable::goToDestination() {
 	if(vecteur_vitesse.Length() < vecteur_path.Length()) {
 		getPhysicsSprite()->getB2Body()->SetLinearVelocity(vecteur_vitesse);
 	}
-	else if (vecteur_path.Length()>0.000001) {
-		getPhysicsSprite()->getB2Body()->SetLinearVelocity(vecteur_path);
+	else if(_list_destination.size()>1) {
+		_list_destination.erase(_list_destination.begin());
+		goToDestination();
 	}
 	else { 
 		getPhysicsSprite()->getB2Body()->SetLinearVelocity(b2Vec2(0,0));
@@ -125,20 +126,19 @@ void Moveable::update(float dt)
 		if(_time_before_restore_position<=0) {
 			_time_before_restore_position=-100;
 			_mode_restore_position=true;
-			goToDestination();
+			_rest=false;
 		}
 	}
 
 	if(_hold_position) goToDestination();
 	else {
 		if(_mode_restore_position) {
-			vecteur_path.Set(_destination.x - getSprite()->getPositionX(), _destination.y - getSprite()->getPositionY());
+			vecteur_path.Set(_list_destination[0].x - getSprite()->getPositionX(), _list_destination[0].y - getSprite()->getPositionY());
 			vecteur_vitesse = getPhysicsSprite()->getB2Body()->GetLinearVelocity();
 			//si on est proche de la destination on reprend la main
 			if(vecteur_path.Length()<=vecteur_vitesse.Length()) {
 				_mode_restore_position=false;
 				_rest=false;
-				goToDestination();
 			}
 		}
 		if(_mode_restore_position || !_rest) goToDestination();
@@ -217,7 +217,7 @@ void Moveable::on_displayable_contact(Displayable * displayableA, Displayable * 
 
 CCPoint Moveable::get_destination()
 {
-	return _destination;
+	return *(_list_destination.end()-1);
 }
 
 float Moveable::get_move_speed()
@@ -228,13 +228,30 @@ float Moveable::get_move_speed()
 
 // --- SET ---
 
-void Moveable::set_destination(float x_dest,float y_dest)
+bool Moveable::set_destination(float x_dest,float y_dest)
 {
+	int tile1_x, tile1_y, tile2_x, tile2_y;
+	CCPoint position = getSprite()->getPosition();
+	vector<MapTile *> result;
+	unsigned int i;
+
+	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(position.x, position.y,tile1_x,tile1_y);
+	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(x_dest, y_dest,tile2_x,tile2_y);
+
+	result = getGame()->get_display_layer()->get_tile_layer()->path_finding(tile1_x,tile1_y,tile2_x,tile2_y);
+
+	if(result.size()==0) return false;
+	
+	_list_destination.clear();
+	for(i=1;i<result.size()-1;i++) {
+		_list_destination.push_back(result[i]->getSprite()->getPosition());
+	}
+	_list_destination.push_back(CCPoint(x_dest,y_dest));
+
 	_rest=false;
 	_move_in_progress=true;
 	_mode_restore_position=false;
-	_destination.x = x_dest;
-	_destination.y = y_dest;
+	return true;
 }
 
 void Moveable::set_move_speed(float move_speed)

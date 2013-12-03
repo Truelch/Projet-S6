@@ -16,6 +16,10 @@ class MapTile : public MapDisplayable {
 		virtual Displayable::DisplayableType getType() { return Displayable::mapTileType; }
 		int get_tile_x() { return _tile_x; }
 		int get_tile_y() { return _tile_y; }
+		bool get_crossUp() { return _crossUp; }
+		bool get_crossDown() { return _crossDown; }
+		bool get_crossRight() { return _crossRight; }
+		bool get_crossLeft() { return _crossLeft; }
 
 		void set_building( Building * building ) { _building = building; }
 

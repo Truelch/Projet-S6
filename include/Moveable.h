@@ -6,12 +6,15 @@
 
 #include "PhysicsDisplayable.h"
 
+#include <vector>
+
 class Moveable : public PhysicsDisplayable
 {
 	private:
 		int _tile_x;
 		int _tile_y;
-		CCPoint _destination;
+		//CCPoint _destination;
+		std::vector<CCPoint> _list_destination;
 		float   _move_speed;
 
 		bool _rest;
@@ -53,7 +56,7 @@ class Moveable : public PhysicsDisplayable
 		virtual Displayable::DisplayableType getType() { return Displayable::moveableType; }
 		
 		// --- SET ---
-		void set_destination(float x_dest, float y_dest);
+		bool set_destination(float x_dest, float y_dest);
 		void set_move_speed(float move_speed);
 		void set_hold_position(bool hold_position);
 
