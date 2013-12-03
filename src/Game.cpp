@@ -24,14 +24,16 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_contactListener = new ContactListener(this);
 	getWorld()->SetContactListener(_contactListener);
 
-	_main_player = new Player(this, "joueur1", Player::blue, 1, 1);
+	_player_list.push_back( new Player(this, "joueur1", Player::blue, 1, 1) );
 	//_player_list.push_back( new Player(this, "joueur2", Player::red, 2, 2) );
+	
+	_main_player = _player_list[0];
 
 	float x,y;
 	_display_layer->coordonate_tile_to_cocos2dx(4,3,x,y);
-	_display_layer->get_unit_layer()->add_unit(x,y,250,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _main_player,100);
-	//_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _main_player,100);
-	//_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],100);
+	_display_layer->get_unit_layer()->add_unit(x,y,250,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],100);
+	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],100);
+	//_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],100);
 
 	/*
 	MapTile * tile = new MapTile(200,200,"000.png",this);

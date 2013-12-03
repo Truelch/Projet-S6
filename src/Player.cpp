@@ -103,3 +103,74 @@ bool Player::is_ally(Player * player)
 	//Boucle de vérification
 	return ally;
 }
+
+void Player::on_unit_destroyed(Unit * unit) {
+	unsigned int i;
+	int x,y;
+	if(unit->getPlayer()==this) {
+		const vector<MapTile *>& range_map_tile_list = unit->get_range_map_tile_list();
+		for(i=0; i<range_map_tile_list.size(); i++) {
+			x = range_map_tile_list[i]->get_tile_x();
+			y = range_map_tile_list[i]->get_tile_y();
+			if(_map_tile_info[y][x].range_unit_list.get_number_t()==0 && _map_tile_info[y][x].visible) {
+				_map_tile_info[y][x].visible=false;
+				get_game()->getEventHandler()->on_player_unrange_tile(x,y,this);
+			}
+		}
+	}
+}
+
+void Player::on_unit_range_tile(int x, int y, Unit * unit) {
+	if(unit->getPlayer()==this) {
+		_map_tile_info[y][x].range_unit_list.add_t(unit);
+		if(_map_tile_info[y][x].discovered==false) {
+			_map_tile_info[y][x].discovered=true;
+			get_game()->getEventHandler()->on_player_discovered_tile(x,y,this);
+		}
+		if(_map_tile_info[y][x].visible==false) {
+			_map_tile_info[y][x].visible=true;
+			get_game()->getEventHandler()->on_player_range_tile(x,y,this);
+		}
+	}
+}
+
+void Player::on_unit_unrange_tile(int x, int y, Unit * unit) {
+	if(unit->getPlayer()==this) {
+		_map_tile_info[y][x].range_unit_list.remove_t(unit);
+		if(_map_tile_info[y][x].range_unit_list.get_number_t()==0 && _map_tile_info[y][x].visible) {
+			_map_tile_info[y][x].visible=false;
+			get_game()->getEventHandler()->on_player_unrange_tile(x,y,this);
+		}
+	}
+}
+
+/*
+void Player::on_player_discovered_tile(int x, int y, Player * player) {
+	//std::cout << "on_player_discovered_tile	: " << x << "," << y << std::endl;
+	print();
+}
+
+void Player::on_player_range_tile(int x, int y, Player * player) {
+	//std::cout << "on_player_range_tile : " << x << "," << y << std::endl;
+	print();
+}
+
+void Player::on_player_unrange_tile(int x, int y, Player * player) {
+	//std::cout << "on_player_unrange_tile : " << x << "," << y << std::endl;
+	print();
+}
+
+void Player::print() {
+	unsigned int i,j;
+
+	for(j=0; j<get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix().size();j++) {
+		for(i=0; i<get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[j].size();i++) {
+			std::cout << _map_tile_info[j][i].discovered;
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+	std::cout << std::endl;
+}
+*/
+

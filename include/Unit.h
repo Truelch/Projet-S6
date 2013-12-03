@@ -36,8 +36,8 @@ class Unit : public Moveable
 		Player * getPlayer() { return _player; }
 		Stat *   get_stat();
 		AIStat * get_ai_stat();
-
 		virtual Displayable::DisplayableType getType() { return Displayable::unitType; }
+		const vector<MapTile *>& get_range_map_tile_list() { return _range_map_tile_list; }
 
 		// --- SET ---
 		void setPlayer(Player * player) { _player = player; }

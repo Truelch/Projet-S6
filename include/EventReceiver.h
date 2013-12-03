@@ -6,6 +6,7 @@ class Unit;
 class Moveable;
 class Displayable;
 class MapTile;
+class Player;
 
 class EventReceiver {
 	public:
@@ -17,8 +18,13 @@ class EventReceiver {
 		virtual void on_moveable_destination_reched(Moveable * moveable) {}
 		virtual void on_displayable_contact(Displayable * displayableA, Displayable * displayableB) {}
 		virtual void on_unit_change_map_tile(int x, int y, Unit * unit) {}
+
 		virtual void on_unit_range_tile(int x, int y, Unit * unit) {}
 		virtual void on_unit_unrange_tile(int x, int y, Unit * unit) {}
+
+		virtual void on_player_discovered_tile(int x, int y, Player * player) {}
+		virtual void on_player_range_tile(int x, int y, Player * player) {}
+		virtual void on_player_unrange_tile(int x, int y, Player * player) {}
 
 	private:
 		EventHandler * _eventHandler;

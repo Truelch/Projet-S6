@@ -55,3 +55,25 @@ void EventHandler::on_unit_unrange_tile(int x, int y, Unit * unit) {
 		_receiver_list[i]->on_unit_unrange_tile(x, y, unit);
 	}
 }
+
+void EventHandler::on_player_discovered_tile(int x, int y, Player * player) {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->on_player_discovered_tile(x, y, player);
+	}
+}
+
+void EventHandler::on_player_range_tile(int x, int y, Player * player) {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->on_player_range_tile(x, y, player);
+	}
+}
+
+void EventHandler::on_player_unrange_tile(int x, int y, Player * player) {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->on_player_unrange_tile(x, y, player);
+	}
+}
+
