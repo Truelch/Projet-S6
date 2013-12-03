@@ -12,10 +12,10 @@ class BackgroundLayer : public Layer {
 		BackgroundLayer(Game * game);
 
 
-		std::vector<std::vector<MapDisplayable *>>& get_map_displayable_matrix();
+		std::vector<std::vector<MapDisplayable *> >& get_map_displayable_matrix();
 	
 	private:
-		std::vector<std::vector<MapDisplayable *>> _map_displayable_matrix;
+		std::vector<std::vector<MapDisplayable *> > _map_displayable_matrix;
 };
 
 #endif

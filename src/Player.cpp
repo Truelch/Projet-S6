@@ -48,7 +48,7 @@ Container<Unit>& Player::get_unit_container()
 	return _unit_container;
 }
 
-std::vector<Container<Unit>>&	Player::get_control_group_vector()
+std::vector<Container<Unit> >&	Player::get_control_group_vector()
 {
 	return _control_group_vector;
 }

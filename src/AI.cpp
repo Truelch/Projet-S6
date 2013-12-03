@@ -150,10 +150,11 @@ void AI::ai_monitor()
 
 void AI::affecting_order()
 {
+	/*
 	int i;
 	float percent_of_life;
 	float need_scout, need_capture, need_attack, need_defense;
-	float scout_value, capture_value, attack_value, defense_value; //Not used, mais si je commente, marche tjr pas !
+	//float scout_value, capture_value, attack_value, defense_value; //Not used, mais si je commente, marche tjr pas !
 	float max = 0;
 	std::string order = "scout";
 	std::cout << "Scout value : " << scout_value << "Capture value : " << capture_value << "Attack value : " << attack_value << "Defense value : " << defense_value << std::endl;
@@ -236,6 +237,7 @@ void AI::affecting_order()
 			
 		}
 	}
+			*/
 }
 
 

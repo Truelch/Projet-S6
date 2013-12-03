@@ -71,7 +71,7 @@ void Unit::update_range_map_tile_list() {
 		end=true;
 		for(i=tile_x-k;i<tile_x+k+1;i++) {
 			for(j=tile_y-k;j<tile_y+k+1;j++) {
-				if(i==tile_x-k || i==tile_x+k || j==tile_y-k || j==tile_y+k) {
+				if( ( i==tile_x-k || i==tile_x+k || j==tile_y-k || j==tile_y+k ) && i>0 && i<getGame()->get_display_layer()->get_map_width() && j>0 && j<getGame()->get_display_layer()->get_map_height() ) {
 					map_tile = getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[j][i];
 					if(map_tile_range(map_tile)) {
 						end=false;
