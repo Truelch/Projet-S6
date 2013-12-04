@@ -25,6 +25,11 @@ std::vector<std::vector<MapTile *> >& TileLayer::get_map_tile_matrix()
 
 
 // --- METHODES ---
+
+vector<MapTile *> line_through_tile(CCPoint point1, CCPoint point2) {
+	return vector<MapTile *>();
+}
+
 bool TileLayer::test_2_tile_crossable(int tile1_x, int tile1_y, int tile2_x, int tile2_y) {
 	if(tile1_y<0 || tile1_y>=(int)_map_tile_matrix.size() || tile1_x<0 || tile1_x>=(int)_map_tile_matrix[0].size()) return false;
 	if(tile2_y<0 || tile2_y>=(int)_map_tile_matrix.size() || tile2_x<0 || tile2_x>=(int)_map_tile_matrix[0].size()) return false;
@@ -89,6 +94,9 @@ vector<MapTile *> TileLayer::path_finding(int tile1_x, int tile1_y, int tile2_x,
 						already_exist=false;
 						for(k=0;k<open_list.size();k++) {
 							if(open_list[k]->get_map_tile()->get_tile_x()==i && open_list[k]->get_map_tile()->get_tile_y()==j) {
+								if(open_list[k]->get_f_score()>open_list[k]->compute_f_score_whith_parent(min_f_scored_item)) {
+									open_list[k]->set_parent(min_f_scored_item);
+								}
 								already_exist=true;
 								break;
 							}

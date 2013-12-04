@@ -21,11 +21,11 @@ Building::Building(MapTile * mapTile, const char * filename, Game * game, Layer 
 void Building::init() {
 	CCPoint position = _map_tile->getSprite()->getOffsetPosition();
 	int tile_x, tile_y;
-	std::ostringstream error_message;
 
 	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(position.x, position.y, tile_x, tile_y);
-	error_message << "impossible de construire un batiment aux coordonnee " << tile_x << "," << tile_y << " le batiment existe deja.";
-	CCAssert(!_map_tile->get_building(), error_message.str().c_str());
+	if(_map_tile->get_building()) {
+		std::cerr << "ERREUR : impossible de construire un batiment aux coordonnee " << tile_x << "," << tile_y << " le batiment existe deja." << std::endl;
+	}
 	_map_tile->set_building(this);
 
 	b2BodyDef bodyDef;

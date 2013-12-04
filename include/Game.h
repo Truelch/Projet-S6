@@ -35,6 +35,10 @@ class Game : public Scene
 		// implement the "static node()" method manually
 		CREATE_FUNC(Game);
 
+		CCPoint get_center_screen();
+		void set_tile_to_center_of_screen(int tile_x, int tile_y);
+		void set_point_to_center_of_screen(CCPoint point);
+
 		//Faire bouger l'unite
 		virtual void update(float dt); //le virtual (qui n'est que dans le .h d'ailleurs) sert à indiquer qu'on surcharge une methode existante
 		

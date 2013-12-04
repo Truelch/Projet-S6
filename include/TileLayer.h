@@ -11,6 +11,8 @@
 
 using namespace std;
 
+
+
 class TileLayer : public Layer
 {
 	public:
@@ -21,6 +23,7 @@ class TileLayer : public Layer
 		// --- GET ---
 		std::vector<std::vector<MapTile *> >& get_map_tile_matrix();
 
+		vector<MapTile *> line_through_tile(CCPoint point1, CCPoint point2);
 		bool test_2_tile_crossable(int tile1_x, int tile1_y, int tile2_x, int tile2_y);
 		vector<MapTile *> path_finding(int tile1_x, int tile1_y, int tile2_x, int tile2_y);
 		

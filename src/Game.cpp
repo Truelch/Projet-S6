@@ -16,7 +16,9 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 {
 	std::cout << "Constructeur de Game" << std::endl;
 	_display_layer = new DisplayLayer(this);
-	_display_layer->init_file("map/map1");
+	if(_display_layer->init_file("map/map1")==EXIT_FAILURE) {
+		std::cerr << "ERREUR : fichier map invalide" << std::endl;
+	}
 	_display_layer->setTouchEnabled(true);
 	//_display_layer->setZOrder(1);
 	addChild(_display_layer);
@@ -32,7 +34,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	float x,y;
 	_display_layer->coordonate_tile_to_cocos2dx(4,3,x,y);
 	_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],100);
-	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],100);
+	//_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],100);
 	//_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],100);
 
 	/*
@@ -158,6 +160,31 @@ void Game::ccTouchesCancelled(CCSet* touches, CCEvent* event) {
 }
 */
 
+CCPoint Game::get_center_screen() {
+	CCSize frame_size = EGLView::sharedOpenGLView()->getVisibleSize();
+	CCPoint point = EGLView::sharedOpenGLView()->getVisibleOrigin();
+	point.x+=frame_size.width/2.0;
+	point.y+=(100+frame_size.height)/2.0;
+
+	return point;
+}
+
+void Game::set_tile_to_center_of_screen(int tile_x, int tile_y) {
+	float x,y;
+	_display_layer->coordonate_tile_to_cocos2dx(tile_x,tile_y,x,y);
+	set_point_to_center_of_screen(CCPoint(x,y));
+}
+
+void Game::set_point_to_center_of_screen(CCPoint point) {
+	float offset_x,offset_y,offset_z;
+	CCPoint center_screen = get_center_screen();
+	CCPoint new_offset(point.x-center_screen.x,point.y-center_screen.y);
+	
+	_display_layer->getCamera()->getCenterXYZ(&offset_x,&offset_y,&offset_z);
+	_display_layer->getCamera()->setCenterXYZ(new_offset.x,new_offset.y,offset_z);
+	_display_layer->getCamera()->getEyeXYZ(&offset_x,&offset_y,&offset_z);
+	_display_layer->getCamera()->setEyeXYZ(new_offset.x,new_offset.y,offset_z);
+}
 
 void Game::mouse_left_button_down( int x, int y ) {
 	float cocos_x, cocos_y;
@@ -174,6 +201,7 @@ void Game::mouse_left_button_down( int x, int y ) {
 	if(_display_layer->get_unit_layer()->get_number_unit()>0) {
 		_display_layer->get_unit_layer()->get_unit(0)->set_destination(cocos_x,cocos_y);
 	}
+
 }
 
 void Game::mouse_move( int x, int y) {

@@ -130,7 +130,7 @@ void Moveable::update(float dt)
 		}
 	}
 
-	if(_hold_position) goToDestination();
+if(_hold_position) goToDestination();
 	else {
 		if(_mode_restore_position) {
 			vecteur_path.Set(_list_destination[0].x - getSprite()->getPositionX(), _list_destination[0].y - getSprite()->getPositionY());

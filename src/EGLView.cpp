@@ -26,7 +26,7 @@ void mouse_button_event(int iMouseID,int iMouseState) {
 			if( iMouseID == GLFW_MOUSE_BUTTON_LEFT )
 				scene->mouse_left_button_down(x,y);
 			else if( iMouseID == GLFW_MOUSE_BUTTON_RIGHT )
-				scene->mouse_left_button_down(x,y);
+				scene->mouse_right_button_down(x,y);
 		} else if (iMouseState == GLFW_RELEASE) {
 			if( iMouseID == GLFW_MOUSE_BUTTON_LEFT )
 				scene->mouse_left_button_up(x,y);
