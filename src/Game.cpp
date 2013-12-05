@@ -6,7 +6,7 @@
 #include "Player.h"
 #include "EGLView.h"
 #include "GL/glfw.h"
-
+#include "Bar.h"
 
 USING_NS_CC;
 
@@ -191,15 +191,35 @@ void Game::mouse_left_button_down( int x, int y ) {
 	float offset_x,offset_y,offset_z;
 
 	//le hud va de (27,0) a (452,100) en coordonnee cocos
+	
+	if(y<520) {
+	
+		_display_layer->getCamera()->getCenterXYZ(&offset_x,&offset_y,&offset_z);
+		coordinateOpenglToCocos2dx(x,y,cocos_x,cocos_y);
 
-	_display_layer->getCamera()->getCenterXYZ(&offset_x,&offset_y,&offset_z);
-	coordinateOpenglToCocos2dx(x,y,cocos_x,cocos_y);
+		cocos_x+=offset_x;
+		cocos_y+=offset_y;
 
-	cocos_x+=offset_x;
-	cocos_y+=offset_y;
+		MapTile * map_tile = _display_layer->get_tile_layer()->get_map_tile_matrix()[3][4];
+		if(test_colision_droiteAB_segemntCD(map_tile->getSprite()->getPosition(),CCPoint(x,y),map_tile->get_vertex_left_bottom(),map_tile->get_vertex_right_bottom())) {
+			std::cout << "bottom" << std::endl;
+		}
+		/*
+		if(test_colision_droiteAB_segemntCD(map_tile->getSprite()->getPosition(),CCPoint(x,y),map_tile->get_vertex_left_top(),map_tile->get_vertex_right_top())) {
+			std::cout << "top" << std::endl;
+		}
+		if(test_colision_droiteAB_segemntCD(map_tile->getSprite()->getPosition(),CCPoint(x,y),map_tile->get_vertex_left_bottom(),map_tile->get_vertex_left_top())) {
+			std::cout << "left" << std::endl;
+		}
+		if(test_colision_droiteAB_segemntCD(map_tile->getSprite()->getPosition(),CCPoint(x,y),map_tile->get_vertex_right_bottom(),map_tile->get_vertex_right_top())) {
+			std::cout << "right" << std::endl;
+		}
+		*/
 
-	if(_display_layer->get_unit_layer()->get_number_unit()>0) {
-		_display_layer->get_unit_layer()->get_unit(0)->set_destination(cocos_x,cocos_y);
+		if(_display_layer->get_unit_layer()->get_number_unit()>0) {
+			_display_layer->get_unit_layer()->get_unit(0)->set_destination(cocos_x,cocos_y);
+		}
+
 	}
 
 }
