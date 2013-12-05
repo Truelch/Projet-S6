@@ -46,6 +46,7 @@ DisplayLayer::~DisplayLayer() {
 	delete _missile_layer;
 }
 
+float DisplayLayer::get_tile_size_cocos() { return (float)_tile_size*COEFF; }
 
 void DisplayLayer::draw()
 {

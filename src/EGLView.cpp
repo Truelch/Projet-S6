@@ -2,6 +2,16 @@
 #include "GL/glfw.h"
 #include "Scene.h"
 
+float leght_pixel_to_cocos(int lenght) {
+	EGLView* pEGLView = EGLView::sharedOpenGLView();
+	return (float)lenght/(pEGLView->getFrameZoomFactor()*pEGLView->getScaleX());
+}
+
+int lenght_cocos_to_pixel(float lenght) {
+	EGLView* pEGLView = EGLView::sharedOpenGLView();
+	return (int)(lenght*pEGLView->getScaleX()*pEGLView->getFrameZoomFactor());
+}
+
 void coordinateOpenglToCocos2dx(int opengl_x, int opengl_y, float& cocos_x, float& cocos_y) {
 	EGLView* pEGLView = EGLView::sharedOpenGLView();
 	cocos_x = ((float)opengl_x/pEGLView->getFrameZoomFactor() - pEGLView->getViewPortRect().origin.x) / pEGLView->getScaleX();
