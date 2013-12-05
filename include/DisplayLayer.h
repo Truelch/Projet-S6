@@ -47,7 +47,8 @@ class DisplayLayer : public Layer
 		UnitLayer *       get_unit_layer();
 		MissileLayer *    get_missile_layer();
 
-		int get_tile_size() { return (int)_tile_size; }
+		int get_tile_size_pixel() { return (int)_tile_size; }
+		float get_tile_size_cocos() { return (float)_tile_size*COEFF; }
 		int get_map_width() { return (int)_map_width; }
 		int get_map_height() { return (int)_map_height; }
 		
