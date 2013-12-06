@@ -16,6 +16,14 @@ class MapTile : public MapDisplayable {
 		virtual Displayable::DisplayableType getType() { return Displayable::mapTileType; }
 		int get_tile_x() { return _tile_x; }
 		int get_tile_y() { return _tile_y; }
+		float get_min_x();
+		float get_max_x();
+		float get_min_y();
+		float get_max_y();
+		CCPoint get_vertex_left_bottom();
+		CCPoint get_vertex_left_top();
+		CCPoint get_vertex_right_bottom();
+		CCPoint get_vertex_right_top();
 		bool get_crossUp() { return _crossUp; }
 		bool get_crossDown() { return _crossDown; }
 		bool get_crossRight() { return _crossRight; }
