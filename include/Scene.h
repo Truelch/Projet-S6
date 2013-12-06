@@ -3,8 +3,9 @@
 
 #include "cocos2d.h"
 #include "Box2D/Box2D.h"
-#include "EventHandler.h"
-#include "DisplayLayer.h"
+
+class EventHandler;
+class DisplayLayer;
 
 #define PTM_RATIO 32
 

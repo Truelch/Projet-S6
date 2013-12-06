@@ -4,14 +4,17 @@
 #include "cocos2d.h"
 #include <vector>
 
-#include "Moveable.h"
-#include "Unit.h"
-#include "Hud.h"
-#include "DisplayLayer.h"
 #include "Scene.h"
-#include "UnitLayer.h"
-#include "ContactListener.h"
-#include "Building.h"
+
+class Moveable;
+class Unit;
+class Hud;
+class UnitLayer;
+class ContactListener;
+class Building;
+class DisplayLayer;
+class Layer;
+class Player;
 
 using namespace std;
 
@@ -33,11 +36,11 @@ class Game : public Scene
 		
 		
 		// implement the "static node()" method manually
-		CREATE_FUNC(Game);
+		//CREATE_FUNC(Game);
 
-		CCPoint get_center_screen();
+		cocos2d::CCPoint get_center_screen();
 		void set_tile_to_center_of_screen(int tile_x, int tile_y);
-		void set_point_to_center_of_screen(CCPoint point);
+		void set_point_to_center_of_screen(cocos2d::CCPoint point);
 
 		//Faire bouger l'unite
 		virtual void update(float dt); //le virtual (qui n'est que dans le .h d'ailleurs) sert à indiquer qu'on surcharge une methode existante

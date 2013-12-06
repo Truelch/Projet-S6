@@ -4,6 +4,8 @@
 #include <iostream>
 #include "Box2D/Box2D.h"
 #include "Game.h"
+#include "DisplayLayer.h"
+#include "EventHandler.h"
 
 #include <math.h>
 

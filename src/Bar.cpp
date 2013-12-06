@@ -2,6 +2,8 @@
 #include "Bar.h"
 #include "Game.h"
 
+#include "DisplayLayer.h"
+
 Bar::Bar(Game * game, Layer * layer, float x, float y, float value, int width, int height, ccColor4B foregroundColor, ccColor4B backgroundColor): Displayable(game, new CCSprite(), layer), _value(value), _width(width), _height(height), _foregroundColor(foregroundColor), _backgroundColor(backgroundColor) {
 	int bytes = _width * _height * 4;
 	void* textureData = malloc(bytes);

@@ -6,7 +6,13 @@
 #include "Player.h"
 #include "EGLView.h"
 #include "GL/glfw.h"
-#include "Bar.h"
+#include "DisplayLayer.h"
+#include "Moveable.h"
+#include "Hud.h"
+#include "UnitLayer.h"
+#include "ContactListener.h"
+#include "Building.h"
+
 
 USING_NS_CC;
 

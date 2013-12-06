@@ -3,6 +3,7 @@
 #include "Box2D/Box2D.h"
 #include "MapTile.h"
 #include "Game.h"
+#include "DisplayLayer.h"
 
 Building::Building(): PhysicsDisplayable() {
 	//

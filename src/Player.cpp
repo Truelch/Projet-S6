@@ -1,5 +1,8 @@
 #include "Player.h"
 
+#include "DisplayLayer.h"
+#include "EventHandler.h"
+
 Player::Player(): EventReceiver(), _game(NULL)
 {
 	init();

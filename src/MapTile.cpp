@@ -5,6 +5,7 @@
 #include "Layer.h"
 #include "Box2D/Box2D.h"
 #include "Game.h"
+#include "DisplayLayer.h"
 
 MapTile::MapTile(): MapDisplayable(), _crossUp(true), _crossDown(true), _crossRight(true), _crossLeft(true), _building(NULL), _tile_x(0), _tile_y(0) {
 

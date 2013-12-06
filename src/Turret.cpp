@@ -10,6 +10,7 @@
 #include "Unit.h"
 #include "Player.h"
 #include "Missile.h"
+#include "DisplayLayer.h"
 
 Turret::Turret(): Displayable() 
 {
@@ -164,7 +165,8 @@ void Turret::fire()
 		float range_max  = _range_max;
 		int damage       = _damage;
 		Player * player  = _shooter_unit->getPlayer();
-		Missile(x, y, rotation, x_dest, y_dest, move_speed, filename, game, layer, range_max, damage, player);
+		_shooter_unit->getPlayer()->get_game()->get_display_layer()->get_missile_layer()->add_missile(x, y, rotation, x_dest, y_dest, move_speed, filename, game, layer, range_max, damage, player);
+		//Missile(x, y, rotation, x_dest, y_dest, move_speed, filename, game, layer, range_max, damage, player);
 	}
 }
 

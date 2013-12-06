@@ -15,6 +15,7 @@ class Missile : public Displayable
 	public:
 		Missile();
 		Missile(float x, float y, float rotation, float x_dest, float y_dest, float move_speed, const char * filename, Game * game, Layer * layer, float range_max, int damage, Player * player);
+		~Missile();
 		
 		// --- METHODES ---
 
