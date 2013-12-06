@@ -161,11 +161,11 @@ void Player::on_player_unrange_tile(int x, int y, Player * player) {
 }
 
 void Player::print() {
-	unsigned int i,j;
+	int i,j;
 
-	for(j=0; j<get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix().size();j++) {
-		for(i=0; i<get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[j].size();i++) {
-			std::cout << _map_tile_info[j][i].discovered;
+	for(j=(int)get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix().size()-1; j>=0;j--) {
+		for(i=0; i<(int)get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[(unsigned int)j].size();i++) {
+			std::cout << _map_tile_info[(unsigned int)j][(unsigned int)i].discovered;
 		}
 		std::cout << std::endl;
 	}
@@ -173,4 +173,3 @@ void Player::print() {
 	std::cout << std::endl;
 }
 */
-

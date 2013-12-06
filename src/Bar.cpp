@@ -16,7 +16,7 @@ Bar::Bar(Game * game, Layer * layer, float x, float y, float value, int width, i
 
 	getSprite()->initWithTexture(_texture);
 	getSprite()->setPosition(CCPoint(x,y));
-	getGame()->get_display_layer()->get_missile_layer()->addChild(getSprite());
+	layer->addChild(getSprite());
 	_texture->autorelease();
 }
 

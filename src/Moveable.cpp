@@ -233,6 +233,9 @@ bool Moveable::set_destination(float x_dest,float y_dest)
 	int tile1_x, tile1_y, tile2_x, tile2_y;
 	CCPoint position = getSprite()->getPosition();
 	vector<MapTile *> result;
+	vector<CCPoint>::iterator it;
+	CCPoint a,b;
+	b2Vec2 vect;
 	unsigned int i;
 
 	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(position.x, position.y,tile1_x,tile1_y);
@@ -241,13 +244,50 @@ bool Moveable::set_destination(float x_dest,float y_dest)
 	result = getGame()->get_display_layer()->get_tile_layer()->path_finding(tile1_x,tile1_y,tile2_x,tile2_y);
 
 	if(result.size()==0) return false;
-	
+
 	_list_destination.clear();
+	_list_destination.push_back(position);
 	for(i=1;i<result.size()-1;i++) {
 		_list_destination.push_back(result[i]->getSprite()->getPosition());
 	}
 	_list_destination.push_back(CCPoint(x_dest,y_dest));
+	
+	if(_list_destination.size()>2) {
+		it=_list_destination.begin()+=2;
+		while(it!=_list_destination.end()) {
+			a=*(it-2);
+			b=*it;
 
+			vect.Set(b.x-a.x,b.y-a.y);
+			vect.Set(-vect.y,vect.x);
+			vect.Normalize();
+			vect*=_hitboxRadius*PTM_RATIO;
+
+			a.x+=vect.x;
+			a.y+=vect.y;
+			b.x+=vect.x;
+			b.y+=vect.y;
+			if(!getGame()->get_display_layer()->get_tile_layer()->test_line_traversable(a,b)) {
+				it++;
+				continue;
+			}
+
+			a=*(it-2);
+			b=*it;
+			a.x-=vect.x;
+			a.y-=vect.y;
+			b.x-=vect.x;
+			b.y-=vect.y;
+			if(!getGame()->get_display_layer()->get_tile_layer()->test_line_traversable(a,b)) {
+				it++;
+				continue;
+			}
+
+			_list_destination.erase(it-1);
+		}
+	}
+	_list_destination.erase(_list_destination.begin());
+	
 	_rest=false;
 	_move_in_progress=true;
 	_mode_restore_position=false;
