@@ -49,6 +49,8 @@ class Game : public Scene
 		virtual void mouse_move( int x, int y);
 		virtual void key_press(int key);
 		virtual void key_release(int key);
+		virtual void mouse_wheel_up(int opengl_x, int opengl_y);
+		virtual void mouse_wheel_down(int opengl_x, int opengl_y);
 		
 	private:
 		int _map_width;

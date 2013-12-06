@@ -12,10 +12,21 @@ int lenght_cocos_to_pixel(float lenght) {
 	return (int)(lenght*pEGLView->getScaleX()*pEGLView->getFrameZoomFactor());
 }
 
-void coordinateOpenglToCocos2dx(int opengl_x, int opengl_y, float& cocos_x, float& cocos_y) {
+void coordinateOpenglToCocos2dx(int opengl_x, int opengl_y, float& cocos_x, float& cocos_y, cocos2d::CCLayer * layer) {
 	EGLView* pEGLView = EGLView::sharedOpenGLView();
-	cocos_x = ((float)opengl_x/pEGLView->getFrameZoomFactor() - pEGLView->getViewPortRect().origin.x) / pEGLView->getScaleX();
-	cocos_y = ((pEGLView->getViewPortRect().getMaxY()-(float)opengl_y)/pEGLView->getFrameZoomFactor() - pEGLView->getViewPortRect().origin.y) / pEGLView->getScaleY();
+	float scaleX, scaleY;
+
+	/*if(layer) {
+		scaleX = layer->getScaleX();
+		scaleY = layer->getScaleY();
+	}
+	else {*/
+		scaleX = pEGLView->getScaleX();
+		scaleY = pEGLView->getScaleY();
+	//}
+
+	cocos_x = ((float)opengl_x/pEGLView->getFrameZoomFactor() - pEGLView->getViewPortRect().origin.x) / scaleX;
+	cocos_y = ((pEGLView->getViewPortRect().getMaxY()-(float)opengl_y)/pEGLView->getFrameZoomFactor() - pEGLView->getViewPortRect().origin.y) / scaleY;
 }
 
 void coordinateCocos2dxToOpengl(float cocos_x, float cocos_y, int& opengl_x, int& opengl_y) {
@@ -51,6 +62,18 @@ void mouse_pos_event(int x,int y) {
 	if(scene) scene->mouse_move(x,y);
 }
 
+void mouse_wheel(int pos) {
+	static int old_pos=0;
+	int x,y;
+	Scene * scene = (Scene *)cocos2d::CCDirector::sharedDirector()->getRunningScene();
+	if(scene) {
+		glfwGetMousePos(&x, &y);
+		if(pos==old_pos+1) scene->mouse_wheel_up(x,y);
+		else if(pos==old_pos-1) scene->mouse_wheel_down(x,y);
+	}
+	old_pos=pos;
+}
+
 void key_event_handle(int iKeyID,int iKeyState) {
 	Scene * scene = (Scene *)cocos2d::CCDirector::sharedDirector()->getRunningScene();
 	if(scene) {
@@ -68,6 +91,7 @@ void EGLView::setFrameSize(float width, float height) {
 	glfwSetMouseButtonCallback(mouse_button_event);
 	glfwSetMousePosCallback(mouse_pos_event);
 	glfwSetKeyCallback(key_event_handle);
+	glfwSetMouseWheelCallback(mouse_wheel);
 }
 
 EGLView* EGLView::sharedOpenGLView()

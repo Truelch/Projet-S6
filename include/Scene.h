@@ -20,6 +20,8 @@ class Scene : public cocos2d::CCScene
 		virtual void mouse_right_button_down( int opengl_x, int opengl_y ) {}
 		virtual void mouse_right_button_up( int opengl_x, int opengl_y ) {}
 		virtual void mouse_move( int opengl_x, int opengl_y) {}
+		virtual void mouse_wheel_up(int opengl_x, int opengl_y) {}
+		virtual void mouse_wheel_down(int opengl_x, int opengl_y) {}
 		virtual void key_press(int key) {}
 		virtual void key_release(int key) {}
 
