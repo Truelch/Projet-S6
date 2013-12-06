@@ -4,6 +4,7 @@
 
 #include "Box2D/Box2D.h"
 #include "Game.h"
+#include "DisplayLayer.h"
 
 bool test_colision_droiteAB_segemntCD(CCPoint a, CCPoint b, CCPoint c, CCPoint d) {
 	b2Vec2 ab(b.x-a.x, b.y-a.y);
