@@ -1,5 +1,7 @@
 
 #include "Scene.h"
+#include "EventHandler.h"
+#include "DisplayLayer.h"
 
 #include "CCArmature/external_tool/GLES-Render.h"
 

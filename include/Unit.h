@@ -21,7 +21,7 @@ class Unit : public Moveable
 		Stat *   _stat;
 		AIStat * _ai_stat;
 		Unit *   _target;
-		vector<Turret *> _turret_list; //Non partagabilité => pas de pointeurs mais attribut "direct"
+		vector<Turret *>  _turret_list; //Non partagabilité => pas de pointeurs mais attribut "direct"
 		vector<MapTile *> _range_map_tile_list;
 
 		virtual void updateCoordonates();

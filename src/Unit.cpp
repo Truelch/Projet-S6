@@ -6,6 +6,8 @@
 #include "Player.h"
 #include "Layer.h"
 #include "Game.h"
+#include "DisplayLayer.h"
+#include "EventHandler.h"
 
 #include <algorithm>
 
@@ -133,7 +135,7 @@ void Unit::check_attack()
 {
 	/*
 	int i = 0;
-	float distance = get_stat()->; //hors de portée => valeur infinie
+	float distance = get_stat()->get_range_max(); //hors de portée => valeur infinie
 	float delta_x, delta_y;
 	//Pour accéder aux container d'unités !	
 	for(i = 0 ; i < _player->get_scene()->get_display_layer()->get_unit_layer()->get_number_unit() ; i++) //Ici
@@ -141,4 +143,9 @@ void Unit::check_attack()
 		i.check_attack();
 	}
 	*/
+	vector<Turret *>::iterator it;
+	for(it=_turret_list.begin(); it!=_turret_list.end();it++) 
+	{
+		(*it)->check_attack();
+	}
 }

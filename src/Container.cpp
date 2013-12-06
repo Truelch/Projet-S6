@@ -1,6 +1,7 @@
 #include "Container.h"
 
 #include "Unit.h"
+#include "Missile.h"
 
 #include <algorithm>
 
@@ -62,3 +63,4 @@ void Container<T>::on_destroyed(T * t) {
 }
 
 template class Container<Unit>;
+template class Container<Missile>;

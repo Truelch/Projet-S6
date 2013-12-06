@@ -1,6 +1,7 @@
 #include "Displayable.h"
 
 #include "Game.h"
+#include "Layer.h"
 
 Displayable::Displayable(): EventReceiver() {
 	_game = NULL;

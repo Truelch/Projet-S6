@@ -1,10 +1,12 @@
 #include "Missile.h"
+#include "DisplayLayer.h"
 
 #include <math.h>
 
 #define PI 3.14159265
 
-Missile::Missile(): Displayable() {
+Missile::Missile(): Displayable() 
+{
 	//
 }
 
@@ -21,6 +23,10 @@ Missile::Missile(float x, float y, float rotation, float x_dest, float y_dest, f
 	set_player(player);
 }
 
+Missile::~Missile()
+{
+	Container<Missile>::on_destroyed(this);
+}
 
 // --- GET ---
 
