@@ -58,8 +58,8 @@ void Unit::update_range_map_tile_list() {
 	for( it=_range_map_tile_list.begin(); it!=_range_map_tile_list.end();  ) {
 		if(map_tile_range(*it)) it++;
 		else {
-			_range_map_tile_list.erase(it);
 			getGame()->getEventHandler()->on_unit_unrange_tile((*it)->get_tile_x(),(*it)->get_tile_y(),this);
+			_range_map_tile_list.erase(it);
 		}
 	}
 

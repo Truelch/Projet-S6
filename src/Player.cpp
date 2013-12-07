@@ -2,6 +2,8 @@
 
 #include "DisplayLayer.h"
 #include "EventHandler.h"
+#include "FogOfWarDisplayable.h"
+#include "FogOfWarLayer.h"
 
 Player::Player(): EventReceiver(), _game(NULL)
 {
@@ -132,6 +134,7 @@ void Player::on_unit_range_tile(int x, int y, Unit * unit) {
 		}
 		if(_map_tile_info[y][x].visible==false) {
 			_map_tile_info[y][x].visible=true;
+			get_game()->get_display_layer()->get_fog_of_war_layer()->get_map_fog_matrix()[y][x]->set_fogStatus(FogOfWarDisplayable::visible);
 			get_game()->getEventHandler()->on_player_range_tile(x,y,this);
 		}
 	}
@@ -142,37 +145,9 @@ void Player::on_unit_unrange_tile(int x, int y, Unit * unit) {
 		_map_tile_info[y][x].range_unit_list.remove_t(unit);
 		if(_map_tile_info[y][x].range_unit_list.get_number_t()==0 && _map_tile_info[y][x].visible) {
 			_map_tile_info[y][x].visible=false;
+			get_game()->get_display_layer()->get_fog_of_war_layer()->get_map_fog_matrix()[y][x]->set_fogStatus(FogOfWarDisplayable::unvisible);
 			get_game()->getEventHandler()->on_player_unrange_tile(x,y,this);
 		}
 	}
 }
 
-/*
-void Player::on_player_discovered_tile(int x, int y, Player * player) {
-	//std::cout << "on_player_discovered_tile	: " << x << "," << y << std::endl;
-	print();
-}
-
-void Player::on_player_range_tile(int x, int y, Player * player) {
-	//std::cout << "on_player_range_tile : " << x << "," << y << std::endl;
-	print();
-}
-
-void Player::on_player_unrange_tile(int x, int y, Player * player) {
-	//std::cout << "on_player_unrange_tile : " << x << "," << y << std::endl;
-	print();
-}
-
-void Player::print() {
-	int i,j;
-
-	for(j=(int)get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix().size()-1; j>=0;j--) {
-		for(i=0; i<(int)get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[(unsigned int)j].size();i++) {
-			std::cout << _map_tile_info[(unsigned int)j][(unsigned int)i].discovered;
-		}
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
-	std::cout << std::endl;
-}
-*/

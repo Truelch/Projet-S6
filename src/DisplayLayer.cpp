@@ -8,6 +8,8 @@
 #include <map>
 
 #include "Scene.h"
+#include "FogOfWarLayer.h"
+#include "FogOfWarDisplayable.h"
 #define COEFF     2.1
 
 typedef struct {
@@ -20,7 +22,7 @@ typedef struct {
 
 DisplayLayer::DisplayLayer(): Layer()
 {
-	_tile_size = 124;
+	_tile_size = 128;
 	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
 }
@@ -28,7 +30,7 @@ DisplayLayer::DisplayLayer(): Layer()
 
 DisplayLayer::DisplayLayer(Game * game): Layer(game)
 {
-	_tile_size = 124;
+	_tile_size = 128;
 	std::cout << "Constructeur de DisplayLayer" << std::endl;
 	init2();
 }
@@ -44,7 +46,7 @@ DisplayLayer::~DisplayLayer() {
 	delete _missile_layer;
 }
 
-float DisplayLayer::get_tile_size_cocos() { return (float)_tile_size*COEFF; }
+float DisplayLayer::get_tile_size_cocos() { return (float)_tile_size/COEFF; }
 
 void DisplayLayer::draw()
 {
@@ -96,6 +98,11 @@ MissileLayer * DisplayLayer::get_missile_layer()
 	return _missile_layer;
 }
 
+FogOfWarLayer * DisplayLayer::get_fog_of_war_layer()
+{
+	return _fog_of_war_layer;
+}
+
 
 // --- SET ---
 
@@ -143,6 +150,11 @@ void DisplayLayer::init2()
 	_missile_layer = new MissileLayer(get_game());
 	_missile_layer->setZOrder(7);
 	addChild(_missile_layer);
+	
+	// --- Layer des FogOfWar ---
+	_fog_of_war_layer = new FogOfWarLayer(get_game());
+	_fog_of_war_layer->setZOrder(8);
+	addChild(_fog_of_war_layer);
 }
 
 void DisplayLayer::coordonate_tile_to_cocos2dx(int x, int y, float& cocos_x, float& cocos_y) {
@@ -276,6 +288,17 @@ int DisplayLayer::init_file(string filename)
 
 	//On aurait également besoin de quelque chose semblable à un dictionnaire en Python; associant un identifiant à un élément stocké.
 	//Par exemple id = 1 renvoie un Tile avec l'image 01.png, son type de collisions etc.
+
+	for(j=0;j<_map_height;j++)
+	{
+		_fog_of_war_layer->get_map_fog_matrix().push_back(vector<FogOfWarDisplayable *>());
+		for(i=0;i<_map_width;i++)
+		{
+			coordonate_tile_to_cocos2dx(i,j,x,y);
+
+			_fog_of_war_layer->get_map_fog_matrix()[j].push_back(new FogOfWarDisplayable(x,y,get_game(),_fog_of_war_layer,FogOfWarDisplayable::undiscovered));
+		}
+	}
 	
 	return EXIT_SUCCESS;
 }

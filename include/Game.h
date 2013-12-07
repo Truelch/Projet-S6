@@ -31,6 +31,8 @@ class Game : public Scene
 		int get_map_height();
 		
 		DisplayLayer * get_display_layer();
+		Player * get_main_player() { return _main_player; }
+		const vector<Player *>& get_player_list() { return _player_list; }
 		
 		// --- SET ---
 		
@@ -38,14 +40,16 @@ class Game : public Scene
 		// implement the "static node()" method manually
 		//CREATE_FUNC(Game);
 
-		cocos2d::CCPoint get_center_screen();
 		void set_tile_to_center_of_screen(int tile_x, int tile_y);
 		void set_point_to_center_of_screen(cocos2d::CCPoint point);
+		void set_map_point_to_opengl_point(cocos2d::CCPoint map_point, int opengl_x, int opengl_y);
+		cocos2d::CCPoint convert_opengl_point_to_map_point(int opengl_x, int opengl_y);
 
 		//Faire bouger l'unite
 		virtual void update(float dt); //le virtual (qui n'est que dans le .h d'ailleurs) sert à indiquer qu'on surcharge une methode existante
 		
 		virtual void mouse_left_button_down( int x, int y );
+		virtual void mouse_right_button_down( int x, int y );
 		virtual void mouse_move( int x, int y);
 		virtual void key_press(int key);
 		virtual void key_release(int key);

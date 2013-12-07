@@ -17,6 +17,8 @@
 #include "MissileLayer.h"
 
 
+class FogOfWarLayer;
+
 //Pour le Tile Layer
 
 typedef vector<vector<MapTile *> > MapTileMatrix;
@@ -46,6 +48,7 @@ class DisplayLayer : public Layer
 		BuildingLayer *   get_building_layer();
 		UnitLayer *       get_unit_layer();
 		MissileLayer *    get_missile_layer();
+		FogOfWarLayer *   get_fog_of_war_layer();
 
 		int get_tile_size_pixel() { return (int)_tile_size; }
 		float get_tile_size_cocos();
@@ -69,6 +72,7 @@ class DisplayLayer : public Layer
 		BuildingLayer *	   _building_layer;   //z = 5
 		UnitLayer *        _unit_layer;       //z = 6
 		MissileLayer *     _missile_layer;    //z = 7
+		FogOfWarLayer *    _fog_of_war_layer; //z = 8
 		
 		//StringMatrix _string_matrix;
 		//MapTileMatrix _map_tile_matrix;            //=> _tile_layer

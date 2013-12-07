@@ -12,21 +12,11 @@ int lenght_cocos_to_pixel(float lenght) {
 	return (int)(lenght*pEGLView->getScaleX()*pEGLView->getFrameZoomFactor());
 }
 
-void coordinateOpenglToCocos2dx(int opengl_x, int opengl_y, float& cocos_x, float& cocos_y, cocos2d::CCLayer * layer) {
+void coordinateOpenglToCocos2dx(int opengl_x, int opengl_y, float& cocos_x, float& cocos_y) {
 	EGLView* pEGLView = EGLView::sharedOpenGLView();
-	float scaleX, scaleY;
 
-	/*if(layer) {
-		scaleX = layer->getScaleX();
-		scaleY = layer->getScaleY();
-	}
-	else {*/
-		scaleX = pEGLView->getScaleX();
-		scaleY = pEGLView->getScaleY();
-	//}
-
-	cocos_x = ((float)opengl_x/pEGLView->getFrameZoomFactor() - pEGLView->getViewPortRect().origin.x) / scaleX;
-	cocos_y = ((pEGLView->getViewPortRect().getMaxY()-(float)opengl_y)/pEGLView->getFrameZoomFactor() - pEGLView->getViewPortRect().origin.y) / scaleY;
+	cocos_x = ((float)opengl_x/pEGLView->getFrameZoomFactor() - pEGLView->getViewPortRect().origin.x) / pEGLView->getScaleX();
+	cocos_y = ((pEGLView->getViewPortRect().getMaxY()-(float)opengl_y)/pEGLView->getFrameZoomFactor() - pEGLView->getViewPortRect().origin.y) / pEGLView->getScaleY();
 }
 
 void coordinateCocos2dxToOpengl(float cocos_x, float cocos_y, int& opengl_x, int& opengl_y) {
