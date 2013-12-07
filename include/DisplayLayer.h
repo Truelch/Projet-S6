@@ -7,15 +7,15 @@
 #include <string>
 
 #include "Layer.h"
-#include "TileLayer.h"
-#include "BackgroundLayer.h"
-#include "LayerRGBA.h"
-#include "UnitLayer.h"
-#include "DoodadLayer.h"
-#include "BuildingLayer.h"
-#include "MapTile.h"
-#include "MissileLayer.h"
 
+class TileLayer;
+class BackgroundLayer;
+class LayerRGBA;
+class UnitLayer;
+class DoodadLayer;
+class BuildingLayer;
+class MapTile;
+class MissileLayer;
 
 //Pour le Tile Layer
 

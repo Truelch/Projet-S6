@@ -4,6 +4,8 @@
 #include "TileLayer.h"
 #include <iostream>
 
+#include "Displayable.h"
+
 using namespace std;
 
 

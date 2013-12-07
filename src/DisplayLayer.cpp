@@ -8,7 +8,19 @@
 #include <map>
 
 #include "Scene.h"
+
+#include "DisplayLayer.h"
+#include "TileLayer.h"
+#include "BackgroundLayer.h"
+#include "LayerRGBA.h"
+#include "UnitLayer.h"
+#include "DoodadLayer.h"
+#include "BuildingLayer.h"
+#include "MapTile.h"
+#include "MissileLayer.h"
+#include "Building.h"
 #define COEFF     2.1
+
 
 typedef struct {
 	std::string sprite;

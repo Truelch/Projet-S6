@@ -7,9 +7,12 @@
 #include <vector>
 
 #include "Layer.h"
-#include "MapTile.h"
+//#include "MapTile.h"
 #include "Container.h"
-#include "Missile.h"
+//#include "Missile.h"
+
+class MapTile;
+class Missile;
 
 using namespace std;
 

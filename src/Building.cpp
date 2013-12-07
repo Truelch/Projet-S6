@@ -4,6 +4,7 @@
 #include "MapTile.h"
 #include "Game.h"
 #include "DisplayLayer.h"
+#include "TileLayer.h"
 
 Building::Building(): PhysicsDisplayable() {
 	//

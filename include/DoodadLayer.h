@@ -7,7 +7,9 @@
 #include <vector>
 
 #include "Layer.h"
+/*
 #include "MapTile.h"
+*/
 
 using namespace std;
 

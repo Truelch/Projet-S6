@@ -5,8 +5,8 @@
 
 #include <string>
 
-#include "Moveable.h"
-#include "Player.h"
+//#include "Player.h"
+class Player;
 
 using namespace std;
 

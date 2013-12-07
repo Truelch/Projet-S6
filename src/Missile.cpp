@@ -3,6 +3,8 @@
 
 #include <math.h>
 
+#include "Player.h"
+
 #define PI 3.14159265
 
 Missile::Missile(): Displayable() 

@@ -1,7 +1,9 @@
 #include "MissileLayer.h"
 
+//#include "Unit.h"
 
-#include "Unit.h"
+#include "MapTile.h"
+#include "Missile.h"
 
 MissileLayer::MissileLayer(): Layer()
 {

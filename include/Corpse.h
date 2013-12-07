@@ -2,8 +2,8 @@
 #define CORPSE_H
 
 #include "cocos2d.h"
+//#include "Displayable.h"
 #include "Displayable.h"
-
 
 using namespace cocos2d;
 
