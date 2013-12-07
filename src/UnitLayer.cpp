@@ -1,5 +1,7 @@
 #include "UnitLayer.h"
 
+#include "Unit.h"
+
 UnitLayer::UnitLayer(): Layer(){
 }
 
