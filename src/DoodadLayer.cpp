@@ -1,5 +1,7 @@
 #include "DoodadLayer.h"
 
+#include "Layer.h"
+#include "MapTile.h"
 
 DoodadLayer::DoodadLayer(): Layer()
 {

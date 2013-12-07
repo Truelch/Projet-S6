@@ -7,7 +7,8 @@
 #include <vector>
 
 #include "Layer.h"
-#include "Building.h"
+//#include "Building.h"
+class Building;
 
 using namespace std;
 

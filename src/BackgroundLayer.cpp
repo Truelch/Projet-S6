@@ -1,8 +1,10 @@
-
 #include "BackgroundLayer.h"
 
-BackgroundLayer::BackgroundLayer(): Layer() {
+#include "MapDisplayable.h"
 
+BackgroundLayer::BackgroundLayer(): Layer() 
+{
+	//
 }
 
 BackgroundLayer::BackgroundLayer(Game * game): Layer(game) {

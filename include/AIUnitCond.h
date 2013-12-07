@@ -1,7 +1,8 @@
 #ifndef AI_UNIT_COND_H
 #define AI_UNIT_COND_H
 
-#include "Unit.h"
+//#include "Unit.h"
+class Unit;
 
 /*
 typedef enum {

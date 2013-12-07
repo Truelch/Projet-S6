@@ -3,11 +3,12 @@
 
 #include "cocos2d.h"
 #include <vector>
-#include "Displayable.h"
+//#include "Displayable.h"
 
 #include "EventReceiver.h"
 
 class Game;
+class Displayable;
 
 USING_NS_CC;
 

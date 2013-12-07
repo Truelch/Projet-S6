@@ -1,5 +1,6 @@
 #include "BuildingLayer.h"
 
+#include "Building.h"
 
 BuildingLayer::BuildingLayer(): Layer()
 {

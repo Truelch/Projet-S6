@@ -4,7 +4,9 @@
 #include <vector>
 
 #include "Layer.h"
-#include "MapDisplayable.h"
+//#include "MapDisplayable.h"
+class Layer;
+class MapDisplayable;
 
 class BackgroundLayer : public Layer {
 	public:

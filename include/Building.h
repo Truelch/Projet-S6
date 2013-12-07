@@ -6,6 +6,7 @@
 
 class MapTile;
 class Game;
+class TileLayer;
 
 class Building : public PhysicsDisplayable
 {

@@ -5,8 +5,10 @@
 #include <string>
 
 #include "EventReceiver.h"
-#include "Scene.h"
-#include "Player.h"
+//#include "Scene.h"
+//#include "Player.h"
+class Scene;
+class Player;
 
 using namespace std;
 
