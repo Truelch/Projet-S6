@@ -2,10 +2,10 @@
 #define MISSILE_H
 
 #include "cocos2d.h"
+#include "Displayable.h"
 
 #include <string>
 
-//#include "Player.h"
 class Player;
 
 using namespace std;

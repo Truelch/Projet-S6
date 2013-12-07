@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "DisplayLayer.h"
 #include "EventHandler.h"
+#include "TileLayer.h"
 
 #include <math.h>
 

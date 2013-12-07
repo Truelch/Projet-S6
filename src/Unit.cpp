@@ -8,6 +8,8 @@
 #include "Game.h"
 #include "DisplayLayer.h"
 #include "EventHandler.h"
+#include "MapTile.h"
+#include "TileLayer.h"
 
 #include <algorithm>
 

@@ -4,6 +4,8 @@
 #include "EventHandler.h"
 #include "FogOfWarDisplayable.h"
 #include "FogOfWarLayer.h"
+#include "TileLayer.h"
+#include "Unit.h"
 
 Player::Player(): EventReceiver(), _game(NULL)
 {
