@@ -2,6 +2,8 @@
 #define SCENE
 
 #include "cocos2d.h"
+#include "cocos-ext.h"
+#include "CCArmature/external_tool/GLES-Render.h"
 #include "Box2D/Box2D.h"
 
 class EventHandler;
@@ -27,6 +29,7 @@ class Scene : public cocos2d::CCScene
 
 		b2World * getWorld() { return _world; }
 		EventHandler * getEventHandler() { return _event_handler; }
+		cocos2d::extension::GLESDebugDraw * get_debug_draw() { return _debug_draw; }
 		
 		//Mon ajout
 		virtual DisplayLayer * get_display_layer() = 0;
@@ -34,6 +37,7 @@ class Scene : public cocos2d::CCScene
 	private:
 		EventHandler * _event_handler;
 		b2World * _world;
+		cocos2d::extension::GLESDebugDraw * _debug_draw;
 };
 
 #endif

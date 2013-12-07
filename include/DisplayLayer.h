@@ -37,7 +37,9 @@ class DisplayLayer : public Layer
 		~DisplayLayer();
 
 		virtual void draw();
-
+		void addDebugLine(CCPoint p1, CCPoint p2);
+		void set_debug_mode(bool debug_mode);
+		bool get_debug_mode() { return _debug_mode; }
 	
 		// --- GET ---
 		LayerRGBA *       get_black_layer();
@@ -82,6 +84,13 @@ class DisplayLayer : public Layer
 		unsigned int _map_height;
 		
 		unsigned int _tile_size; //= 128px
+
+		typedef struct {
+			b2Vec2 p1;
+			b2Vec2 p2;
+		} Line;
+		vector<Line> _debug_line;
+		bool _debug_mode;
 };
 
 #endif

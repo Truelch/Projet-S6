@@ -149,47 +149,6 @@ if(_hold_position) goToDestination();
 	}
 
 	updateCoordonates();
-
-	/*
-	//Coeff unité de temps
-	//float coeff = 50;
-	//dt = 1/50 en temps normal
-	//Définition du vecteur unitaire de déplacement : contient 2 valeurs => CCPoint
-	float delta_x = _destination.x - getSprite()->getPositionX();
-	float delta_y = _destination.y - getSprite()->getPositionY();
-	
-	float hyp     = sqrt(delta_x*delta_x + delta_y*delta_y);
-	
-	float vect_x  = delta_x / hyp;
-	float vect_y  = delta_y / hyp;
-	
-	
-	if(delta_x != 0)
-	{
-		float angle;
-		if (delta_x < 0)  angle = -1.* atan(delta_y/delta_x) * (180/PI) + 90;
-		else angle = -1.* atan(delta_y/delta_x) * (180/PI) + 270;
-		//float angle = asin(delta_y/hyp) * (180/PI);
-		setRotation(angle);
-	}
-	
-	//Vecteur unitaire
-	//vector        = CCPoint(vect_x, vect_y);
-	//L'unité se déplace d'un vecteur égal au vecteur unitaire * vitesse
-	//speed_vector  = CCPoint(_move_speed * vect_x, _move_speed * _vect_y);
-	if(hyp > _move_speed)
-	{
-		setPositionX(getSprite()->getPositionX() + vect_x*_move_speed);
-		setPositionY(getSprite()->getPositionY() + vect_y*_move_speed);
-		//_position.x += vect_x; //(dt/coeff);
-		//_position.y += vect_y; //(dt/coeff);
-	}
-	else
-	{
-		//setPositionX(get_destination().x);	
-		//setPositionY(get_destination().y);
-	}
-	*/
 }
 
 void Moveable::on_displayable_contact(Displayable * displayableA, Displayable * displayableB) {
@@ -235,25 +194,39 @@ bool Moveable::set_destination(float x_dest,float y_dest)
 {
 	int tile1_x, tile1_y, tile2_x, tile2_y;
 	CCPoint position = getSprite()->getPosition();
+	CCPoint destination = CCPoint(x_dest,y_dest);
 	vector<MapTile *> result;
+	vector<MapTile *> list_tile_straight_path;
 	vector<CCPoint>::iterator it;
 	CCPoint a,b;
 	b2Vec2 vect;
 	unsigned int i;
+	bool achievable=true;
 
 	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(position.x, position.y,tile1_x,tile1_y);
-	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(x_dest, y_dest,tile2_x,tile2_y);
+	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(destination.x,destination.y,tile2_x,tile2_y);
 
 	result = getGame()->get_display_layer()->get_tile_layer()->path_finding(tile1_x,tile1_y,tile2_x,tile2_y);
 
-	if(result.size()==0) return false;
+	//si la destination n'est pas atteignable on essayer avec toutes les tiles en partant de la destination jusqu'a la position actuelle pour se rapprocher le plus possible de la destination
+	if(result.size()==0) {
+		achievable=false;
+		list_tile_straight_path = getGame()->get_display_layer()->get_tile_layer()->line_through_tile(position,destination);
+		do {
+			tile2_x = (*(list_tile_straight_path.end()-1))->get_tile_x();
+			tile2_y = (*(list_tile_straight_path.end()-1))->get_tile_y();
+			result = getGame()->get_display_layer()->get_tile_layer()->path_finding(tile1_x,tile1_y,tile2_x,tile2_y);
+			list_tile_straight_path.erase(list_tile_straight_path.end()-1);
+		} while(result.size()==0);
+		destination = getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[tile2_y][tile2_x]->getSprite()->getPosition();
+	}
 
 	_list_destination.clear();
 	_list_destination.push_back(position);
 	for(i=1;i<result.size()-1;i++) {
 		_list_destination.push_back(result[i]->getSprite()->getPosition());
 	}
-	_list_destination.push_back(CCPoint(x_dest,y_dest));
+	_list_destination.push_back(destination);
 	
 	if(_list_destination.size()>2) {
 		it=_list_destination.begin()+=2;
@@ -290,11 +263,11 @@ bool Moveable::set_destination(float x_dest,float y_dest)
 		}
 	}
 	_list_destination.erase(_list_destination.begin());
-	
+
 	_rest=false;
 	_move_in_progress=true;
 	_mode_restore_position=false;
-	return true;
+	return achievable;
 }
 
 void Moveable::set_move_speed(float move_speed)

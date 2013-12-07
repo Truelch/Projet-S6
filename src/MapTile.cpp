@@ -70,3 +70,7 @@ CCPoint MapTile::get_vertex_right_top() {
 	return CCPoint(get_max_x(),get_max_y());
 }
 
+bool MapTile::test_achievable() {
+	return (_crossUp || _crossDown || _crossRight || _crossLeft) && !_building;
+}
+

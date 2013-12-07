@@ -11,7 +11,7 @@
 
 using namespace std;
 
-bool test_colision_droiteAB_segemntCD(CCPoint a, CCPoint b, CCPoint c, CCPoint d);
+bool test_colision_droiteAB_segemntCD(CCPoint a, CCPoint b, CCPoint c, CCPoint d, int * marge = NULL);
 
 class TileLayer : public Layer
 {

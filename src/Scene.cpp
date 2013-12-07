@@ -13,8 +13,8 @@ Scene::Scene(): CCScene() {
 	gravity.Set(0.0f, 0.0f);
 	_world = new b2World(gravity);
 
-	cocos2d::extension::GLESDebugDraw * m_debugDraw = new cocos2d::extension::GLESDebugDraw( PTM_RATIO );
-	_world->SetDebugDraw(m_debugDraw);
+	_debug_draw = new cocos2d::extension::GLESDebugDraw( PTM_RATIO );
+	_world->SetDebugDraw(_debug_draw);
 
 	uint32 flags = 0;
 	flags += b2Draw::e_shapeBit;
@@ -22,7 +22,7 @@ Scene::Scene(): CCScene() {
 	flags += b2Draw::e_aabbBit;
 	flags += b2Draw::e_pairBit;
 	flags += b2Draw::e_centerOfMassBit;
-	m_debugDraw->SetFlags(flags);
+	_debug_draw->SetFlags(flags);
 
 }
 
