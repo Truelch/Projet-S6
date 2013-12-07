@@ -27,6 +27,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	}
 	_display_layer->setTouchEnabled(true);
 	//_display_layer->setZOrder(1);
+	_display_layer->setScale(0.5f);
 	addChild(_display_layer);
 
 	_contactListener = new ContactListener(this);
@@ -39,6 +40,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 
 	float x,y;
 	_display_layer->coordonate_tile_to_cocos2dx(4,3,x,y);
+	std::cout << x << "," << y << std::endl;
 	_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],100);
 	//_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],100);
 	//_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],100);
@@ -195,13 +197,17 @@ void Game::set_point_to_center_of_screen(CCPoint point) {
 void Game::mouse_left_button_down( int x, int y ) {
 	float cocos_x, cocos_y;
 	float offset_x,offset_y,offset_z;
+	CCSize frameSize = EGLView::sharedOpenGLView()->getFrameSize();
 
 	//le hud va de (27,0) a (452,100) en coordonnee cocos
 	
 	if(y<520) {
+
+		x=frameSize.width/2+((x-frameSize.width/2)/_display_layer->getScaleX());
+		y=frameSize.height/2+((y-frameSize.height/2)/_display_layer->getScaleY());
 	
 		_display_layer->getCamera()->getCenterXYZ(&offset_x,&offset_y,&offset_z);
-		coordinateOpenglToCocos2dx(x,y,cocos_x,cocos_y);
+		coordinateOpenglToCocos2dx(x,y,cocos_x,cocos_y,_display_layer);
 
 		cocos_x+=offset_x;
 		cocos_y+=offset_y;
@@ -211,7 +217,6 @@ void Game::mouse_left_button_down( int x, int y ) {
 		}
 
 	}
-
 }
 
 void Game::mouse_move( int x, int y) {
@@ -240,5 +245,15 @@ void Game::key_release(int key) {
 	else if(key==GLFW_KEY_RIGHT) _scroll_right_key=false;
 	else if(key==GLFW_KEY_UP) _scroll_up_key=false;
 	else if(key==GLFW_KEY_DOWN) _scroll_down_key=false;
+}
+
+void Game::mouse_wheel_up(int opengl_x, int opengl_y) {
+	if(_display_layer->getScale()<1)
+		_display_layer->setScale(_display_layer->getScale()+0.05);
+}
+
+void Game::mouse_wheel_down(int opengl_x, int opengl_y) {
+	if(_display_layer->getScale()>0.2)
+		_display_layer->setScale(_display_layer->getScale()-0.05);
 }
 

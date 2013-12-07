@@ -28,8 +28,6 @@ typedef struct {
 	bool        crossDown;
 	bool        crossRight;
 	bool        crossLeft;
-	bool        building;
-	std::string building_sprite;
 } TileID;
 
 DisplayLayer::DisplayLayer(): Layer()
@@ -183,13 +181,12 @@ int DisplayLayer::init_file(string filename)
 	std::string line, tileString;
 	
 	std::map<std::string,TileID> sprite_map;
-	std::string img_filename, building_sprite;
+	std::string img_filename;
 	bool crossUp, crossDown, crossRight, crossLeft;
 	StringMatrix string_matrix;
 	
-	sprite_map["s00"]= {"tiles/ground/000.png",true,true,true,true,false,""};
-	sprite_map["f00"]= {"tiles/cliff/000.png",false,false,false,false,false,""};
-	sprite_map["b00"]= {"tiles/ground/000.png",true,true,true,true,true,"buildings/ram01.png"};
+	sprite_map["s00"]= {"tiles/ground/000.png",true,true,true,true};
+	sprite_map["f00"]= {"tiles/cliff/000.png",false,false,false,false};
 
 	string_matrix.clear();
 	
@@ -282,13 +279,10 @@ int DisplayLayer::init_file(string filename)
 			crossDown = sprite_map[string_matrix[j][i]].crossDown && j!=0;
 			crossRight = sprite_map[string_matrix[j][i]].crossRight && i!=_map_width-1;
 			crossLeft = sprite_map[string_matrix[j][i]].crossLeft && i!=0;
-			building_sprite = sprite_map[string_matrix[j][i]].building_sprite;
 			
 			coordonate_tile_to_cocos2dx(i,j,x,y);
 			
 			_tile_layer->get_map_tile_matrix()[j].push_back(new MapTile(x,y,img_filename.c_str(),get_game(),_tile_layer,crossUp,crossDown,crossRight,crossLeft)); //Cela marche-t-il ?
-			if(sprite_map[string_matrix[j][i]].building)
-				_building_layer->get_building_list().push_back(new Building(_tile_layer->get_map_tile_matrix()[j][i],building_sprite.c_str(),get_game(),_building_layer,x,y));
 		}
 	}
 
