@@ -7,6 +7,7 @@
 class MapTile;
 class Game;
 class TileLayer;
+class Player;
 
 class Building : public PhysicsDisplayable
 {
@@ -18,6 +19,7 @@ class Building : public PhysicsDisplayable
 		// --- GET ---
 		CCPoint get_rally_point() { return _rally_point; }
 		virtual Displayable::DisplayableType getType() { return Displayable::buildingType; }
+		Player * get_player();
 		
 		// --- SET ---
 		void set_rally_point(float x_rally_point, float y_rally_point)
@@ -26,12 +28,17 @@ class Building : public PhysicsDisplayable
 			_rally_point.y = y_rally_point;
 		};
 		void set_rally_point(CCPoint rally_point) { _rally_point = rally_point; }
+		void set_player(Player * player);
+		
+		// --- METHODES ---
 
 	private:
 		void init();
 
-		CCPoint _rally_point;
+		CCPoint   _rally_point;
 		MapTile * _map_tile;
+		
+		Player *  _player;
 };
 
 #endif

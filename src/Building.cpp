@@ -6,7 +6,12 @@
 #include "DisplayLayer.h"
 #include "TileLayer.h"
 
-Building::Building(): PhysicsDisplayable() {
+#include "Player.h"
+
+#include <algorithm>
+
+Building::Building(): PhysicsDisplayable() 
+{
 	//
 }
 
@@ -19,6 +24,25 @@ Building::Building(MapTile * mapTile, const char * filename, Game * game, Layer 
 {
 	init();
 }
+
+// --- GET ---
+Player * Building::get_player()
+{
+	return _player;
+}
+
+// --- SET ---
+void Building::set_player(Player * player)
+{
+	//On retire le bâtiment de la liste de son ancien propriétaire
+	_player->get_building_vector().erase(std::remove(_player->get_building_vector().begin(), _player->get_building_vector().end(), this), _player->get_building_vector().end());
+	//On affecte
+	_player = player;
+	//On ajoute le bâtiment au nouveau propriétaire
+	_player->get_building_vector().push_back(this);
+}
+
+// --- METHODES ---
 
 void Building::init() {
 	CCPoint position = _map_tile->getSprite()->getOffsetPosition();

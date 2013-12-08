@@ -33,6 +33,7 @@ Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float m
 	_stat->set_prod_time(prod_time);
 	_stat->set_sight(sight);
 
+	player->get_unit_container().add_t(this);
 	_bar = new Bar(game, layer, x, y+20, (float)hp/hp_max, 100, 10, ccc4(0,255,0,255), ccc4(255,0,0,255));
 }
 

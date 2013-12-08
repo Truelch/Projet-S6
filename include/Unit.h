@@ -37,6 +37,7 @@ class Unit : public Moveable
 		Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename, Game * game, Layer * layer, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, int prod_time, Player * owner, float sight);
 		virtual ~Unit();
 
+		// utiliser directement au lieu de faire get_stat
 		// get stat
 		string get_name();
 		int get_hp();

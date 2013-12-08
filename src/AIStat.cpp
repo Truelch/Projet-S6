@@ -1,5 +1,5 @@
 #include "AIStat.h"
-
+#include "Unit.h"
 
 AIStat::AIStat()
 {
@@ -15,8 +15,6 @@ AIStat::AIStat(float scout, float attack, float defense, float capture, int fron
 	set_front_rank(front_rank);
 	set_priority(priority);	
 }
-
-// --- METHODES ---
 
 // --- GET ---
 
@@ -50,6 +48,15 @@ int AIStat::get_priority()
 	return _priority;
 }
 
+AIStat::State AIStat::get_state()
+{
+	return _state;
+}
+
+Unit * AIStat::get_unit()
+{
+	return _unit;
+}
 
 // --- SET ---
 
@@ -81,4 +88,15 @@ void AIStat::set_front_rank(int front_rank)
 void AIStat::set_priority(int priority)
 {
 	_priority = priority;
+}
+
+void AIStat::set_state(AIStat::State state)
+{
+	_state = state;
+}
+
+// --- METHODES ---
+void AIStat::retreat()
+{
+	//_unit->set_destination(x,y);
 }
