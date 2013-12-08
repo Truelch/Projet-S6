@@ -2,6 +2,10 @@
 #include "Scene.h"
 #include "Player.h"
 #include "Unit.h"
+#include "DisplayLayer.h"
+#include "UnitLayer.h"
+//Random
+#include <stdlib.h>     /* srand, rand */
 
 AI::AI(): EventReceiver()
 {
@@ -81,6 +85,60 @@ float AI::get_percent_life_min()
 	return _percent_life_min;
 }
 
+//
+
+Unit * AI::get_unit(int index, Container<Unit> * list)
+{
+	return list->get_t(index);
+}
+
+void AI::remove_unit(Unit * unit, Container<Unit> * list)
+{
+	list->remove_t(unit);
+}
+
+void AI::add_unit(Unit * unit, Container<Unit> * list)
+{
+	//On n'a pas à créer une unité ici (contraire à l'UnitLayer), on se contente de manipuler des unités déjà instanciées
+	list->add_t(unit);
+}
+
+int AI::get_number_unit(Container<Unit> * list) 
+{
+	return list->get_number_t();
+}
+
+//
+
+/*
+
+AttackManager * AI::get_attack_manager()
+{
+	return _attack_manager;
+}
+
+DefenseManager * AI::get_defense_manager()
+{
+	return _defense_manager;
+}
+
+ScoutManager * AI::get_scout_manager()
+{
+	return _scout_manager;
+}
+
+CaptureManager * AI::get_capture_manager()
+{
+	return _capture_manager;
+}
+
+RetreatManager * AI::get_retreat_manager()
+{
+	return _retreat_manager;
+}
+
+*/
+
 Scene* AI::get_scene()
 {
 	return _scene;
@@ -90,6 +148,7 @@ Player* AI::get_player()
 {
 	return _player;
 }
+
 
 
 // --- SET ---
@@ -167,77 +226,101 @@ void AI::affecting_order()
 	// ------------------------------------
 	for(i=0;i<_player->get_unit_container().get_number_t();i++)
 	{
-		//Vérification si l'unité est en état de se battre
-		percent_of_life = _player->get_unit_container().get_t(i)->get_stat()->get_hp()/(float)_player->get_unit_container().get_t(i)->get_stat()->get_hp_max();
-		if (percent_of_life > _percent_life_min) //Unité en état de combattre
+		//i désigne seulement l'index de l'unité dans le container (et pas l'élément lui-même comme en Python)
+		//On affecte un ordre que si l'unité est oisive. Après, dans les différents manager, elle peut quitter son affectation pour une autre à certaines conditions..
+		if(get_player()->get_unit_container().get_t(i)->get_ai_stat()->get_state()==AIStat::s_inactive)
 		{
-			// --- SCOUT ---
-			//Calcul de scout_value, def_value, att_value et capture_value (ce dernier vérifiant la distance de l'unité à un élément capurable ?
-			need_scout  = compute_need_scout();
-			scout_value = (_player->get_unit_container().get_t(i)->get_ai_stat()->get_scout()) * need_scout;
-			
-			// --- CAPTURE ---
-			need_capture  = compute_need_capture();
-			capture_value = (_player->get_unit_container().get_t(i)->get_ai_stat()->get_capture()) * need_capture;
-			
-			// --- ATTACK ---
-			need_attack   = compute_need_attack();
-			attack_value  = (_player->get_unit_container().get_t(i)->get_ai_stat()->get_attack()) * need_attack;
-						
-			// --- DEFENSE ---
-			need_defense  = compute_need_capture();
-			defense_value = (_player->get_unit_container().get_t(i)->get_ai_stat()->get_defense()) * need_defense;
-			
-			// --- CALCUL DU MAX(SCOUT, CAPTURE, ATTACK, DEFENSE) ---
-			max = need_scout;
-			
-			
-			
-			if (need_capture > max)
+			//Vérification si l'unité est en état de se battre
+			percent_of_life = _player->get_unit_container().get_t(i)->get_stat()->get_hp()/(float)_player->get_unit_container().get_t(i)->get_stat()->get_hp_max();
+			if (percent_of_life > _percent_life_min) //Unité en état de combattre
 			{
-				order = "capture";
-			}
-			
-			else if (need_attack > max)
-			{
-				order = "attack";
-			}
-			
-			else if (need_defense > max)
-			{
-				order = "defense";
-			}
-			
-			// --- --- ---
-			
-			
-			if      (order == "scout")   
-			{
-				//_player->get_unit_container().get_t(i)->scout();
-				//Comportement d'unité ; Rajouter un attribut pour le comportement intelligent d'une unité
+				// --- SCOUT ---
+				//Calcul de scout_value, def_value, att_value et capture_value (ce dernier vérifiant la distance de l'unité à un élément capurable ?
+				need_scout  = compute_need_scout();
+				scout_value = (_player->get_unit_container().get_t(i)->get_ai_stat()->get_scout()) * need_scout;
 				
-			}   
-			
-			else if (order == "capture") 
-			{
-				//_player->get_unit_container().get_t(i)->capture();
+				// --- CAPTURE ---
+				need_capture  = compute_need_capture();
+				capture_value = (_player->get_unit_container().get_t(i)->get_ai_stat()->get_capture()) * need_capture;
+				
+				// --- ATTACK ---
+				need_attack   = compute_need_attack();
+				attack_value  = (_player->get_unit_container().get_t(i)->get_ai_stat()->get_attack()) * need_attack;
+							
+				// --- DEFENSE ---
+				need_defense  = compute_need_capture();
+				defense_value = (_player->get_unit_container().get_t(i)->get_ai_stat()->get_defense()) * need_defense;
+				
+				// --- CALCUL DU MAX(SCOUT, CAPTURE, ATTACK, DEFENSE) ---
+				max = need_scout;
+				
+				
+				
+				if (need_capture > max)
+				{
+					order = "capture";
+				}
+				
+				else if (need_attack > max)
+				{
+					order = "attack";
+				}
+				
+				else if (need_defense > max)
+				{
+					order = "defense";
+				}
+				
+				// --- --- ---
+				
+				
+				if (order == "scout")   
+				{
+					//_player->get_unit_container().get_t(i)->scout();
+					//Comportement d'unité ; Rajouter un attribut pour le comportement intelligent d'une unité
+					
+					//Changer son attribut d'état
+					get_player()->get_unit_container().get_t(i)->get_ai_stat()->set_state(AIStat::s_scout);
+					//La rajouter dans le conteneur des unités affectées au scouting
+					add_unit(get_player()->get_unit_container().get_t(i),&_scout_list);
+				}   
+				
+				else if (order == "capture") 
+				{
+					//_player->get_unit_container().get_t(i)->capture();
+					
+					//Changer son attribut d'état
+					get_player()->get_unit_container().get_t(i)->get_ai_stat()->set_state(AIStat::s_capture);
+					//La rajouter dans le conteneur des unités affectées au scouting
+					add_unit(get_player()->get_unit_container().get_t(i),&_capture_list);
+				}
+				
+				else if (order == "attack")  
+				{
+					//_player->get_unit_container().get_t(i)->attack();
+					
+					//Changer son attribut d'état
+					get_player()->get_unit_container().get_t(i)->get_ai_stat()->set_state(AIStat::s_attack);
+					//La rajouter dans le conteneur des unités affectées au scouting
+					add_unit(get_player()->get_unit_container().get_t(i),&_attack_list);					
+				}
+				
+				else if (order == "defense") 
+				{
+					//_player->get_unit_container().get_t(i)->defense();
+					
+					//Changer son attribut d'état
+					get_player()->get_unit_container().get_t(i)->get_ai_stat()->set_state(AIStat::s_defense);
+					//La rajouter dans le conteneur des unités affectées à la défense
+					add_unit(get_player()->get_unit_container().get_t(i),&_defense_list);					
+				}
 			}
 			
-			else if (order == "attack")  
+			else //hp trop faibles
 			{
-				//_player->get_unit_container().get_t(i)->attack();
+				//i->get_ai_stat()->retreat(_player->get_unit_container().get_t(i)); //set_destination(x_QG,y_QG); + impossible de lui redonner d'autres ordres
+				
 			}
-			
-			else if (order == "defense") 
-			{
-				//_player->get_unit_container().get_t(i)->defense();
-			}
-		}
-		
-		else //hp trop faibles
-		{
-			//retreat(_player->get_unit_container().get_t(i)); //set_destination(x_QG,y_QG); + impossible de lui redonner d'autres ordres
-			
 		}
 	}
 			
@@ -284,9 +367,10 @@ float AI::compute_need_capture()
 	float need_capture = 0.0;
 	
 	//Si nbr bâtiments capturés = 0 => Priorité absolue (n-1)
-	if(1)
+	int controlled_building = get_player()->get_building_vector().size();
+	if(controlled_building == 1) //Le QG compte dans les bâtiments
 	{
-		need_capture = 1000;
+		need_capture = 1000; //Grande priorité
 	}
 	else
 	{
@@ -301,6 +385,8 @@ float AI::compute_need_attack()
 {
 	float need_attack = 0.0;
 	//
+	
+	
 	return need_attack;
 }
 
@@ -308,5 +394,46 @@ float AI::compute_need_defense()
 {
 	float need_defense = 0.0;
 	//
+	
+	
 	return need_defense;
+}
+
+void AI::attack_management()
+{
+	//
+}
+
+void AI::defense_management()
+{
+	//
+}
+
+void AI::scout_management()
+{
+	int x,y,x_max,y_max,i;
+	x_max = _player->get_game()->get_map_width();
+	y_max = _player->get_game()->get_map_height();
+	//A partir du conteneur de scout formé, on donne les ordres à chacun
+	//Ici, on envoie les unités dans des directions random, en faisant attention à ce qu'elles aillent tout de même vers du terrain non-exploré
+	for(i=0;i<_scout_list.get_number_t();i++) //On traverse le container à unité qui scoutent
+	{
+		x = rand() % x_max;
+		y = rand() % y_max;		
+		while(_player->get_map_tile_info()[y][x].discovered == true) //Attention si tout le terrain a déjà été découvert !
+		{
+			x = rand() % x_max;
+			y = rand() % y_max;	
+		}	
+		if (_player->get_map_tile_info()[y][x].discovered == false)
+		{		
+			//Go go go !
+			get_player()->get_unit_container().get_t(i)->set_destination(x,y);
+		}	
+	}
+}
+
+void AI::capture_management()
+{
+	//
 }

@@ -46,16 +46,16 @@ class Stat
 	private:		
 		// --- ATTRIBUTS ---
 		string _name;
-		int _hp;
-		int _hp_max;
-		int _hp_regen;
-		int _power;
-		int _power_max;
-		int _power_regen;
-		int _armor;
+		int    _hp;
+		int    _hp_max;
+		int    _hp_regen;
+		int    _power;
+		int    _power_max;
+		int    _power_regen;
+		int    _armor;
 		string _type_armor;
-		int _prod_time;
-		float _sight;
+		int    _prod_time;
+		float  _sight;
 		
 };
 

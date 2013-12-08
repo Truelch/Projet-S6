@@ -10,3 +10,8 @@ void UnitLayer::add_unit(float x, float y, float x_dest, float y_dest, float rot
 	Unit * unit = new Unit(x,y,x_dest,y_dest,rotation,move_speed,groundFixture,density,filename,get_game(),this,name,hp,hp_max,hp_regen,power,power_max,power_regen,armor,prod_time,owner,sight);
 	_unit_list.add_t(unit);
 }
+
+void UnitLayer::remove_unit(Unit * unit) {
+	_unit_list.remove_t(unit);
+}
+

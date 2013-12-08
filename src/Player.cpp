@@ -10,11 +10,13 @@
 Player::Player(): EventReceiver(), _game(NULL)
 {
 	init();
+	//Boucle pour trouver le QG
 }
 
 Player::Player(Game * game, string name, Color color, int player_number, int team_number):EventReceiver(game->getEventHandler()), _name(name), _color(color), _player_number(player_number), _team_number(team_number), _game(game)
 {
 	init();
+	//Boucle pour trouver le QG
 }
 
 void Player::init() {
@@ -65,6 +67,16 @@ Game * Player::get_game()
 	return _game;
 }
 
+std::vector<Building *>& Player::get_building_vector()
+{
+	return _building_vector;
+}
+
+Building * Player::get_qg()
+{
+	return _qg;
+}
+
 // --- SET ---
 
 void Player::set_name(string name)
@@ -85,6 +97,11 @@ void Player::set_player_number(int player_number)
 void Player::set_team_number(int team_number)
 {
 	_team_number = team_number;
+}
+
+void Player::set_qg(Building * qg)
+{
+	_qg = qg;
 }
 
 // --- METHODES ---

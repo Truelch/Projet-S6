@@ -7,8 +7,24 @@
 #include "EventReceiver.h"
 //#include "Scene.h"
 //#include "Player.h"
+
+/*
+class AIAttackManager;
+class AIDefenseManager;
+class AIScoutManager;
+class AICaptureManager;
+class AIRetreatManager;
+*/
+
+//
+#include "Container.h"
+
+class Unit;
+//
+
 class Scene;
 class Player;
+
 
 using namespace std;
 
@@ -38,8 +54,23 @@ class AI : public EventReceiver {
 		float      _dt_time;          //temps min entre chaque action. Ex : facile : 2 sec ; normal : 0.5 ; difficile : 0	
 		bool       _omniscience;      //true : l'AI sait tout ce qui se passe et ne fait pas de décisions aléatoires (pour le scout et assauts de début de partie par ex)		
 		float      _percent_life_min; //pourcentage minimal de la vie pour laquelle l'unité est autorisée à combattre
-
-		Scene *    _scene;		
+		
+		/*
+		AIAttackManager *  _ai_attack_manager;
+		AIDefenseManager * _ai_defense_manager;
+		AIScoutManager *   _ai_scout_manager;
+		AICaptureManager * _ai_capture_manager;
+		AIRetreatManager * _ai_retreat_manager;
+		*/
+		Container<Unit> _inactive_list;
+		Container<Unit> _attack_list;
+		Container<Unit> _defense_list;
+		Container<Unit> _scout_list;
+		Container<Unit> _capture_list;
+		Container<Unit> _retreat_list;
+		
+		//
+		Scene *    _scene;
 		Player *   _player;
 
 	public:
@@ -55,6 +86,24 @@ class AI : public EventReceiver {
 		float      get_dt_time();
 		bool       get_omniscience();
 		float      get_percent_life_min();
+		
+		/*
+		AIAttackManager *  get_ai_attack_manager();
+		AIDefenseManager * get_ai_defense_manager();
+		AIScoutManager *   get_ai_scout_manager();
+		AICaptureManager * get_ai_capture_manager();
+		AIRetreatManager * get_ai_retreat_manager();		
+		*/
+
+		//Il faut qu'on puisse choisir l'attribut sur lequel on travail
+		//Container<Unit> list correspond à l'une des listes : _inactive_list, _attack_list, etc.
+		
+		Unit * get_unit(int index, Container<Unit> * list); //{ return _unit_list.get_t(index); }
+		void   remove_unit(Unit *, Container<Unit> * list);
+		void   add_unit(Unit * unit, Container<Unit> * list);
+		int    get_number_unit(Container<Unit> * list); //{ return _unit_list.get_number_t(); }
+
+		//
 		
 		Scene *  get_scene();
 		Player * get_player(); //Comme pour Unit. Mais ne devrait pas plutôt renvoyer une référence ?
@@ -76,11 +125,15 @@ class AI : public EventReceiver {
 		void affecting_order();
 		void build_order();
 		
-		float compute_need_scout();
-		float compute_need_capture();
 		float compute_need_attack();
 		float compute_need_defense();
-
+		float compute_need_scout();
+		float compute_need_capture();		
+		
+		void attack_management();
+		void defense_management();
+		void scout_management();
+		void capture_management();
 };
 
 #endif

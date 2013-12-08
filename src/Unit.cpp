@@ -32,6 +32,8 @@ Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float m
 	_stat->set_armor(armor);
 	_stat->set_prod_time(prod_time);
 	_stat->set_sight(sight);
+
+	player->get_unit_container().add_t(this);
 }
 
 Unit::~Unit() {
