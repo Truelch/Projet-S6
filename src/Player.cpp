@@ -145,7 +145,7 @@ void Player::on_unit_destroyed(Unit * unit) {
 }
 
 void Player::on_unit_range_tile(int x, int y, Unit * unit) {
-	if(unit->getPlayer()==this) {
+	if(get_game()->get_main_player()==this && unit->getPlayer()==this) {
 		_map_tile_info[y][x].range_unit_list.add_t(unit);
 		if(_map_tile_info[y][x].discovered==false) {
 			_map_tile_info[y][x].discovered=true;
@@ -160,7 +160,7 @@ void Player::on_unit_range_tile(int x, int y, Unit * unit) {
 }
 
 void Player::on_unit_unrange_tile(int x, int y, Unit * unit) {
-	if(unit->getPlayer()==this) {
+	if(get_game()->get_main_player()==this && unit->getPlayer()==this) {
 		_map_tile_info[y][x].range_unit_list.remove_t(unit);
 		if(_map_tile_info[y][x].range_unit_list.get_number_t()==0 && _map_tile_info[y][x].visible) {
 			_map_tile_info[y][x].visible=false;
@@ -169,4 +169,19 @@ void Player::on_unit_unrange_tile(int x, int y, Unit * unit) {
 		}
 	}
 }
+
+void Player::remove_unit_selected(Unit * unit) {
+	if(_unit_selected.contain_t(unit)) {
+		unit->set_selected(false);
+		_unit_selected.remove_t(unit);
+	}
+}
+
+void Player::add_unit_selected(Unit * unit) {
+	if(unit->getPlayer()==this && !_unit_selected.contain_t(unit)) {
+		unit->set_selected(true);
+		_unit_selected.add_t(unit);
+	}
+}
+
 

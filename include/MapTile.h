@@ -28,6 +28,7 @@ class MapTile : public MapDisplayable {
 		bool get_crossDown() { return _crossDown; }
 		bool get_crossRight() { return _crossRight; }
 		bool get_crossLeft() { return _crossLeft; }
+		bool test_achievable();
 
 		void set_building( Building * building ) { _building = building; }
 

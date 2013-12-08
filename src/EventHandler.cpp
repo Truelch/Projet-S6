@@ -35,10 +35,10 @@ void EventHandler::on_displayable_contact(Displayable * displayableA, Displayabl
 	}
 }
 
-void EventHandler::on_unit_change_map_tile(int x, int y, Unit * unit) {
+void EventHandler::on_moveable_change_map_tile(int x, int y, Moveable * moveable) {
 	unsigned int i;
 	for(i=0; i<_receiver_list.size(); i++) {
-		_receiver_list[i]->on_unit_change_map_tile(x, y, unit);
+		_receiver_list[i]->on_moveable_change_map_tile(x, y, moveable);
 	}
 }
 

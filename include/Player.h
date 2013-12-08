@@ -42,7 +42,8 @@ class Player: public EventReceiver
 		int     _team_number;
 		Game *  _game;
 		// --
-		Container<Unit>               _unit_container;       //Contient toutes les unités du joueur
+		Container<Unit>              _unit_container;       //Contient toutes les unités du joueur
+		Container<Unit> _unit_selected;
 		std::vector<Container<Unit> > _control_group_vector; //Contient 10 slots de groupes d'unités
 		//En fait, il faudrait que les groupes de contrôle puissent contenir soit des unités soit des bâtiments !
 		
@@ -70,12 +71,17 @@ class Player: public EventReceiver
 		// --
 		Container<Unit>&                get_unit_container();
 		std::vector<Container<Unit> >&	get_control_group_vector();
-		std::vector<std::vector<TileInfo> >& get_map_tile_info() { return _map_tile_info; }
-		//
-		Game *           get_game();
-		//
 		std::vector<Building *>& get_building_vector();
 		Building *               get_qg();
+
+		Unit * get_unit_selected(int index) { return _unit_selected.get_t(index); }
+		void   remove_unit_selected(Unit * unit);
+		void   add_unit_selected(Unit * unit);
+		bool   test_unit_selected(Unit * unit) { return _unit_selected.contain_t(unit); }
+		int    get_number_unit_selected() { return _unit_selected.get_number_t(); }
+		//
+		Game * get_game();
+		const std::vector<std::vector<TileInfo> >& get_map_tile_info() { return _map_tile_info; }
 		
 		// --- SET ---
 		void set_name(string name);

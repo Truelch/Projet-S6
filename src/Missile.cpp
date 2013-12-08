@@ -5,6 +5,7 @@
 
 #include "Player.h"
 #include "UnitLayer.h"
+#include "Unit.h"
 
 #define PI 3.14159265
 
@@ -185,6 +186,6 @@ void Missile::check_collision()
 
 void Missile::deal_dmg(Unit * unit)
 {
-	unit->get_stat()->set_hp(unit->get_stat()->get_hp()-_damage);
+	unit->set_hp(unit->get_hp()-_damage);
 	//Détruire le projectile et vérifier si l'unité a encore des pv !
 }

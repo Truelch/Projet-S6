@@ -231,7 +231,7 @@ void AI::affecting_order()
 		if(get_player()->get_unit_container().get_t(i)->get_ai_stat()->get_state()==AIStat::s_inactive)
 		{
 			//Vérification si l'unité est en état de se battre
-			percent_of_life = _player->get_unit_container().get_t(i)->get_stat()->get_hp()/(float)_player->get_unit_container().get_t(i)->get_stat()->get_hp_max();
+			percent_of_life = _player->get_unit_container().get_t(i)->get_hp()/(float)_player->get_unit_container().get_t(i)->get_hp_max();
 			if (percent_of_life > _percent_life_min) //Unité en état de combattre
 			{
 				// --- SCOUT ---

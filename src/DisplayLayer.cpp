@@ -20,6 +20,7 @@
 #include "MapTile.h"
 #include "MissileLayer.h"
 #include "Building.h"
+#include "Game.h"
 #define COEFF     2.1
 
 
@@ -31,7 +32,7 @@ typedef struct {
 	bool        crossLeft;
 } TileID;
 
-DisplayLayer::DisplayLayer(): Layer()
+DisplayLayer::DisplayLayer(): Layer(), _debug_mode(false)
 {
 	_tile_size = 128;
 	std::cout << "Constructeur de DisplayLayer" << std::endl;
@@ -39,7 +40,7 @@ DisplayLayer::DisplayLayer(): Layer()
 }
 
 
-DisplayLayer::DisplayLayer(Game * game): Layer(game)
+DisplayLayer::DisplayLayer(Game * game): Layer(game), _debug_mode(false)
 {
 	_tile_size = 128;
 	std::cout << "Constructeur de DisplayLayer" << std::endl;
@@ -55,9 +56,34 @@ DisplayLayer::~DisplayLayer() {
 	delete _building_layer;
 	delete _unit_layer;
 	delete _missile_layer;
+	delete _fog_of_war_layer;
+	delete _selection_zone_layer;
 }
 
 float DisplayLayer::get_tile_size_cocos() { return (float)_tile_size/COEFF; }
+
+void DisplayLayer::addDebugLine(CCPoint p1, CCPoint p2) {
+	_debug_line.push_back({b2Vec2(p1.x/PTM_RATIO,p1.y/PTM_RATIO),b2Vec2(p2.x/PTM_RATIO,p2.y/PTM_RATIO)});
+}
+
+void DisplayLayer::set_debug_mode(bool debug_mode) {
+	if(debug_mode && !_debug_mode) {
+		_debug_mode=true;
+		removeChild(_black_layer);
+		removeChild(_background_layer);
+		removeChild(_opacity_layer);
+		removeChild(_tile_layer);
+		removeChild(_fog_of_war_layer);
+	}
+	else if(!debug_mode && _debug_mode) {
+		_debug_mode=false;
+		addChild(_black_layer);
+		addChild(_background_layer);
+		addChild(_opacity_layer);
+		addChild(_tile_layer);
+		addChild(_fog_of_war_layer);
+	}
+}
 
 void DisplayLayer::draw()
 {
@@ -65,12 +91,18 @@ void DisplayLayer::draw()
 	CCLayer::draw();
 
 	//afficher les hitbox
-	/*
-	ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
-	kmGLPushMatrix();
-	get_game()->getWorld()->DrawDebugData();
-	kmGLPopMatrix();
-	*/
+	if(_debug_mode) {
+		ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
+		kmGLPushMatrix();
+		get_game()->getWorld()->DrawDebugData();
+		b2Color color(1,0,0);
+		unsigned int i;
+		for(i=0; i<_debug_line.size();i++) {
+			get_game()->get_debug_draw()->DrawSegment(_debug_line[i].p1,_debug_line[i].p2,color);
+		}
+
+		kmGLPopMatrix();
+	}
 }
 
 // --- GET ---
@@ -114,6 +146,10 @@ FogOfWarLayer * DisplayLayer::get_fog_of_war_layer()
 	return _fog_of_war_layer;
 }
 
+Layer * DisplayLayer::get_selection_zone_layer() {
+	return _selection_zone_layer;
+}
+
 
 // --- SET ---
 
@@ -130,7 +166,7 @@ void DisplayLayer::init2()
 	// --- Layer de Background avec Tiles ---
 	_background_layer = new BackgroundLayer(get_game());
 	_background_layer->setZOrder(1);
-	//addChild(_background_layer);
+	addChild(_background_layer);
 	
 	// --- Layer d'Opacité ---
 	_opacity_layer = new LayerRGBA(get_game());
@@ -166,6 +202,10 @@ void DisplayLayer::init2()
 	_fog_of_war_layer = new FogOfWarLayer(get_game());
 	_fog_of_war_layer->setZOrder(8);
 	addChild(_fog_of_war_layer);
+
+	_selection_zone_layer = new Layer(get_game());
+	_selection_zone_layer->setZOrder(9);
+	addChild(_selection_zone_layer);
 }
 
 void DisplayLayer::coordonate_tile_to_cocos2dx(int x, int y, float& cocos_x, float& cocos_y) {

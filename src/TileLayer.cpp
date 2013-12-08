@@ -5,14 +5,24 @@
 #include "Box2D/Box2D.h"
 #include "Game.h"
 #include "DisplayLayer.h"
+#include "EGLView.h"
 
-bool test_colision_droiteAB_segemntCD(CCPoint a, CCPoint b, CCPoint c, CCPoint d) {
+bool test_colision_droiteAB_segemntCD(CCPoint a, CCPoint b, CCPoint c, CCPoint d, int * marge) {
 	b2Vec2 ab(b.x-a.x, b.y-a.y);
 	b2Vec2 ac(c.x-a.x, c.y-a.y); 
 	b2Vec2 ad(d.x-a.x, d.y-a.y); 
 	float cross_ab_ac=b2Cross(ab,ac);
 	float cross_ab_ad=b2Cross(ab,ad);
-	return (cross_ab_ac>=0 && cross_ab_ad<=0) || (cross_ab_ac<=0 && cross_ab_ad>=0);
+	if( (cross_ab_ac>=0 && cross_ab_ad<=0) || (cross_ab_ac<=0 && cross_ab_ad>=0) ) {
+		return true;
+	}
+	
+	if(marge) {
+		if(abs(cross_ab_ac)>abs(cross_ab_ad)) *marge = abs(cross_ab_ad);
+		else *marge = abs(cross_ab_ac);
+	}
+
+	return false;
 }
 
 TileLayer::TileLayer(): Layer()
@@ -39,26 +49,35 @@ std::vector<std::vector<MapTile *> >& TileLayer::get_map_tile_matrix()
 // --- METHODES ---
 
 bool TileLayer::test_line_traversable(CCPoint point1, CCPoint point2) {
+	int tile1_x, tile1_y, tile2_x, tile2_y;
+	get_game()->get_display_layer()->coordonate_cocos2dx_to_tile(point1.x, point1.y, tile1_x, tile1_y);
+	get_game()->get_display_layer()->coordonate_cocos2dx_to_tile(point2.x, point2.y, tile2_x, tile2_y);
+	if(tile1_y<0 || tile1_y>=(int)_map_tile_matrix.size() || tile1_x<0 || tile1_x>=(int)_map_tile_matrix[0].size()) return false;
+	if(tile2_y<0 || tile2_y>=(int)_map_tile_matrix.size() || tile2_x<0 || tile2_x>=(int)_map_tile_matrix[0].size()) return false;
+
 	vector<MapTile *> list_map = line_through_tile(point1,point2);
 	if(list_map.size()==0) return false;
+
 	unsigned int i;
 	for(i=0;i<list_map.size()-1;i++) {
-		if(!test_2_tile_crossable(list_map[i]->get_tile_x(),list_map[i]->get_tile_y(),list_map[i+1]->get_tile_x(),list_map[i+1]->get_tile_y())) return false;
+		if(!test_2_tile_crossable(list_map[i]->get_tile_x(),list_map[i]->get_tile_y(),list_map[i+1]->get_tile_x(),list_map[i+1]->get_tile_y())) {
+			return false;
+		}
 	}
 	return true;
 }
 
 vector<MapTile *> TileLayer::line_through_tile(CCPoint point1, CCPoint point2) {
 	int tile1_x, tile1_y, tile2_x, tile2_y;
+	int marge_x, marge_y;
 	get_game()->get_display_layer()->coordonate_cocos2dx_to_tile(point1.x,point1.y,tile1_x,tile1_y);
 	get_game()->get_display_layer()->coordonate_cocos2dx_to_tile(point2.x,point2.y,tile2_x,tile2_y);
 	vector<MapTile *> result;
 	MapTile * map_tile;
 
 	while(true) {
-
+		
 		if(tile1_y<0 || tile1_y>=(int)_map_tile_matrix.size() || tile1_x<0 || tile1_x>=(int)_map_tile_matrix[0].size()) return result;
-		if(tile2_y<0 || tile2_y>=(int)_map_tile_matrix.size() || tile2_x<0 || tile2_x>=(int)_map_tile_matrix[0].size()) return result;
 
 		result.push_back(get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[tile1_y][tile1_x]);
 
@@ -66,32 +85,46 @@ vector<MapTile *> TileLayer::line_through_tile(CCPoint point1, CCPoint point2) {
 
 		map_tile = *(result.end()-1);
 
+		if(tile2_x>tile1_x && tile2_y==tile1_y) { tile1_x+=1; continue; }
+		if(tile2_x<tile1_x && tile2_y==tile1_y) { tile1_x-=1; continue; }
+		if(tile2_y>tile1_y && tile2_x==tile1_x) { tile1_y+=1; continue; }
+		if(tile2_y<tile1_y && tile2_x==tile1_x) { tile1_y-=1; continue; }
+
 		if(tile2_x>tile1_x) {
-			if(test_colision_droiteAB_segemntCD(point1,point2,map_tile->get_vertex_right_bottom(),map_tile->get_vertex_right_top())) {
+			if(test_colision_droiteAB_segemntCD(point1,point2,map_tile->get_vertex_right_bottom(),map_tile->get_vertex_right_top(),&marge_x)) {
 				tile1_x+=1;
 				continue;
 			}
 		}
 		else if(tile2_x<tile1_x) {
-			if(test_colision_droiteAB_segemntCD(point1,point2,map_tile->get_vertex_left_bottom(),map_tile->get_vertex_left_top())) {
+			if(test_colision_droiteAB_segemntCD(point1,point2,map_tile->get_vertex_left_bottom(),map_tile->get_vertex_left_top(),&marge_x)) {
 				tile1_x-=1;
 				continue;
 			}
+			marge_x*=-1;
 		}
 		if(tile2_y>tile1_y) {
-			if(test_colision_droiteAB_segemntCD(point1,point2,map_tile->get_vertex_left_top(),map_tile->get_vertex_right_top())) {
+			if(test_colision_droiteAB_segemntCD(point1,point2,map_tile->get_vertex_left_top(),map_tile->get_vertex_right_top(),&marge_y)) {
 				tile1_y+=1;
 				continue;
 			}
 		}
 		else if(tile2_y<tile1_y) {
-			if(test_colision_droiteAB_segemntCD(point1,point2,map_tile->get_vertex_left_bottom(),map_tile->get_vertex_right_bottom())) {
+			if(test_colision_droiteAB_segemntCD(point1,point2,map_tile->get_vertex_left_bottom(),map_tile->get_vertex_right_bottom(),&marge_y)) {
 				tile1_y-=1;
 				continue;
 			}
+			marge_y*=-1;
 		}
 
-		return vector<MapTile *>();
+		if(abs(marge_x)<abs(marge_y)) {
+			if(marge_x>0) tile1_x+=1;
+			else tile1_x-=1;
+		}
+		else {
+			if(marge_y>0) tile1_y+=1;
+			else tile1_y-=1;
+		}
 
 	}
 	return result;
@@ -128,6 +161,7 @@ bool TileLayer::test_2_tile_crossable(int tile1_x, int tile1_y, int tile2_x, int
 vector<MapTile *> TileLayer::path_finding(int tile1_x, int tile1_y, int tile2_x, int tile2_y) {
 	if(tile1_y<0 || tile1_y>=(int)_map_tile_matrix.size() || tile1_x<0 || tile1_x>=(int)_map_tile_matrix[0].size()) return vector<MapTile *>();
 	if(tile2_y<0 || tile2_y>=(int)_map_tile_matrix.size() || tile2_x<0 || tile2_x>=(int)_map_tile_matrix[0].size()) return vector<MapTile *>();
+	if(!_map_tile_matrix[tile2_y][tile2_x]->test_achievable()) return vector<MapTile *>();
 
 	MapTile * destination = _map_tile_matrix[tile2_y][tile2_x];
 	vector<PathFindingItem *> open_list, closed_list;

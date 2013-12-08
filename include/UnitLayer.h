@@ -4,8 +4,9 @@
 #include <vector>
 #include <iostream>
 #include "Layer.h"
-#include "Unit.h"
 #include "Container.h"
+
+class Unit;
 
 class UnitLayer : public Layer {
 	public:
