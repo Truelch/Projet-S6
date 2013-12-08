@@ -7,6 +7,7 @@
 #include "DisplayLayer.h"
 #include "EventHandler.h"
 #include "TileLayer.h"
+#include "Player.h"
 
 #include <math.h>
 
@@ -35,14 +36,34 @@ Moveable::Moveable(float x, float y, float x_dest, float y_dest, float rotation,
 	else {
 		set_destination(x_dest,y_dest);
 	}
+
+	int tile_x, tile_y;
+	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(x,y,tile_x,tile_y);
+	if(!getGame()->get_main_player()->get_map_tile_info()[tile_y][tile_x].visible) {
+		getSprite()->setScale(0);
+	}
 }
 
 Moveable::~Moveable() {
 }
 
 void Moveable::updateCoordonates() {
+	static int old_tile_x=-1, old_tile_y=-1;
+
 	CCPoint position = getSprite()->getPosition();
 	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(position.x, position.y, _tile_x, _tile_y);
+
+	if(old_tile_x!=_tile_x || old_tile_y!=_tile_y) {
+		getGame()->getEventHandler()->on_moveable_change_map_tile(_tile_x, _tile_y, this);
+
+		if(!getGame()->get_main_player()->get_map_tile_info()[_tile_y][_tile_x].visible) {
+			getSprite()->setScale(0);
+		}
+		else getSprite()->setScale(1);
+
+		old_tile_x=_tile_x;
+		old_tile_y=_tile_y;
+	}
 }
 
 void Moveable::bodyInit(int x, int y, int rotation, float hitboxRadius) {
@@ -282,3 +303,21 @@ void Moveable::set_hold_position(bool hold_position) {
 	}
 	else _hold_position=false;
 }
+
+bool Moveable::test_point_in_moveable(CCPoint point) {
+	return getSprite()->getPosition().getDistance(point)<_hitboxRadius*PTM_RATIO;
+}
+
+void Moveable::on_player_range_tile(int x, int y, Player * player) {
+	if(getGame()->get_main_player()==player && x==_tile_x && y==_tile_y) {
+		getSprite()->setScale(1);
+	}
+}
+
+void Moveable::on_player_unrange_tile(int x, int y, Player * player) {
+	if(getGame()->get_main_player()==player && x==_tile_x && y==_tile_y) {
+		getSprite()->setScale(0);
+	}
+	
+}
+

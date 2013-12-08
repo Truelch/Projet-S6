@@ -56,6 +56,8 @@ DisplayLayer::~DisplayLayer() {
 	delete _building_layer;
 	delete _unit_layer;
 	delete _missile_layer;
+	delete _fog_of_war_layer;
+	delete _selection_zone_layer;
 }
 
 float DisplayLayer::get_tile_size_cocos() { return (float)_tile_size/COEFF; }
@@ -144,6 +146,10 @@ FogOfWarLayer * DisplayLayer::get_fog_of_war_layer()
 	return _fog_of_war_layer;
 }
 
+Layer * DisplayLayer::get_selection_zone_layer() {
+	return _selection_zone_layer;
+}
+
 
 // --- SET ---
 
@@ -196,6 +202,10 @@ void DisplayLayer::init2()
 	_fog_of_war_layer = new FogOfWarLayer(get_game());
 	_fog_of_war_layer->setZOrder(8);
 	addChild(_fog_of_war_layer);
+
+	_selection_zone_layer = new Layer(get_game());
+	_selection_zone_layer->setZOrder(9);
+	addChild(_selection_zone_layer);
 }
 
 void DisplayLayer::coordonate_tile_to_cocos2dx(int x, int y, float& cocos_x, float& cocos_y) {

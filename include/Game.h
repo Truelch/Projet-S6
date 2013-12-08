@@ -15,6 +15,7 @@ class Building;
 class DisplayLayer;
 class Layer;
 class Player;
+class SelectionZone;
 
 using namespace std;
 
@@ -49,6 +50,7 @@ class Game : public Scene
 		virtual void update(float dt); //le virtual (qui n'est que dans le .h d'ailleurs) sert à indiquer qu'on surcharge une methode existante
 		
 		virtual void mouse_left_button_down( int x, int y );
+		virtual void mouse_left_button_up( int x, int y );
 		virtual void mouse_right_button_down( int x, int y );
 		virtual void mouse_move( int x, int y);
 		virtual void key_press(int key);
@@ -57,6 +59,9 @@ class Game : public Scene
 		virtual void mouse_wheel_down(int opengl_x, int opengl_y);
 		
 	private:
+		void set_bar_visible(bool visible);
+
+
 		int _map_width;
 		int _map_height;
 
@@ -75,9 +80,16 @@ class Game : public Scene
 		bool _scroll_right_key;
 		bool _scroll_up_key;
 		bool _scroll_down_key;
+		bool _mouse_button_left_down;
+
+		bool _key_left_alt;
+		bool _key_right_alt;
 
 		Player * _main_player;
 		vector<Player *> _player_list;
+
+		SelectionZone * _selectionZone;
+		bool _selection_zone_enable;
 };
 
 #endif

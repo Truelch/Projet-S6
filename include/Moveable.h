@@ -61,6 +61,10 @@ class Moveable : public PhysicsDisplayable
 		void set_hold_position(bool hold_position);
 
 		virtual void on_displayable_contact(Displayable * displayableA, Displayable * displayableB);
+		virtual void on_player_range_tile(int x, int y, Player * player);
+		virtual void on_player_unrange_tile(int x, int y, Player * player);
+
+		bool test_point_in_moveable(CCPoint point);
 		
 };
 

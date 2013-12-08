@@ -48,15 +48,18 @@ FogOfWarDisplayable::~FogOfWarDisplayable() {
 }
 
 void FogOfWarDisplayable::set_fogStatus(FogStatus fogStatus) {
+	_fogStatus=fogStatus;
+	update();
+	/*
 	CCPoint position = getSprite()->getPosition();
 	int tile_x, tile_y;
 	int i,j;
 	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(position.x,position.y,tile_x,tile_y);
-	_fogStatus=fogStatus;
 	for(i=tile_x-1;i<tile_x+2;i++) {
 		for(j=tile_y-1;j<tile_y+2;j++) {
 			if(j>=0 && j<(int)getGame()->get_display_layer()->get_fog_of_war_layer()->get_map_fog_matrix().size() && i>=0 && i<(int)getGame()->get_display_layer()->get_fog_of_war_layer()->get_map_fog_matrix()[0].size()) getGame()->get_display_layer()->get_fog_of_war_layer()->get_map_fog_matrix()[j][i]->update();
 		}
 	}
+	*/
 }
 

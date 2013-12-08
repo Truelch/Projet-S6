@@ -17,7 +17,7 @@ class EventReceiver {
 		virtual void on_unit_destroyed(Unit * unit) {}
 		virtual void on_moveable_destination_reched(Moveable * moveable) {}
 		virtual void on_displayable_contact(Displayable * displayableA, Displayable * displayableB) {}
-		virtual void on_unit_change_map_tile(int x, int y, Unit * unit) {}
+		virtual void on_moveable_change_map_tile(int x, int y, Moveable * moveable) {}
 
 		virtual void on_unit_range_tile(int x, int y, Unit * unit) {}
 		virtual void on_unit_unrange_tile(int x, int y, Unit * unit) {}
