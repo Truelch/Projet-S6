@@ -14,7 +14,12 @@ class Moveable : public PhysicsDisplayable
 		int _tile_x;
 		int _tile_y;
 		//CCPoint _destination;
-		std::vector<CCPoint> _list_destination;
+		
+		typedef struct {
+			CCPoint destination;
+			std::vector<MapTile *> map_tile_list;
+		} ListDestinationItem;
+		std::vector<ListDestinationItem> _list_destination;
 		float   _move_speed;
 
 		bool _rest;

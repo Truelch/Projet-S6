@@ -82,7 +82,10 @@ vector<MapTile *> TileLayer::line_through_tile(CCPoint point1, CCPoint point2) {
 	while(true) {
 		
 		//on verifie si la case ne se trouve pas en dehors de la map
-		if(tile1_y<0 || tile1_y>=(int)_map_tile_matrix.size() || tile1_x<0 || tile1_x>=(int)_map_tile_matrix[0].size()) return result;
+		if(tile1_y<0 || tile1_y>=(int)_map_tile_matrix.size() || tile1_x<0 || tile1_x>=(int)_map_tile_matrix[0].size()) {
+			std::cout << "return result; " << result.size() << std::cout;
+			return result;
+		}
 
 		//on verifie si on a pas depasser la destination
 		
@@ -192,9 +195,14 @@ bool TileLayer::test_2_tile_crossable(int tile1_x, int tile1_y, int tile2_x, int
 }
 
 vector<MapTile *> TileLayer::path_finding(int tile1_x, int tile1_y, int tile2_x, int tile2_y) {
-	if(tile1_y<0 || tile1_y>=(int)_map_tile_matrix.size() || tile1_x<0 || tile1_x>=(int)_map_tile_matrix[0].size()) return vector<MapTile *>();
-	if(tile2_y<0 || tile2_y>=(int)_map_tile_matrix.size() || tile2_x<0 || tile2_x>=(int)_map_tile_matrix[0].size()) return vector<MapTile *>();
-	if(!_map_tile_matrix[tile2_y][tile2_x]->test_achievable()) return vector<MapTile *>();
+	vector<MapTile *> result;
+	if(tile1_y<0 || tile1_y>=(int)_map_tile_matrix.size() || tile1_x<0 || tile1_x>=(int)_map_tile_matrix[0].size()) return result;
+	if(tile2_y<0 || tile2_y>=(int)_map_tile_matrix.size() || tile2_x<0 || tile2_x>=(int)_map_tile_matrix[0].size()) return result;
+	if(tile1_x==tile2_x && tile1_y==tile2_y) {
+		result.push_back(_map_tile_matrix[tile1_y][tile1_x]);
+		return result;
+	}
+	if(!_map_tile_matrix[tile2_y][tile2_x]->test_achievable()) return result;
 
 	MapTile * destination = _map_tile_matrix[tile2_y][tile2_x];
 	vector<PathFindingItem *> open_list, closed_list;
@@ -203,7 +211,6 @@ vector<MapTile *> TileLayer::path_finding(int tile1_x, int tile1_y, int tile2_x,
 	int i,j;
 	int tile_x, tile_y;
 	bool already_exist;
-	vector<MapTile *> result;
 
 	open_list.push_back(new PathFindingItem(_map_tile_matrix[tile1_y][tile1_x], NULL, destination));
 

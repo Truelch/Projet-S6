@@ -31,7 +31,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	}
 	_display_layer->setTouchEnabled(true);
 	//_display_layer->setZOrder(1);
-	_display_layer->setScale(0.5);
+	_display_layer->setScale(0.2);
 	addChild(_display_layer);
 
 	_selectionZone = new SelectionZone(CCPoint(0,0), CCPoint(0,0), this, _display_layer->get_selection_zone_layer(), ccc4(0,255,255,68));
@@ -47,15 +47,19 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	float x,y;
 	_display_layer->coordonate_tile_to_cocos2dx(4,3,x,y);
 	_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
-	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
+	//_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
 	_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],100);
 
+	/*
+	float x2,y2;
+	_display_layer->coordonate_tile_to_cocos2dx(0,1,x2,y2);
 	for(int i=0;i<5;i++) {
 		for(int j=0;j<5;j++) {
-			_display_layer->coordonate_tile_to_cocos2dx(10+i,10+j,x,y);
-			_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
+			_display_layer->coordonate_tile_to_cocos2dx(5+i,j,x,y);
+			_display_layer->get_unit_layer()->add_unit(x,y,x2,y2,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
 		}
 	}
+	*/
 
 	/*
 	MapTile * tile = new MapTile(200,200,"000.png",this);
