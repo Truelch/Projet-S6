@@ -50,6 +50,13 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
 	_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],100);
 
+	for(int i=0;i<5;i++) {
+		for(int j=0;j<5;j++) {
+			_display_layer->coordonate_tile_to_cocos2dx(10+i,10+j,x,y);
+			_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
+		}
+	}
+
 	/*
 	MapTile * tile = new MapTile(200,200,"000.png",this);
 	_display_layer->get_tile_layer()->addChild(tile->getSprite());
@@ -373,7 +380,7 @@ void Game::mouse_wheel_up(int opengl_x, int opengl_y) {
 }
 
 void Game::mouse_wheel_down(int opengl_x, int opengl_y) {
-	if(_display_layer->getScale()>0.2)
+	if(_display_layer->getScale()>0.1)
 		_display_layer->setScale(_display_layer->getScale()-0.05);
 }
 

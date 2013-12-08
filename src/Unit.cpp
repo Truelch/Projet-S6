@@ -270,14 +270,27 @@ void Unit::set_sight(float sight)
 
 void Unit::set_selected(bool selected) {
 	_selected = selected;
-	if(_selected) _bar->set_visible(true);
-	else if(_bar_visible) _bar->set_visible(true);
-	else _bar->set_visible(false);
+	update_bar_visibility();
 }
 
 void Unit::set_bar_visible(bool bar_visible) {
 	_bar_visible = bar_visible;
-	if(_bar_visible) _bar->set_visible(true);
-	else if(_selected) _bar->set_visible(true);
+	update_bar_visibility();
+}
+
+void Unit::on_player_range_tile(int x, int y, Player * player) {
+	Moveable::on_player_range_tile(x,y,player);
+	update_bar_visibility();
+}
+
+void Unit::on_player_unrange_tile(int x, int y, Player * player) {
+	Moveable::on_player_unrange_tile(x,y,player);
+	update_bar_visibility();
+}
+
+void Unit::update_bar_visibility() {
+	if(getSprite()->getScale()!=0 && ( _bar_visible || _selected ) ) _bar->set_visible(true);
 	else _bar->set_visible(false);
 }
+
+

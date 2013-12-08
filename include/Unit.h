@@ -80,6 +80,10 @@ class Unit : public Moveable
 		// --- METHODES ---
 		virtual void update(float dt);
 		virtual void on_displayable_contact(Displayable * displayableA, Displayable * displayableB);
+		void on_player_range_tile(int x, int y, Player * player);
+		void on_player_unrange_tile(int x, int y, Player * player);
+		void update_bar_visibility();
+
 		bool map_tile_range(MapTile * map_tile);
 		void check_attack(); //Vérifie pour chaque tourelle (traverse le container de turret et appelle la méthode check_attack de chaque turret)
 };

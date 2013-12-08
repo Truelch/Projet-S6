@@ -93,6 +93,7 @@ class Player: public EventReceiver
 		virtual void on_unit_destroyed(Unit * unit);
 		virtual void on_unit_range_tile(int x, int y, Unit * unit);
 		virtual void on_unit_unrange_tile(int x, int y, Unit * unit);
+		
 };
 
 #endif
