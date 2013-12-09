@@ -47,11 +47,12 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	float x,y,x2,y2;
 	_display_layer->coordonate_tile_to_cocos2dx(4,3,x,y);
 	_display_layer->coordonate_tile_to_cocos2dx(3,4,x2,y2);
-	//_display_layer->get_unit_layer()->add_unit(x,y,x2,y2,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
-	//_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
+	_display_layer->get_unit_layer()->add_unit(x,y,x2,y2,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
+	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
 	_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],100);
 
 	//float x2,y2;
+	/*
 	_display_layer->coordonate_tile_to_cocos2dx(0,1,x2,y2);
 	for(int i=0;i<5;i++) {
 		for(int j=0;j<5;j++) {
@@ -59,7 +60,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 			_display_layer->get_unit_layer()->add_unit(x,y,x2,y2,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
 		}
 	}
-	_main_player->add_unit_selected(_display_layer->get_unit_layer()->get_unit(3));
+	*/
 
 	/*
 	MapTile * tile = new MapTile(200,200,"000.png",this);
