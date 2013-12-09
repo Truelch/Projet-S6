@@ -73,6 +73,7 @@ void DisplayLayer::set_debug_mode(bool debug_mode) {
 		removeChild(_background_layer);
 		removeChild(_opacity_layer);
 		removeChild(_tile_layer);
+		removeChild(_unit_layer);
 		removeChild(_fog_of_war_layer);
 	}
 	else if(!debug_mode && _debug_mode) {
@@ -81,6 +82,7 @@ void DisplayLayer::set_debug_mode(bool debug_mode) {
 		addChild(_background_layer);
 		addChild(_opacity_layer);
 		addChild(_tile_layer);
+		addChild(_unit_layer);
 		addChild(_fog_of_war_layer);
 	}
 }

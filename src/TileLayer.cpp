@@ -83,7 +83,6 @@ vector<MapTile *> TileLayer::line_through_tile(CCPoint point1, CCPoint point2) {
 		
 		//on verifie si la case ne se trouve pas en dehors de la map
 		if(tile1_y<0 || tile1_y>=(int)_map_tile_matrix.size() || tile1_x<0 || tile1_x>=(int)_map_tile_matrix[0].size()) {
-			std::cout << "return result; " << result.size() << std::cout;
 			return result;
 		}
 

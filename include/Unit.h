@@ -25,6 +25,9 @@ class Unit : public Moveable
 		vector<Turret *>  _turret_list; //Non partagabilité => pas de pointeurs mais attribut "direct"
 		vector<MapTile *> _range_map_tile_list;
 
+		int _tile_x;
+		int _tile_y;
+
 		Bar * _bar;
 		bool _selected;
 		bool _bar_visible;

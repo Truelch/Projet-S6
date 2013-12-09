@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "cocos-ext.h"
+#include "Box2D/Box2D.h"
 
 #include "PhysicsDisplayable.h"
 
@@ -20,6 +21,9 @@ class Moveable : public PhysicsDisplayable
 			std::vector<MapTile *> map_tile_list;
 		} ListDestinationItem;
 		std::vector<ListDestinationItem> _list_destination;
+		b2Vec2 _vect_ligne_destination;
+		void init_point_ligne_destination();
+
 		float   _move_speed;
 
 		bool _rest;
@@ -35,6 +39,8 @@ class Moveable : public PhysicsDisplayable
 
 		bool _hold_position;
 		bool _move_in_progress;
+
+		bool test_current_destination_reched();
 
 	protected:
 		virtual void updateCoordonates();

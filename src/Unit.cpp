@@ -35,6 +35,9 @@ Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float m
 
 	player->get_unit_container().add_t(this);
 	_bar = new Bar(game, layer, x, y+20, (float)hp/hp_max, 100, 10, ccc4(0,255,0,255), ccc4(255,0,0,255));
+
+	_tile_x=-1;
+	_tile_y=-1;
 }
 
 Unit::~Unit() {
@@ -45,17 +48,18 @@ Unit::~Unit() {
 }
 
 void Unit::updateCoordonates() {
-	static int old_tile_x=-1, old_tile_y=-1;
-
 	Moveable::updateCoordonates();
 
-	if(old_tile_x!=get_tile_x() || old_tile_y!=get_tile_y()) {
+	int old_tile_x=_tile_x;
+	int old_tile_y=_tile_y;
+	_tile_x=get_tile_x();
+	_tile_y=get_tile_y();
+
+	if(old_tile_x!=_tile_x || old_tile_y!=_tile_y) {
 		if(old_tile_x!=-1 && old_tile_y!=-1) {
 			getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[old_tile_y][old_tile_x]->get_unit_container().remove_t(this);
 		}
-		getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[get_tile_y()][get_tile_x()]->get_unit_container().add_t(this);
-		old_tile_x=get_tile_x();
-		old_tile_y=get_tile_y();
+		getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[_tile_y][_tile_x]->get_unit_container().add_t(this);
 	}
 
 }

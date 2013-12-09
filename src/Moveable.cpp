@@ -9,16 +9,16 @@
 #include "TileLayer.h"
 #include "Player.h"
 
-#include <math.h>
+#include "UnitLayer.h"
 
-#define PI 3.14159265
+#include <math.h>
 
 using namespace std;
 
-Moveable::Moveable(): PhysicsDisplayable(), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _hold_position(false), _move_in_progress(false) {
+Moveable::Moveable(): PhysicsDisplayable(), _vect_ligne_destination(b2Vec2(0,0)), _rest(false), _groundFixture(5.0f), _density(1.0f), _time_before_restore_position(-100), _mode_restore_position(false), _hold_position(false), _move_in_progress(false) {
 }
 
-Moveable::Moveable(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Game * game, Layer * layer): PhysicsDisplayable(game,CCPhysicsSprite::create(filename), layer), _rest(false), _groundFixture(groundFixture), _density(density), _hitboxRadius(hitboxRadius), _time_before_restore_position(-100), _mode_restore_position(false), _hold_position(false), _move_in_progress(false)
+Moveable::Moveable(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Game * game, Layer * layer): PhysicsDisplayable(game,CCPhysicsSprite::create(filename), layer), _vect_ligne_destination(b2Vec2(0,0)), _rest(false), _groundFixture(groundFixture), _density(density), _hitboxRadius(hitboxRadius), _time_before_restore_position(-100), _mode_restore_position(false), _hold_position(false), _move_in_progress(false)
 {
 	b2Vec2 vecteur_path;
 	bodyInit(x,y,rotation,hitboxRadius);
@@ -51,7 +51,8 @@ Moveable::~Moveable() {
 }
 
 void Moveable::updateCoordonates() {
-	static int old_tile_x=-1, old_tile_y=-1;
+	int old_tile_x=_tile_x;
+	int old_tile_y=_tile_y;
 	CCPoint destination = _list_destination.end()->destination;
 	CCPoint position = getSprite()->getPosition();
 	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(position.x, position.y, _tile_x, _tile_y);
@@ -61,7 +62,6 @@ void Moveable::updateCoordonates() {
 
 		//si la nouvelle taille n'est pas dans le chemin prevu
 		if(	std::find(_list_destination.begin()->map_tile_list.begin(), _list_destination.begin()->map_tile_list.end(), getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[_tile_y][_tile_x]) == _list_destination.begin()->map_tile_list.end() ) {
-			std::cout << this << " : pas le chemin prevu" << std::endl;
 			set_destination(destination.x,destination.y);
 		}
 
@@ -69,9 +69,6 @@ void Moveable::updateCoordonates() {
 			getSprite()->setScale(0);
 		}
 		else getSprite()->setScale(1);
-
-		old_tile_x=_tile_x;
-		old_tile_y=_tile_y;
 	}
 }
 
@@ -101,6 +98,32 @@ void Moveable::bodyInit(int x, int y, int rotation, float hitboxRadius) {
 	getPhysicsSprite()->setRotation(rotation);
 }
 
+void Moveable::init_point_ligne_destination() {
+	CCPoint destination = _list_destination.begin()->destination;
+	CCPoint position = getSprite()->getPosition();
+	_vect_ligne_destination.Set(destination.x-position.x,destination.y-position.y);
+	_vect_ligne_destination=_vect_ligne_destination.Skew();
+	if(b2Cross(_vect_ligne_destination,b2Vec2(destination.x-position.x,destination.y-position.y))<0) {
+		_vect_ligne_destination*=-1;
+	}
+}
+
+bool Moveable::test_current_destination_reched() {
+	if(b2Vec2(_list_destination[0].destination.x - getSprite()->getPositionX(), _list_destination[0].destination.y - getSprite()->getPositionY()).Length() < _move_speed) {
+		_vect_ligne_destination.SetZero();
+		return true;
+	}
+	CCPoint destination = _list_destination.begin()->destination;
+	CCPoint position = getSprite()->getPosition();
+	if( _vect_ligne_destination.x!=0 || _vect_ligne_destination.y!=0 ) {
+		if(b2Cross(_vect_ligne_destination,b2Vec2(destination.x-position.x,destination.y-position.y))<0) {
+			_vect_ligne_destination.SetZero();
+			return true;
+		}
+	}
+	return false;
+}
+
 void Moveable::goToDestination() {
 	b2Vec2 vecteur_path, vecteur_unitaire, vecteur_vitesse;
 	float angle;
@@ -121,11 +144,13 @@ void Moveable::goToDestination() {
 	}
 
 
-	if(vecteur_vitesse.Length() < vecteur_path.Length()) {
+	//if(vecteur_vitesse.Length() < vecteur_path.Length()) {
+	if(!test_current_destination_reched()) {
 		getPhysicsSprite()->getB2Body()->SetLinearVelocity(vecteur_vitesse);
 	}
 	else if(_list_destination.size()>1) {
 		_list_destination.erase(_list_destination.begin());
+		init_point_ligne_destination();
 		goToDestination();
 	}
 	else { 
@@ -163,7 +188,7 @@ void Moveable::update(float dt)
 		}
 	}
 
-if(_hold_position) goToDestination();
+	if(_hold_position) goToDestination();
 	else {
 		if(_mode_restore_position) {
 			vecteur_path.Set(_list_destination[0].destination.x - getSprite()->getPositionX(), _list_destination[0].destination.y - getSprite()->getPositionY());
@@ -220,8 +245,7 @@ float Moveable::get_move_speed()
 
 // --- SET ---
 
-bool Moveable::set_destination(float x_dest,float y_dest)
-{
+bool Moveable::set_destination(float x_dest,float y_dest) {
 	int tile1_x, tile1_y, tile2_x, tile2_y;
 	CCPoint position = getSprite()->getPosition();
 	CCPoint destination = CCPoint(x_dest,y_dest);
@@ -298,6 +322,8 @@ bool Moveable::set_destination(float x_dest,float y_dest)
 	}
 
 	_list_destination.erase(_list_destination.begin());
+
+	init_point_ligne_destination();
 
 	_rest=false;
 	_move_in_progress=true;

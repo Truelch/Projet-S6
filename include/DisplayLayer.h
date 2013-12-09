@@ -38,6 +38,7 @@ class DisplayLayer : public Layer
 
 		virtual void draw();
 		void addDebugLine(CCPoint p1, CCPoint p2);
+		void clearDebugLine() { _debug_line.clear(); }
 		void set_debug_mode(bool debug_mode);
 		bool get_debug_mode() { return _debug_mode; }
 	

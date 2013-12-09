@@ -20,6 +20,7 @@ Bar::Bar(Game * game, Layer * layer, float x, float y, float value, int width, i
 	getSprite()->setPosition(CCPoint(x,y));
 	_texture->autorelease();
 	getSprite()->setScale(0);
+	getSprite()->setZOrder(1);
 }
 
 void Bar::update() {

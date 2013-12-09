@@ -11,4 +11,5 @@ Hud::Hud(float x, float y, const char * filename, Game * game, Layer * layer): D
 {
 	//
 	std::cout << "Constructeur de Hud" << std::endl;
+	//getSprite()->setScaleX(0.9);
 }
