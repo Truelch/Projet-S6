@@ -32,6 +32,7 @@ class Player: public EventReceiver
 			bool discovered;
 			bool visible;
 			Container<Unit> range_unit_list;
+			std::vector<Building *> range_building_list;
 		} TileInfo;
 		
 	private:
@@ -98,6 +99,11 @@ class Player: public EventReceiver
 		virtual void on_unit_destroyed(Unit * unit);
 		virtual void on_unit_range_tile(int x, int y, Unit * unit);
 		virtual void on_unit_unrange_tile(int x, int y, Unit * unit);
+
+		virtual void on_player_range_tile(int x, int y, Player * player);
+		virtual void on_player_unrange_tile(int x, int y, Player * player);
+
+		virtual void on_building_change_player(Building * building, Player * old_player, Player * new_player);
 		
 };
 

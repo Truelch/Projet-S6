@@ -6,6 +6,7 @@
 #include "FogOfWarLayer.h"
 #include "TileLayer.h"
 #include "Unit.h"
+#include "Building.h"
 
 Player::Player(): EventReceiver(), _game(NULL)
 {
@@ -145,7 +146,7 @@ void Player::on_unit_destroyed(Unit * unit) {
 }
 
 void Player::on_unit_range_tile(int x, int y, Unit * unit) {
-	if(get_game()->get_main_player()==this && unit->getPlayer()==this) {
+	if(unit->getPlayer()==this) {
 		_map_tile_info[y][x].range_unit_list.add_t(unit);
 		if(_map_tile_info[y][x].discovered==false) {
 			_map_tile_info[y][x].discovered=true;
@@ -153,18 +154,16 @@ void Player::on_unit_range_tile(int x, int y, Unit * unit) {
 		}
 		if(_map_tile_info[y][x].visible==false) {
 			_map_tile_info[y][x].visible=true;
-			get_game()->get_display_layer()->get_fog_of_war_layer()->get_map_fog_matrix()[y][x]->set_fogStatus(FogOfWarDisplayable::visible);
 			get_game()->getEventHandler()->on_player_range_tile(x,y,this);
 		}
 	}
 }
 
 void Player::on_unit_unrange_tile(int x, int y, Unit * unit) {
-	if(get_game()->get_main_player()==this && unit->getPlayer()==this) {
+	if(unit->getPlayer()==this) {
 		_map_tile_info[y][x].range_unit_list.remove_t(unit);
-		if(_map_tile_info[y][x].range_unit_list.get_number_t()==0 && _map_tile_info[y][x].visible) {
+		if(_map_tile_info[y][x].range_unit_list.get_number_t()==0 && _map_tile_info[y][x].range_building_list.size()==0 && _map_tile_info[y][x].visible) {
 			_map_tile_info[y][x].visible=false;
-			get_game()->get_display_layer()->get_fog_of_war_layer()->get_map_fog_matrix()[y][x]->set_fogStatus(FogOfWarDisplayable::unvisible);
 			get_game()->getEventHandler()->on_player_unrange_tile(x,y,this);
 		}
 	}
@@ -184,4 +183,48 @@ void Player::add_unit_selected(Unit * unit) {
 	}
 }
 
+void Player::on_player_range_tile(int x, int y, Player * player) {
+	if(get_game()->get_main_player()==this && player==this) {
+		get_game()->get_display_layer()->get_fog_of_war_layer()->get_map_fog_matrix()[y][x]->set_fogStatus(FogOfWarDisplayable::visible);
+	}
+}
 
+void Player::on_player_unrange_tile(int x, int y, Player * player) {
+	if(get_game()->get_main_player()==this && player==this) {
+		get_game()->get_display_layer()->get_fog_of_war_layer()->get_map_fog_matrix()[y][x]->set_fogStatus(FogOfWarDisplayable::unvisible);
+	}
+}
+
+void Player::on_building_change_player(Building * building, Player * old_player, Player * new_player) {
+	int x,y;
+	vector<MapTile *> range_map_tile_list=building->get_range_map_tile_list();
+	vector<MapTile *>::iterator it;
+	if(old_player==this) {
+		for(it=range_map_tile_list.begin();it!=range_map_tile_list.end();it++) {
+			x = (*it)->get_tile_x();
+			y = (*it)->get_tile_y();
+			_map_tile_info[y][x].range_building_list.erase(std::remove(_map_tile_info[y][x].range_building_list.begin(), _map_tile_info[y][x].range_building_list.end(), building), _map_tile_info[y][x].range_building_list.end());
+			if(_map_tile_info[y][x].range_unit_list.get_number_t()==0 && _map_tile_info[y][x].range_building_list.size()==0 && _map_tile_info[y][x].visible) {
+				_map_tile_info[y][x].visible=false;
+				get_game()->getEventHandler()->on_player_unrange_tile(x,y,this);
+			}
+		}
+	}
+	if(new_player==this) {
+		for(it=range_map_tile_list.begin();it!=range_map_tile_list.end();it++) {
+			x = (*it)->get_tile_x();
+			y = (*it)->get_tile_y();
+			if(std::find(_map_tile_info[y][x].range_building_list.begin(), _map_tile_info[y][x].range_building_list.end(), building) == _map_tile_info[y][x].range_building_list.end()) {
+				_map_tile_info[y][x].range_building_list.push_back(building);
+			}
+			if(_map_tile_info[y][x].discovered==false) {
+				_map_tile_info[y][x].discovered=true;
+				get_game()->getEventHandler()->on_player_discovered_tile(x,y,this);
+			}
+			if(_map_tile_info[y][x].visible==false) {
+				_map_tile_info[y][x].visible=true;
+				get_game()->getEventHandler()->on_player_range_tile(x,y,this);
+			}
+		}
+	}
+}
