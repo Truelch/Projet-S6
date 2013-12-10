@@ -19,7 +19,6 @@ SelectionZone::SelectionZone(CCPoint p1, CCPoint p2, Game * game, Layer * layer,
 	update();
 
 	getSprite()->initWithTexture(_texture);
-	layer->addChild(getSprite());
 	_texture->autorelease();
 }
 

@@ -18,12 +18,14 @@ class AIRetreatManager;
 
 //
 #include "Container.h"
+#include <vector>
 
 class Unit;
 //
 
 class Scene;
 class Player;
+class Building;
 
 
 using namespace std;
@@ -72,7 +74,9 @@ class AI : public EventReceiver {
 		//
 		Scene *    _scene;
 		Player *   _player;
-
+		//Liste des bâtiments connus (découverts mais pas forcément actuellement visibles)
+		std::vector<Building *> _discovered_building_vector;
+		
 	public:
 		AI(); //constructeur par défaut
 		AI(Scene * scene, Difficulty difficulty); //remplit tous les paramètres en fonction du string d'entrée
@@ -104,9 +108,10 @@ class AI : public EventReceiver {
 		int    get_number_unit(Container<Unit> * list); //{ return _unit_list.get_number_t(); }
 
 		//
-		
 		Scene *  get_scene();
 		Player * get_player(); //Comme pour Unit. Mais ne devrait pas plutôt renvoyer une référence ?
+		//Liste des bâtiments découverts
+		std::vector<Building * >& get_discovered_building_vector();
 		
 		// --- SET ---
 		void set_difficulty(Difficulty difficulty);	//ne devrait pas être utilisé. si c'est le cas, ce set devrait setter les autres attributs comme avec le constructeur ayant difficulty en entrée	
@@ -134,6 +139,8 @@ class AI : public EventReceiver {
 		void defense_management();
 		void scout_management();
 		void capture_management();
+		
+		virtual void on_player_discovered_tile(int x, int y, Player * player);
 };
 
 #endif

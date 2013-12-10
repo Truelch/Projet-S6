@@ -1,4 +1,3 @@
-
 #include "Scene.h"
 #include "EventHandler.h"
 #include "DisplayLayer.h"

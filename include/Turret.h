@@ -6,11 +6,11 @@
 
 using namespace cocos2d;
 
-class Turret : public Displayable
+class Turret : public CCSprite
 {
 	public:
 		Turret();
-		Turret(float x, float y, float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, 
+		Turret(float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, 
 				float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit);
 		//~Turret(); //Besoin ? => Nope
 				
@@ -43,15 +43,17 @@ class Turret : public Displayable
 		
 	private:
 		// --- Attributs ---
-		CCPoint _relative_position;
-		float   _missile_speed;
-		int     _damage;
-		float   _current_cooldown; //temps écoulé depuis le dernier tir. Si il vaut cooldown, il ne s'incrémente plus et le projectile est prêt à être tiré.
-		float   _cooldown;
-		float   _range_max;
-		Unit *  _shooter_unit; //L'unité qui a lancé le projectile
-		Unit *  _target_unit;  //L'unité ciblée
-		const char * _missile_filename;
+		float        _rotation;
+		CCPoint      _relative_position;
+		float        _missile_speed;
+		const char * _missile_filename;		
+		int          _damage;	
+		float        _current_cooldown; //temps écoulé depuis le dernier tir. Si il vaut cooldown, il ne s'incrémente plus et le projectile est prêt à être tiré.
+		float        _cooldown;
+		float        _range_max;
+		Unit *       _shooter_unit; //L'unité qui a lancé le projectile
+		Unit *       _target_unit;  //L'unité ciblée
+
 };
 
 #endif

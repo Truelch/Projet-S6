@@ -19,7 +19,10 @@ Unit::Unit(): Moveable(), _player(NULL)
 	//
 }
 
-Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename, Game * game, Layer * layer, string name, int hp, int hp_max, int hp_regen, int power, int power_max, int power_regen, int armor, int prod_time, Player * player, float sight): Moveable(x, y, x_dest, y_dest, rotation, move_speed, 0.7f, groundFixture, density, filename, game, layer), _player(player), _selected(false), _bar_visible(false)
+Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename, Game * game, Layer * layer, string name, 
+			float hp, float hp_max, float hp_regen, float power, float power_max, float power_regen, float armor, float prod_time, Player * player, float sight/*,
+			float rotation, const char * turret_filename, float x_relative, float y_relative, float missile_speed, const char */): 
+			Moveable(x, y, x_dest, y_dest, rotation, move_speed, 0.7f, groundFixture, density, filename, game, layer), _player(player), _selected(false), _bar_visible(false)
 {
 	_stat = new Stat();
 	_stat->set_name(name);
@@ -35,6 +38,9 @@ Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float m
 
 	player->get_unit_container().add_t(this);
 	_bar = new Bar(game, layer, x, y+20, (float)hp/hp_max, 100, 10, ccc4(0,255,0,255), ccc4(255,0,0,255));
+	//Tourelle
+	//_turret = new Turret(0, turret_filename, game, layer, x_relative, y_relative, missile_speed, missile_filename, damage, cooldown, range_max, this);
+	//Comme il y a une liste de tourelle, ne pas les instancier ici
 }
 
 Unit::~Unit() {
@@ -43,6 +49,153 @@ Unit::~Unit() {
 	getLayer()->removeChild(getPhysicsSprite());
 	getGame()->getEventHandler()->on_unit_destroyed(this);
 }
+
+// --- GET ---
+
+AIStat * Unit::get_ai_stat()
+{
+	return _ai_stat;
+}
+
+string Unit::get_name()
+{
+	return _stat->get_name();
+}
+
+float Unit::get_hp()
+{
+	return _stat->get_hp();
+}
+
+float Unit::get_hp_max()
+{
+	return _stat->get_hp_max();
+}
+
+float Unit::get_hp_regen()
+{
+	return _stat->get_hp_regen();
+}
+
+float Unit::get_power()
+{
+	return _stat->get_power();
+}
+
+float Unit::get_power_max()
+{
+	return _stat->get_power_max();
+}
+
+float Unit::get_power_regen()
+{
+	return _stat->get_power_regen();
+}
+
+float Unit::get_armor()
+{
+	return _stat->get_armor();
+}
+
+/*
+string Unit::get_type_armor()
+{
+	return _stat->get_type_armor();
+}
+*/
+
+float Unit::get_prod_time()
+{
+	return _stat->get_prod_time();
+}
+
+float Unit::get_sight()
+{
+	return _stat->get_sight();
+}
+
+
+// --- SET ---
+
+void Unit::set_name(string name)
+{
+	_stat->set_name(name);
+}
+
+void Unit::set_hp(float hp)
+{
+	_bar->setValue((float)_stat->get_hp()/_stat->get_hp_max());
+	_stat->set_hp(hp);
+	if (get_hp() <= 0)
+	{
+		delete(this); //A mettre tout à la fin
+	}
+}
+
+void Unit::set_hp_max(float hp_max)
+{
+	_bar->setValue((float)_stat->get_hp()/_stat->get_hp_max()); //Cast plus nécessaire maintenant non ?
+	_stat->set_hp_max(hp_max);
+}
+
+void Unit::set_hp_regen(float hp_regen)
+{
+	_stat->set_hp_regen(hp_regen);
+}
+
+void Unit::set_power(float power)
+{
+	_stat->set_power(power);
+}
+
+void Unit::set_power_max(float power_max)
+{
+	_stat->set_power_max(power_max);
+}
+
+void Unit::set_power_regen(float power_regen)
+{
+	_stat->set_power_regen(power_regen);
+}
+
+void Unit::set_armor(float armor)
+{
+	_stat->set_armor(armor);
+}
+
+/*
+void Unit::set_armor_type(string type_armor)
+{
+	_stat->set_armor_type(type_armor);
+}
+*/
+
+void Unit::set_prod_time(float prod_time)
+{
+	_stat->set_prod_time(prod_time);
+}
+
+void Unit::set_sight(float sight)
+{
+	_stat->set_sight(sight);
+}
+
+void Unit::set_selected(bool selected) {
+	_selected = selected;
+	if(_selected) _bar->set_visible(true);
+	else if(_bar_visible) _bar->set_visible(true);
+	else _bar->set_visible(false);
+}
+
+void Unit::set_bar_visible(bool bar_visible) {
+	_bar_visible = bar_visible;
+	if(_bar_visible) _bar->set_visible(true);
+	else if(_selected) _bar->set_visible(true);
+	else _bar->set_visible(false);
+}
+
+
+// --- METHODES ---
 
 void Unit::updateCoordonates() {
 	static int old_tile_x=-1, old_tile_y=-1;
@@ -59,6 +212,7 @@ void Unit::updateCoordonates() {
 	}
 
 }
+
 
 void Unit::update_range_map_tile_list() {
 	vector<MapTile *>::iterator it;
@@ -96,14 +250,6 @@ void Unit::update_range_map_tile_list() {
 	}
 }
 
-// --- GET ---
-
-AIStat * Unit::get_ai_stat()
-{
-	return _ai_stat;
-}
-
-// --- METHODES ---
 void Unit::on_displayable_contact(Displayable * displayableA, Displayable * displayableB) {
 	Unit * unit = NULL;
 	if(displayableA==this) {
@@ -130,6 +276,8 @@ void Unit::update(float dt) {
 	_bar->getSprite()->setPositionY(getSprite()->getPositionY()+20);
 
 	update_range_map_tile_list();
+	//
+	check_attack();
 }
 
 bool Unit::map_tile_range(MapTile * map_tile) {
@@ -153,132 +301,4 @@ void Unit::check_attack()
 	{
 		(*it)->check_attack();
 	}
-}
-
-string Unit::get_name()
-{
-	return _stat->get_name();
-}
-
-int Unit::get_hp()
-{
-	return _stat->get_hp();
-}
-
-int Unit::get_hp_max()
-{
-	return _stat->get_hp_max();
-}
-
-int Unit::get_hp_regen()
-{
-	return _stat->get_hp_regen();
-}
-
-int Unit::get_power()
-{
-	return _stat->get_power();
-}
-
-int Unit::get_power_max()
-{
-	return _stat->get_power_max();
-}
-
-int Unit::get_power_regen()
-{
-	return _stat->get_power_regen();
-}
-
-int Unit::get_armor()
-{
-	return _stat->get_armor();
-}
-
-string Unit::get_type_armor()
-{
-	return _stat->get_type_armor();
-}
-
-int Unit::get_prod_time()
-{
-	return _stat->get_prod_time();
-}
-
-float Unit::get_sight()
-{
-	return _stat->get_sight();
-}
-
-// --- SET ---
-
-void Unit::set_name(string name)
-{
-	_stat->set_name(name);
-}
-
-void Unit::set_hp(int hp)
-{
-	_bar->setValue((float)_stat->get_hp()/_stat->get_hp_max());
-	_stat->set_hp(hp);
-}
-
-void Unit::set_hp_max(int hp_max)
-{
-	_bar->setValue((float)_stat->get_hp()/_stat->get_hp_max());
-	_stat->set_hp_max(hp_max);
-}
-
-void Unit::set_hp_regen(int hp_regen)
-{
-	_stat->set_hp_regen(hp_regen);
-}
-
-void Unit::set_power(int power)
-{
-	_stat->set_power(power);
-}
-
-void Unit::set_power_max(int power_max)
-{
-	_stat->set_power_max(power_max);
-}
-
-void Unit::set_power_regen(int power_regen)
-{
-	_stat->set_power_regen(power_regen);
-}
-
-void Unit::set_armor(int armor)
-{
-	_stat->set_armor(armor);
-}
-
-void Unit::set_armor_type(string type_armor)
-{
-	_stat->set_armor_type(type_armor);
-}
-
-void Unit::set_prod_time(int prod_time)
-{
-	_stat->set_prod_time(prod_time);
-}
-
-void Unit::set_sight(float sight)
-{
-	_stat->set_sight(sight);
-}
-
-void Unit::set_selected(bool selected) {
-	_selected = selected;
-	if(_selected) _bar->set_visible(true);
-	else if(_bar_visible) _bar->set_visible(true);
-	else _bar->set_visible(false);
-}
-
-void Unit::set_bar_visible(bool bar_visible) {
-	_bar_visible = bar_visible;
-	if(_bar_visible) _bar->set_visible(true);
-	else if(_selected) _bar->set_visible(true);
-	else _bar->set_visible(false);
 }

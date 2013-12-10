@@ -4,6 +4,8 @@
 #include "Unit.h"
 #include "DisplayLayer.h"
 #include "UnitLayer.h"
+#include "Building.h"
+#include "TileLayer.h"
 //Random
 #include <stdlib.h>     /* srand, rand */
 
@@ -148,8 +150,11 @@ Player* AI::get_player()
 {
 	return _player;
 }
-
-
+//
+std::vector<Building * >& AI::get_discovered_building_vector()
+{
+	return _discovered_building_vector;
+}
 
 // --- SET ---
 
@@ -212,14 +217,15 @@ void AI::ai_monitor()
 
 void AI::affecting_order()
 {
+	/*
 	
 	int i;
 	float percent_of_life;
 	float need_scout, need_capture, need_attack, need_defense;
-	float scout_value, capture_value, attack_value, defense_value; //Not used, mais si je commente, marche tjr pas !
+	float scout_value=0, capture_value=0, attack_value=0, defense_value=0; //Not used, mais si je commente, marche tjr pas !
 	float max = 0;
 	std::string order = "scout";
-	std::cout << "Scout value : " << scout_value << "Capture value : " << capture_value << "Attack value : " << attack_value << "Defense value : " << defense_value << std::endl;
+	//std::cout << "Scout value : " << scout_value << "Capture value : " << capture_value << "Attack value : " << attack_value << "Defense value : " << defense_value << std::endl;
 	//Boucle for traversant les unités du joueur
 	// ------------------------------------
 	// --- ORDRE AFFECTE A CHAQUE UNITE ---
@@ -324,6 +330,7 @@ void AI::affecting_order()
 		}
 	}
 			
+	*/
 }
 
 
@@ -340,7 +347,7 @@ float AI::compute_need_scout()
 	float need_scout             = 0.0;
 	//Appel d'une fonction renvoie un float percent_of_map_know = nbrTilesConnus / nbrTotalTiles
 	float percent_of_known_map   = _player->compute_percent_of_known_map(); //Pourcentage de la carte connue 0.0 => 1.0
-	float percent_of_unknown_map = 1 - percent_of_known_map;        //Pourcentage de la carte inconnue
+	float percent_of_unknown_map = 1 - percent_of_known_map;                //Pourcentage de la carte inconnue
 	
 	float coeff = 10; //coefficient de normalisation avec les valeurs de priorité. Sert à l'ajustement
 	
@@ -435,5 +442,21 @@ void AI::scout_management()
 
 void AI::capture_management()
 {
-	//
+	//Pour chaque bâtiment donné, on regarde l'unité la plus à même de le capturer. Personne d'autre ne s'occupe de la capture => Quoique ?
+	
+}
+
+void AI::on_player_discovered_tile(int x, int y, Player * player)
+{
+	if(player == _player)
+	{
+		Building * building;
+		//Si il y a un bâtiment, on le rajoute dans la liste des bâtiments
+		building = _player->get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[y][x]->get_building();
+		if(building)
+		{
+			//On rajoute le bâtiment dans la liste des bâtiments découverts du Joueur
+			_discovered_building_vector.push_back(building);
+		}
+	}
 }

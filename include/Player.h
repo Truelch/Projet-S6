@@ -47,11 +47,13 @@ class Player: public EventReceiver
 		std::vector<Container<Unit> > _control_group_vector; //Contient 10 slots de groupes d'unités
 		//En fait, il faudrait que les groupes de contrôle puissent contenir soit des unités soit des bâtiments !
 		
-		// --
+		// ---
 		//BuildingContainer          _building_container;
 		std::vector<Building *>  _building_vector;
-		Building *               _qg;
-		
+		Building *               _hq;
+		// ---
+		int _resources;
+		// ---
 		std::vector<std::vector<TileInfo> > _map_tile_info;
 		
 		
@@ -68,12 +70,16 @@ class Player: public EventReceiver
 		Color  get_color();
 		int    get_player_number();
 		int    get_team_number();
-		// --
+		//---
 		Container<Unit>&                get_unit_container();
 		std::vector<Container<Unit> >&	get_control_group_vector();
-		std::vector<Building *>& get_building_vector();
-		Building *               get_qg();
-
+		std::vector<Building *>&        get_building_vector();
+		Building *                      get_hq();
+		// ---
+		int get_resources() { return _resources;}
+		// ---
+		
+		//
 		Unit * get_unit_selected(int index) { return _unit_selected.get_t(index); }
 		void   remove_unit_selected(Unit * unit);
 		void   add_unit_selected(Unit * unit);
@@ -88,7 +94,10 @@ class Player: public EventReceiver
 		void set_color(Color color);
 		void set_player_number(int player_number); //Eviter son utilisation
 		void set_team_number(int team_number);     //Eviter son utilisation
-		void set_qg(Building * qg);
+		void set_hq(Building * hq);                //hq = HeadQuarters => Processeur
+		// ---
+		void set_resources(int resources);
+		// ---
 		
 		// --- METHODES ---
 		float compute_percent_of_known_map();   //Renvoie le pourcentage de la map connue
@@ -98,6 +107,10 @@ class Player: public EventReceiver
 		virtual void on_unit_destroyed(Unit * unit);
 		virtual void on_unit_range_tile(int x, int y, Unit * unit);
 		virtual void on_unit_unrange_tile(int x, int y, Unit * unit);
+		
+		void update(float dt);
+		int  count_building_type(string name);
+		int  supply_provided();
 };
 
 #endif

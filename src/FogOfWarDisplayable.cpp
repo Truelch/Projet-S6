@@ -22,7 +22,6 @@ FogOfWarDisplayable::FogOfWarDisplayable(float x, float y, Game * game, Layer * 
 
 	getSprite()->initWithTexture(_texture);
 	getSprite()->setPosition(CCPoint(x,y));
-	layer->addChild(getSprite());
 	_texture->autorelease();
 }
 

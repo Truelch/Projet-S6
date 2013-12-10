@@ -70,7 +70,7 @@ class Game : public Scene
 		DisplayLayer *    _display_layer;
 
 		Layer * _hud_layer;
-		Hud * _hud;
+		Hud *   _hud;
 
 		bool _scroll_left_mouse;
 		bool _scroll_right_mouse;

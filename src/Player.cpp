@@ -72,9 +72,9 @@ std::vector<Building *>& Player::get_building_vector()
 	return _building_vector;
 }
 
-Building * Player::get_qg()
+Building * Player::get_hq()
 {
-	return _qg;
+	return _hq;
 }
 
 // --- SET ---
@@ -99,9 +99,14 @@ void Player::set_team_number(int team_number)
 	_team_number = team_number;
 }
 
-void Player::set_qg(Building * qg)
+void Player::set_hq(Building * hq)
 {
-	_qg = qg;
+	_hq = hq;
+}
+
+void Player::set_resources(int resources)
+{
+	_resources = resources;
 }
 
 // --- METHODES ---
@@ -184,4 +189,42 @@ void Player::add_unit_selected(Unit * unit) {
 	}
 }
 
+void Player::update(float dt)
+{
+	//Ajout de ressources
+	int nbr_source = count_building_type("Source");
+	float coeff = 1.0; //Variable d'ajustement
+	set_resources(_resources+coeff*dt*(float)nbr_source);
+	//Supply
+	//Théoriquement, seule la RAM augmente le supply, mais bon
+		
+}
+
+int Player::count_building_type(string name)
+{
+	//Renvoie un entier égal au nombre de bâtiments dont le nom est identique à celui donné en paramètre.
+	int /*i, */count = 0;
+	//Encore un problème entre le i et la size()
+	/*for(i = 0 ; i < _building_vector.size() ; i++)
+	{
+		if (_building_vector[i]->get_name()==name)
+		{
+			count+=1;
+		}
+	}*/
+	return count;
+}
+
+int Player::supply_provided()
+{
+	//Renvoie un entier égal à la somme de tous les supply fournis par tous les bâtiments du joueur
+	int /*i, */supply = 0;
+	//Encore un problème entre le i et la size()
+	/*for(i = 0 ; i < _building_vector.size() ; i++)
+	{
+		//Ne pas vérifier que la RAM
+		supply+=_building_vector[i]->get_supply();
+	}*/
+	return supply;
+}
 

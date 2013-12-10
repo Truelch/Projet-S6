@@ -50,6 +50,7 @@ class Missile : public Displayable
 		// --- ATTRIBUTS ---
 		CCPoint      _origin;
 		CCPoint      _destination;
+		CCPoint      _movement;   //Vecteur unitaire de déplacement
 		float        _move_speed;
 		const char * _filename;
 		float        _range_max;

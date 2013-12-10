@@ -15,12 +15,16 @@ Building::Building(): PhysicsDisplayable()
 	//
 }
 
-Building::Building(int x, int y, const char * filename, Game * game, Layer * layer, float x_rally_point, float y_rally_point): PhysicsDisplayable(game,CCPhysicsSprite::create(filename),layer), _rally_point(CCPoint(x_rally_point,y_rally_point)), _map_tile(game->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[y][x])
+Building::Building(int x, int y, const char * filename, Game * game, Layer * layer, float x_rally_point, float y_rally_point, std::string name): 
+			PhysicsDisplayable(game,CCPhysicsSprite::create(filename),layer), 
+			_rally_point(CCPoint(x_rally_point,y_rally_point)), _map_tile(game->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[y][x]), _name(name)
 {
 	init();
 }
 
-Building::Building(MapTile * mapTile, const char * filename, Game * game, Layer * layer, float x_rally_point, float y_rally_point): PhysicsDisplayable(game,CCPhysicsSprite::create(filename),layer), _rally_point(CCPoint(x_rally_point,y_rally_point)), _map_tile(mapTile)
+Building::Building(MapTile * mapTile, const char * filename, Game * game, Layer * layer, float x_rally_point, float y_rally_point, std::string name): 
+			PhysicsDisplayable(game,CCPhysicsSprite::create(filename),layer), 
+			_rally_point(CCPoint(x_rally_point,y_rally_point)), _map_tile(mapTile), _name(name)
 {
 	init();
 }
@@ -40,6 +44,16 @@ void Building::set_player(Player * player)
 	_player = player;
 	//On ajoute le bâtiment au nouveau propriétaire
 	_player->get_building_vector().push_back(this);
+}
+
+void Building::set_name(std::string name)
+{
+	_name = name;
+}
+
+void Building::set_supply(int supply)
+{
+	_supply = supply;
 }
 
 // --- METHODES ---
@@ -75,3 +89,38 @@ void Building::init() {
 	getPhysicsSprite()->setPTMRatio(PTM_RATIO);
 	getPhysicsSprite()->setPosition( _map_tile->getSprite()->getPosition() );
 }
+
+
+void Building::update(float dt) {
+
+	//update_range_map_tile_list();
+	//
+	check_attack();
+	//Production
+	
+}
+
+/*bool Building::map_tile_range(MapTile * map_tile) 
+{
+	return getSprite()->getPosition().getDistance(map_tile->getSprite()->getPosition())<_stat->get_sight();
+}*/
+
+void Building::check_attack()
+{
+	/*
+	int i = 0;
+	float distance = get_stat()->get_range_max(); //hors de portée => valeur infinie
+	float delta_x, delta_y;
+	//Pour accéder aux container d'unités !	
+	for(i = 0 ; i < _player->get_scene()->get_display_layer()->get_unit_layer()->get_number_unit() ; i++) //Ici
+	{
+		i.check_attack();
+	}
+	*/
+	vector<Turret *>::iterator it;
+	for(it=_turret_list.begin(); it!=_turret_list.end();it++) 
+	{
+		(*it)->check_attack();
+	}
+}
+
