@@ -7,6 +7,7 @@ class Moveable;
 class Displayable;
 class MapTile;
 class Player;
+class Building;
 
 class EventReceiver {
 	public:
@@ -25,6 +26,8 @@ class EventReceiver {
 		virtual void on_player_discovered_tile(int x, int y, Player * player) {}
 		virtual void on_player_range_tile(int x, int y, Player * player) {}
 		virtual void on_player_unrange_tile(int x, int y, Player * player) {}
+
+		virtual void on_building_change_player(Building * building, Player * old_player, Player * new_player) {}
 
 	private:
 		EventHandler * _eventHandler;

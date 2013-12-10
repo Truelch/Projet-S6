@@ -25,6 +25,9 @@ class Unit : public Moveable
 		vector<Turret *>  _turret_list; //Non partagabilité => pas de pointeurs mais attribut "direct"
 		vector<MapTile *> _range_map_tile_list;
 
+		int _tile_x;
+		int _tile_y;
+
 		Bar * _bar;
 		bool _selected;
 		bool _bar_visible;
@@ -83,6 +86,10 @@ class Unit : public Moveable
 		// --- METHODES ---
 		virtual void update(float dt);
 		virtual void on_displayable_contact(Displayable * displayableA, Displayable * displayableB);
+		void on_player_range_tile(int x, int y, Player * player);
+		void on_player_unrange_tile(int x, int y, Player * player);
+		void update_bar_visibility();
+
 		bool map_tile_range(MapTile * map_tile);
 		void check_attack(); //Vérifie pour chaque tourelle (traverse le container de turret et appelle la méthode check_attack de chaque turret)
 };

@@ -32,7 +32,7 @@ void FogOfWarDisplayable::update() {
 			if(_fogStatus==visible)
 				_texture->setPixelAt(CCPointMake(x, y), ccc4(0,0,0,0));
 			else if(_fogStatus==unvisible)
-				_texture->setPixelAt(CCPointMake(x, y), ccc4(0,0,0,128));
+				_texture->setPixelAt(CCPointMake(x, y), ccc4(0,0,0,200));
 			else if(_fogStatus==undiscovered)
 				_texture->setPixelAt(CCPointMake(x, y), ccc4(0,0,0,255));
 		}

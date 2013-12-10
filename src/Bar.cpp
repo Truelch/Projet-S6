@@ -18,9 +18,9 @@ Bar::Bar(Game * game, Layer * layer, float x, float y, float value, int width, i
 
 	getSprite()->initWithTexture(_texture);
 	getSprite()->setPosition(CCPoint(x,y));
-	layer->addChild(getSprite());
 	_texture->autorelease();
 	getSprite()->setScale(0);
+	getSprite()->setZOrder(1);
 }
 
 void Bar::update() {

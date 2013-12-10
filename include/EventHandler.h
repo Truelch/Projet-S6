@@ -8,6 +8,7 @@ class Unit;
 class Moveable;
 class Displayable;
 class Player;
+class Building;
 
 class EventHandler {
 	public:
@@ -28,6 +29,8 @@ class EventHandler {
 		void on_player_discovered_tile(int x, int y, Player * player);
 		void on_player_range_tile(int x, int y, Player * player);
 		void on_player_unrange_tile(int x, int y, Player * player);
+
+		void on_building_change_player(Building * building, Player * old_player, Player * new_player);
 
 	private:
 		std::vector<EventReceiver *> _receiver_list;

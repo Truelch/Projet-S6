@@ -188,6 +188,7 @@ void Player::add_unit_selected(Unit * unit) {
 	}
 }
 
+<<<<<<< HEAD
 void Player::update(float dt)
 {
 	//Ajout de ressources
@@ -225,8 +226,7 @@ int Player::supply_provided()
 		supply+=_building_vector[i]->get_supply();
 	}*/
 	return supply;
-}
-
+=======
 void Player::on_player_range_tile(int x, int y, Player * player) {
 	if(get_game()->get_main_player()==this && player==this) {
 		get_game()->get_display_layer()->get_fog_of_war_layer()->get_map_fog_matrix()[y][x]->set_fogStatus(FogOfWarDisplayable::visible);
@@ -237,6 +237,7 @@ void Player::on_player_unrange_tile(int x, int y, Player * player) {
 	if(get_game()->get_main_player()==this && player==this) {
 		get_game()->get_display_layer()->get_fog_of_war_layer()->get_map_fog_matrix()[y][x]->set_fogStatus(FogOfWarDisplayable::unvisible);
 	}
+>>>>>>> 7b137d14e07ec30948582b2b0142cd5959eaca15
 }
 
 void Player::on_building_change_player(Building * building, Player * old_player, Player * new_player) {
