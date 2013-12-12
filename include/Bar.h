@@ -8,6 +8,8 @@ class Bar : public Displayable {
 	public:
 		Bar(Game * game, Layer * layer, float x, float y, float value, int width, int height, ccColor4B foregroundColor, ccColor4B backgroundColor);
 		~Bar();
+
+		virtual Displayable::DisplayableType getType() { return Displayable::barType; }
 		
 		void setValue(float value) { _value = value; update(); }
 		void set_backgroundColor(ccColor4B color) { _backgroundColor = color; update(); }

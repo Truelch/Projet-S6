@@ -27,6 +27,11 @@ class TileLayer : public Layer
 		bool test_line_traversable(CCPoint point1, CCPoint point2);
 		bool test_2_tile_crossable(int tile1_x, int tile1_y, int tile2_x, int tile2_y);
 		vector<MapTile *> path_finding(int tile1_x, int tile1_y, int tile2_x, int tile2_y);
+
+		float get_min_x();
+		float get_max_x();
+		float get_min_y();
+		float get_max_y();
 		
 	private:
 		std::vector<std::vector<MapTile *> > _map_tile_matrix;

@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "GL/glfw.h"
+#include <GL/glfw.h>
 
 USING_NS_CC;
 
@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	srand(time(NULL));
 
 	EGLView* eglView = EGLView::sharedOpenGLView();
-	eglView->setFrameSize(1024, 768);
+	eglView->setFrameSize(1024,768);
 
 	cocos2d::CCApplication * app2 = CCApplication::sharedApplication();
 	return app2->run();

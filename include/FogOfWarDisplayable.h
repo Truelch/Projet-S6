@@ -23,6 +23,8 @@ class FogOfWarDisplayable : public Displayable {
 		FogOfWarDisplayable(float x, float y, Game * game, Layer * layer, FogStatus fogStatus);
 		virtual ~FogOfWarDisplayable();
 
+		virtual Displayable::DisplayableType getType() { return Displayable::fogOfWarDisplayableType; }
+
 		FogStatus get_fogStatus() { return _fogStatus; }
 		void set_fogStatus(FogStatus fogStatus);
 };

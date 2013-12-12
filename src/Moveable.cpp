@@ -60,7 +60,7 @@ void Moveable::updateCoordonates() {
 	if(old_tile_x!=_tile_x || old_tile_y!=_tile_y) {
 		getGame()->getEventHandler()->on_moveable_change_map_tile(_tile_x, _tile_y, this);
 
-		//si la nouvelle taille n'est pas dans le chemin prevu
+		//si la nouvelle tile n'est pas dans le chemin prevu
 		if(	std::find(_list_destination.begin()->map_tile_list.begin(), _list_destination.begin()->map_tile_list.end(), getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[_tile_y][_tile_x]) == _list_destination.begin()->map_tile_list.end() ) {
 			set_destination(destination.x,destination.y);
 		}
@@ -83,7 +83,7 @@ void Moveable::bodyInit(int x, int y, int rotation, float hitboxRadius) {
 
 	// Define another box shape for our dynamic body.
 	b2CircleShape dynamicBox;
-	dynamicBox.m_radius = hitboxRadius;
+	dynamicBox.m_radius = hitboxRadius/PTM_RATIO;
 
 	
 	// Define the dynamic body fixture.
@@ -291,7 +291,7 @@ bool Moveable::set_destination(float x_dest,float y_dest) {
 			vect.Set(b.x-a.x,b.y-a.y);
 			vect.Set(-vect.y,vect.x);
 			vect.Normalize();
-			vect*=_hitboxRadius*PTM_RATIO;
+			vect*=_hitboxRadius;
 
 			a.x+=vect.x;
 			a.y+=vect.y;
@@ -345,7 +345,7 @@ void Moveable::set_hold_position(bool hold_position) {
 }
 
 bool Moveable::test_point_in_moveable(CCPoint point) {
-	return getSprite()->getPosition().getDistance(point)<_hitboxRadius*PTM_RATIO;
+	return getSprite()->getPosition().getDistance(point)<_hitboxRadius;
 }
 
 void Moveable::on_player_range_tile(int x, int y, Player * player) {

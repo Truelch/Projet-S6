@@ -10,11 +10,21 @@ void coordinateCocos2dxToOpengl(float cocos_x, float cocos_y, int& opengl_x, int
 
 class EGLView : public cocos2d::CCEGLView {
 	public:
-		EGLView(): CCEGLView() {}
+		EGLView();
 
-		virtual void setFrameSize(float width, float height);
+		virtual void setFrameSize(int width, int height);
 
 		static EGLView* sharedOpenGLView();
+
+		/*
+		virtual bool isOpenGLReady();
+		virtual void swapBuffers();
+
+		bool initGL();
+
+	private:
+		bool bIsInit;
+		*/
 	
 };
 

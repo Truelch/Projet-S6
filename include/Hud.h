@@ -13,6 +13,8 @@ class Hud : public Displayable
 	public:
 		Hud();
 		Hud(float x, float y, const char * filename, Game * game, Layer * layer);
+
+		virtual Displayable::DisplayableType getType() { return Displayable::hudType; }
 		
 		// --- ATTRIBUTS ---
 		//Lui ajouter un container de Boutons
@@ -21,7 +23,6 @@ class Hud : public Displayable
 		// --- METHODES ---
 		
 		// --- GET ---
-		virtual Displayable::DisplayableType getType() { return Displayable::hudType; }
 		
 		// --- SET ---
 		

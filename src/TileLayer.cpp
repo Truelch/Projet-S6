@@ -307,3 +307,19 @@ int TileLayer::PathFindingItem::compute_f_score_whith_parent(PathFindingItem * p
 	else return parent->get_g_score() + 10 + _h_score;
 }
 
+float TileLayer::get_min_x() {
+	return _map_tile_matrix[0][0]->get_min_x();
+}
+
+float TileLayer::get_max_x() {
+	return _map_tile_matrix[0][_map_tile_matrix[0].size()-1]->get_max_x();
+}
+
+float TileLayer::get_min_y() {
+	return _map_tile_matrix[0][0]->get_min_y();
+}
+
+float TileLayer::get_max_y() {
+	return _map_tile_matrix[_map_tile_matrix.size()-1][0]->get_max_y();
+}
+
