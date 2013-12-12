@@ -157,7 +157,7 @@ int closeEventHandle() {
 void CCEGLView::setFrameSize(float width, float height)
 {
 	bool eResult = false;
-	int u32GLFWFlags = GLFW_WINDOW;
+	int u32GLFWFlags = GLFW_FULLSCREEN;
 	//create the window by glfw.
 
 	//check
