@@ -345,6 +345,7 @@ void Moveable::set_hold_position(bool hold_position) {
 }
 
 bool Moveable::test_point_in_moveable(CCPoint point) {
+	cout << "distance : " << getSprite()->getPosition().getDistance(point) << std::endl;
 	return getSprite()->getPosition().getDistance(point)<_hitboxRadius;
 }
 

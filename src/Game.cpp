@@ -46,7 +46,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_main_player = _player_list[0];
 	
 	float x,y;
-	_display_layer->coordonate_tile_to_cocos2dx(0,0,x,y);
+	_display_layer->coordonate_tile_to_cocos2dx(10,4,x,y);
 	_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
 	/*_display_layer->get_unit_layer()->get_unit(0)->get_turret_list().push_back(new Turret(0,"units/turret_tank_00.png", this, _display_layer->get_missile_layer(), -5, 0, 
 				10,"missiles/01.png", 12, 1.3, 500.0,_display_layer->get_unit_layer()->get_unit(0)));*/
@@ -299,7 +299,9 @@ void Game::mouse_left_button_down() {
 				unit_container = _display_layer->get_tile_layer()->get_map_tile_matrix()[j][i]->get_unit_container();
 
 				for(k=0;k<unit_container.get_number_t();k++) {
+					std::cout << unit_container.get_t(k)->getPlayer() << std::endl;
 					if(unit_container.get_t(k)->getPlayer()==_main_player && unit_container.get_t(k)->test_point_in_moveable(point)) {
+						std::cout << "ok" << std::endl;
 						unit_selected = unit_container.get_t(k);
 						break;
 					}
