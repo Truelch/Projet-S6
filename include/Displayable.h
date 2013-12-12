@@ -22,6 +22,7 @@ class Displayable : public EventReceiver
 			cursorType,
 			fogOfWarDisplayableType,
 			hudType,
+			hudItemType,
 			mapDisplayableType,
 			mapTileType,
 			missileType,
@@ -39,6 +40,8 @@ class Displayable : public EventReceiver
 		Displayable(float x, float y, float rotation, const char * filename, Game * game, Layer * layer);
 		Displayable(Game * _game, CCSprite * sprite, Layer * layer);
 		virtual ~Displayable();
+
+		bool containsPoint(CCPoint point);
 
 		Game * getGame() { return _game; }
 		CCSprite * getSprite() { return _sprite; }

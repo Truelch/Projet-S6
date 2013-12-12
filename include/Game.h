@@ -17,6 +17,8 @@ class Layer;
 class Player;
 class SelectionZone;
 class Cursor;
+class HudLayer;
+class HudItem;
 
 using namespace std;
 
@@ -72,7 +74,7 @@ class Game : public Scene
 		
 		DisplayLayer *    _display_layer;
 
-		Layer * _hud_layer;
+		HudLayer * _hud_layer;
 
 		Layer * _cursor_layer;
 		Cursor * _cursor;
@@ -99,6 +101,8 @@ class Game : public Scene
 		int _mouse_x, _mouse_y;
 		int _old_x, _old_y;
 		bool _mouse_initiate;
+
+		HudItem * _hud_item_mouse;
 };
 
 #endif

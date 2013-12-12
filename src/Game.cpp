@@ -13,18 +13,20 @@
 #include "ContactListener.h"
 #include "Building.h"
 #include "HudLayer.h"
+#include "HudItem.h"
 
 #include "TileLayer.h"
 #include "BuildingLayer.h"
 #include "MissileLayer.h"
 #include "SelectionZone.h"
 #include "Cursor.h"
+#include "EventHandler.h"
 
 USING_NS_CC;
 
 using namespace std;
 
-Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _scroll_up_mouse(false), _scroll_down_mouse(false), _scroll_left_key(false), _scroll_right_key(false), _scroll_up_key(false), _scroll_down_key(false), _mouse_button_left_down(false), _key_left_alt(false), _key_right_alt(false), _selection_zone_enable(false), _mouse_x(0), _mouse_y(0), _old_x(0), _old_y(0), _mouse_initiate(false)
+Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _scroll_up_mouse(false), _scroll_down_mouse(false), _scroll_left_key(false), _scroll_right_key(false), _scroll_up_key(false), _scroll_down_key(false), _mouse_button_left_down(false), _key_left_alt(false), _key_right_alt(false), _selection_zone_enable(false), _mouse_x(0), _mouse_y(0), _old_x(0), _old_y(0), _mouse_initiate(false), _hud_item_mouse(NULL)
 {
 	std::cout << "Constructeur de Game" << std::endl;
 	_display_layer = new DisplayLayer(this);
@@ -60,8 +62,8 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],100);
 	*/
 	
-	//float x2,y2;
 	/*
+	float x2,y2;
 	_display_layer->coordonate_tile_to_cocos2dx(0,1,x2,y2);
 	for(int i=0;i<5;i++) {
 		for(int j=0;j<5;j++) {
@@ -86,6 +88,8 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_hud_layer = new HudLayer(this,"hud.png");
 	_hud_layer->setZOrder(2);
 	addChild(_hud_layer);
+
+	_hud_layer->add_hud_item(381,607,"widgets/stop.png",HudItem::stopType);
 
 	//_hud = new Hud(256,180,"hud.png", this, _hud_layer);
 	
@@ -284,44 +288,58 @@ CCPoint Game::convert_opengl_point_to_layer_point(int opengl_x, int opengl_y, La
 }
 
 void Game::mouse_left_button_down() {
+	int tile_x, tile_y, i,j,k;
+	CCPoint point;
+	Unit * unit_selected = NULL;
+	Container<Unit> unit_container;
+	bool unit_already_selected=false;
+	CCSize size;
+	CCPoint pos;
+
 	_mouse_button_left_down=true;
 
-	int tile_x, tile_y, i,j,k;
-	CCPoint point = convert_opengl_point_to_layer_point(_mouse_x,_mouse_y,_display_layer);
-	_display_layer->coordonate_cocos2dx_to_tile(point.x, point.y, tile_x, tile_y);
-	Container<Unit> unit_container;
-	Unit * unit_selected = NULL;
-	bool unit_already_selected=false;
+	if(_mouse_y<520) {
+		point = convert_opengl_point_to_layer_point(_mouse_x,_mouse_y,_display_layer);
+		_display_layer->coordonate_cocos2dx_to_tile(point.x, point.y, tile_x, tile_y);
 
-	for(i=tile_x-1;i<tile_x+2;i++) {
-		for(j=tile_y-1;j<tile_y+2;j++) {
-			if(j>=0 && j<(int)_display_layer->get_tile_layer()->get_map_tile_matrix().size() && i>=0 && i<(int)_display_layer->get_tile_layer()->get_map_tile_matrix()[0].size()) {
-				unit_container = _display_layer->get_tile_layer()->get_map_tile_matrix()[j][i]->get_unit_container();
+		for(i=tile_x-1;i<tile_x+2;i++) {
+			for(j=tile_y-1;j<tile_y+2;j++) {
+				if(j>=0 && j<(int)_display_layer->get_tile_layer()->get_map_tile_matrix().size() && i>=0 && i<(int)_display_layer->get_tile_layer()->get_map_tile_matrix()[0].size()) {
+					unit_container = _display_layer->get_tile_layer()->get_map_tile_matrix()[j][i]->get_unit_container();
 
-				for(k=0;k<unit_container.get_number_t();k++) {
-					std::cout << unit_container.get_t(k)->getPlayer() << std::endl;
-					if(unit_container.get_t(k)->getPlayer()==_main_player && unit_container.get_t(k)->test_point_in_moveable(point)) {
-						std::cout << "ok" << std::endl;
-						unit_selected = unit_container.get_t(k);
-						break;
+					for(k=0;k<unit_container.get_number_t();k++) {
+						if(unit_container.get_t(k)->getPlayer()==_main_player && unit_container.get_t(k)->test_point_in_moveable(point)) {
+							unit_selected = unit_container.get_t(k);
+							break;
+						}
 					}
 				}
 			}
 		}
-	}
-
-	if(unit_selected) {
-		for(i=0;i<_main_player->get_number_unit_selected();) {
-			if(_main_player->get_unit_selected(i)!=unit_selected) {
-				_main_player->remove_unit_selected(_main_player->get_unit_selected(i));
+		if(unit_selected) {
+			for(i=0;i<_main_player->get_number_unit_selected();) {
+				if(_main_player->get_unit_selected(i)!=unit_selected) {
+					_main_player->remove_unit_selected(_main_player->get_unit_selected(i));
+				}
+				else {
+					unit_already_selected=true;
+					i++;
+				}
 			}
-			else {
-				unit_already_selected=true;
-				i++;
+
+			if(!unit_already_selected) _main_player->add_unit_selected(unit_selected);
+		}
+	}
+	else {
+		point = convert_opengl_point_to_layer_point(_mouse_x,_mouse_y,_hud_layer);
+		for(i=0;i<_hud_layer->get_number_hud_item();i++) {
+			size = _hud_layer->get_hud_item(i)->getSprite()->getTextureRect().size;
+			pos = _hud_layer->get_hud_item(i)->getSprite()->getPosition();
+			if(_hud_layer->get_hud_item(i)->containsPoint(point)) {
+				_hud_item_mouse=_hud_layer->get_hud_item(i);
+				break;
 			}
 		}
-
-		if(!unit_already_selected) _main_player->add_unit_selected(unit_selected);
 	}
 }
 
@@ -330,6 +348,7 @@ void Game::mouse_left_button_up() {
 	vector<Unit *> unit_selected;
 	vector<Unit *>::iterator it;
 	int i;
+	CCPoint point;
 	if(_selection_zone_enable) {
 		unit_selected = _selectionZone->get_list_unit();
 		for(it=unit_selected.begin();it!=unit_selected.end();) {
@@ -356,6 +375,12 @@ void Game::mouse_left_button_up() {
 		_selectionZone->setP2(CCPoint(0,0));
 		_selectionZone->update();
 	}
+
+	point = convert_opengl_point_to_layer_point(_mouse_x,_mouse_y,_hud_layer);
+	if(_hud_item_mouse && _hud_item_mouse->containsPoint(point)) {
+		getEventHandler()->on_hud_item_clicked(_hud_item_mouse);
+	}
+	_hud_item_mouse=NULL;
 }
 
 void Game::mouse_right_button_down() {
@@ -449,6 +474,7 @@ void Game::key_press(int key) {
 		_key_right_alt=true;
 		set_bar_visible(true);
 	}
+	else if(key=='Q') CCDirector::sharedDirector()->end();
 }
 
 void Game::key_release(int key) {
