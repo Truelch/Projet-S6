@@ -17,7 +17,10 @@ class Displayable : public EventReceiver
 	public:
 		typedef enum {
 			displayableType,
+			barType,
 			corpseType,
+			cursorType,
+			fogOfWarDisplayableType,
 			hudType,
 			mapDisplayableType,
 			mapTileType,
@@ -27,6 +30,7 @@ class Displayable : public EventReceiver
 			moveableType,
 			unitType,
 			powerNodeType,
+			selectionZoneType,
 			turretType,
 		} DisplayableType;
 

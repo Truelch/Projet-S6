@@ -12,6 +12,8 @@ class Corpse : public Displayable
 	public:
 		//Corpse();
 		Corpse(float x, float y, const char * filename, Game * game, Layer * layer);
+
+		virtual Displayable::DisplayableType getType() { return Displayable::corpseType; }
 		
 		// --- Attributs ---
 
@@ -20,8 +22,6 @@ class Corpse : public Displayable
 		
 		
 		// --- GET ---
-		virtual Displayable::DisplayableType getType() { return Displayable::corpseType; }
-
 		
 		// --- SET ---
 

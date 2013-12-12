@@ -11,6 +11,8 @@ class SelectionZone : public Displayable {
 	public:
 		SelectionZone(CCPoint p1, CCPoint p2, Game * game, Layer * layer, ccColor4B color);
 		virtual ~SelectionZone();
+
+		virtual Displayable::DisplayableType getType() { return Displayable::selectionZoneType; }
 		
 		cocos2d::CCPoint getP1() { return _p1; }
 		cocos2d::CCPoint getP2() { return _p2; }
