@@ -16,7 +16,13 @@ Building::Building(): PhysicsDisplayable()
 	//
 }
 
-Building::Building(int x, int y, const char * filename, Game * game, Layer * layer, float x_rally_point, float y_rally_point, std::string name, Player * player, float sight): PhysicsDisplayable(game,CCPhysicsSprite::create(filename),layer), _rally_point(CCPoint(x_rally_point,y_rally_point)), _map_tile(game->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[y][x]), _player(player), _name(name), _sight(sight)
+<<<<<<< HEAD
+Building::Building(int x, int y, const char * filename, Game * game, Layer * layer, float x_rally_point, float y_rally_point, std::string name): 
+			PhysicsDisplayable(game,CCPhysicsSprite::create(filename),layer), 
+			_rally_point(CCPoint(x_rally_point,y_rally_point)), _map_tile(game->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[y][x]), _name(name)
+=======
+Building::Building(int x, int y, const char * filename, Game * game, Layer * layer, float x_rally_point, float y_rally_point, Player * player, float sight): PhysicsDisplayable(game,CCPhysicsSprite::create(filename),layer), _rally_point(CCPoint(x_rally_point,y_rally_point)), _map_tile(game->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[y][x]), _player(player), _sight(sight)
+>>>>>>> 7b137d14e07ec30948582b2b0142cd5959eaca15
 {
 	init();
 
@@ -25,7 +31,13 @@ Building::Building(int x, int y, const char * filename, Game * game, Layer * lay
 	getGame()->getEventHandler()->on_building_change_player(this, NULL, _player);
 }
 
-Building::Building(MapTile * mapTile, const char * filename, Game * game, Layer * layer, float x_rally_point, float y_rally_point, std::string name, Player * player, float sight): PhysicsDisplayable(game,CCPhysicsSprite::create(filename),layer), _rally_point(CCPoint(x_rally_point,y_rally_point)), _map_tile(mapTile), _player(player), _name(name), _sight(sight)
+<<<<<<< HEAD
+Building::Building(MapTile * mapTile, const char * filename, Game * game, Layer * layer, float x_rally_point, float y_rally_point, std::string name): 
+			PhysicsDisplayable(game,CCPhysicsSprite::create(filename),layer), 
+			_rally_point(CCPoint(x_rally_point,y_rally_point)), _map_tile(mapTile), _name(name)
+=======
+Building::Building(MapTile * mapTile, const char * filename, Game * game, Layer * layer, float x_rally_point, float y_rally_point, Player * player, float sight): PhysicsDisplayable(game,CCPhysicsSprite::create(filename),layer), _rally_point(CCPoint(x_rally_point,y_rally_point)), _map_tile(mapTile), _player(player), _sight(sight)
+>>>>>>> 7b137d14e07ec30948582b2b0142cd5959eaca15
 {
 	init();
 
@@ -93,6 +105,8 @@ void Building::init() {
 	getPhysicsSprite()->setPosition( _map_tile->getSprite()->getPosition() );
 }
 
+<<<<<<< HEAD
+
 void Building::update(float dt) {
 
 	//update_range_map_tile_list();
@@ -101,6 +115,11 @@ void Building::update(float dt) {
 	//Production
 	
 }
+
+/*bool Building::map_tile_range(MapTile * map_tile) 
+{
+	return getSprite()->getPosition().getDistance(map_tile->getSprite()->getPosition())<_stat->get_sight();
+}*/
 
 void Building::check_attack()
 {
@@ -121,6 +140,7 @@ void Building::check_attack()
 	}
 }
 
+=======
 bool Building::map_tile_range(MapTile * map_tile) {
 	return getSprite()->getPosition().getDistance(map_tile->getSprite()->getPosition())<_sight;
 }
@@ -149,3 +169,5 @@ void Building::update_range_map_tile_list() {
 	}
 }
 
+
+>>>>>>> 7b137d14e07ec30948582b2b0142cd5959eaca15

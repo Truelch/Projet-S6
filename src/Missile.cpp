@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "UnitLayer.h"
 #include "Unit.h"
+#include "TileLayer.h"
 
 #define PI 3.14159265
 
@@ -15,16 +16,15 @@ Missile::Missile(): Displayable()
 }
 
 Missile::Missile(float x, float y, float rotation, float x_dest, float y_dest, float move_speed, const char * filename, Game * game, Layer * layer, float range_max, int damage,
-				Player * player): Displayable(x, y, rotation, filename, game, layer)
+				Player * player): Displayable(x, y, rotation, filename, game, layer), 
+				_origin(CCPoint(x,y)),_destination(CCPoint(x_dest,y_dest)), _move_speed(move_speed), _filename(filename), _range_max(range_max), _damage(damage), _player(player)
 {
-	set_destination(x_dest,y_dest);
-	set_origin(x,y);                //Lorsque le missile est instancé, son origine vaut sa position
-	set_range_max(range_max);
-	set_damage(damage);
-	set_move_speed(move_speed);
-	set_range_max(range_max);
-	//
-	set_player(player);
+	//Création du vecteur unitaire de déplacement du Missile
+	float delta_x  = _destination.x - getSprite()->getPositionX();
+	float delta_y  = _destination.y - getSprite()->getPositionY();	
+	float distance = _origin.getDistance(_destination);
+	_movement.x    = delta_x/distance;
+	_movement.y    = delta_y/distance;
 }
 
 Missile::~Missile()
@@ -109,10 +109,10 @@ void Missile::update(float dt)
 	float delta_x = _destination.x - getSprite()->getPositionX();
 	float delta_y = _destination.y - getSprite()->getPositionY();
 	
-	//float hyp     = sqrt(delta_x*delta_x + delta_y*delta_y);
+	float hyp     = sqrt(delta_x*delta_x + delta_y*delta_y);
 	
-	//float vect_x  = delta_x / hyp;
-	//float vect_y  = delta_y / hyp;
+	float vect_x  = delta_x / hyp;
+	float vect_y  = delta_y / hyp;
 	
 	
 	if(delta_x != 0) //Pour éviter la division par zéro !
@@ -125,9 +125,9 @@ void Missile::update(float dt)
 	}
 
 	//On déplace le projectile
-	//_position.x += vect_x*dt; //(dt/coeff);
-	//_position.y += vect_y*dt; //(dt/coeff);
-	//Si la distance entre la position originale et la position actuelle du projectile est supérieure à la portée max
+	getSprite()->setPosition(CCPoint(getSprite()->getPosition().x+vect_x*dt,getSprite()->getPosition().y+vect_y*dt)); //(dt/coeff);
+
+	//Si la distance entre la position originale et la position actuelle du projectile est supérieure à la portée max => fait par check_collision()
 		
 	//Après le déplacement, vérifier si le projectile n'est pas rentré dans une unité ennemie
 	check_collision();
@@ -144,14 +144,14 @@ void Missile::check_range()
 
 void Missile::check_collision()
 {
-	int i = 0;
-	float distance; //Sert à calculer la distance entre l'origine et la position actuelle, puis la distance entre une unité donnée et le projectile
-	float delta_x, delta_y;
-	//Pour accéder aux container d'unités !	
-	delta_x = - getSprite()->getPositionX(); //Ici
-	delta_y = - getSprite()->getPositionY(); //Ici
-	
-	distance = sqrt(delta_x*delta_x + delta_y*delta_y);	
+	int i,j,k;
+	//float delta_x, delta_y;
+	float x = getSprite()->getPositionX(); //Coordonnées actuelles du Missile
+	float y = getSprite()->getPositionY(); //
+	int tile_x, tile_y; //Coordonnées du Tile sur lequel se trouve le missile (tile_x et pas x_tile pour correspondre à la boucle plus loin)
+	_player->get_game()->get_display_layer()->coordonate_cocos2dx_to_tile(x, y, tile_x, tile_y);
+	Container<Unit> unit_container;	
+	float distance = _origin.getDistance(getSprite()->getPosition()); //Distance entre l'origine et sa position actuelle ; sera réutilisé pour la distance entre le missile et une unité donnée 
 	if(distance >= _range_max) //Détruit le projectile s'il est allé trop loin
 	{	
 		//Destruction
@@ -160,6 +160,7 @@ void Missile::check_collision()
 	}
 	else //Sinon on regarde s'il se collisionne avec une unité
 	{
+		/*
 		for(i = 0 ; i < _player->get_game()->get_display_layer()->get_unit_layer()->get_number_unit() ; i++)
 		{
 			//_player->get_game()->get_display_layer()->get_unit_layer()->get_unit(i);
@@ -176,11 +177,41 @@ void Missile::check_collision()
 				return; //Pour être sur qu'il ne continue pas et éviter le segfault !
 			}
 		}
-		//Ce for ne sera effectif que si aucune unité n'a été trouvée
+		*/
+		
+		//Ce for ne sera effectif que si aucune unité n'a été trouvée => on collisionne avec un décor ?
 		/*for()
 		{
 			
 		}*/
+		
+		//Ce bout de code provient à l'origine de Game => faire les bon getteurs
+		for(i=tile_x-1;i<tile_x+2;i++) //Traverse tous les tiles proches
+		{
+			for(j=tile_y-1;j<tile_y+2;j++) 
+			{
+				if(j>=0 && j<(int)_player->get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix().size() 
+				&& i>=0 && i<(int)_player->get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[0].size())
+				{
+					unit_container = _player->get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[j][i]->get_unit_container();
+					for(k=0;k<unit_container.get_number_t();k++) 
+					{
+						if(unit_container.get_t(k)->getPlayer() != _player) //Propriétaire de l'unité vérifiée != propriétaire du missile
+						{
+							distance = unit_container.get_t(k)->getSprite()->getPosition().getDistance(getSprite()->getPosition()); //Distance entre l'unité et le missile
+							if(distance <= _player->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->get_hitboxRadius())//Vérification de la distance
+							{
+								//Explosion !
+								deal_dmg(_player->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)); //L'unité i se prend le projectile !
+								//Destruction
+								delete this;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}				
 	}
 }
 

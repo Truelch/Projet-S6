@@ -73,6 +73,7 @@ class Game : public Scene
 		DisplayLayer *    _display_layer;
 
 		Layer * _hud_layer;
+
 		Layer * _cursor_layer;
 		Cursor * _cursor;
 

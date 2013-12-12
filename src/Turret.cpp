@@ -1,9 +1,7 @@
 #include "Turret.h"
-//#include <math.h>
-//=> pour les sqrt
-//#include <iostream>
+#include <math.h>
 
-//#define PI 3.14159265
+//#include <iostream>
 
 //using namespace std;
 
@@ -14,24 +12,44 @@
 #include "UnitLayer.h"
 #include "MissileLayer.h"
 
-Turret::Turret(): Displayable() 
+Turret::Turret(): CCSprite() 
 {
 	//
 }
 
-Turret::Turret(float x, float y, float rotation, const char * filename, Game * game, Layer * layer, 
-				float x_relative, float y_relative, float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit): 
-				Displayable(x,y,rotation,filename,game,layer)
+Turret::Turret(float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, 
+				float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit): 
+				CCSprite(), 
+				_rotation(rotation), _relative_position(CCPoint(x_relative,y_relative)), _missile_speed(missile_speed), _missile_filename(missile_filename), _cooldown(cooldown),
+				_range_max(range_max), _shooter_unit(shooter_unit)
 {
-	set_relative_position(x_relative,y_relative);
-	set_missile_speed(missile_speed);
-	set_missile_filename(filename);
-	set_damage(damage);
-	set_cooldown(cooldown);
-	set_range_max(range_max);
+	initWithFile(filename);
+	setPosition(_relative_position);
 	
-	set_shooter_unit(shooter_unit);
 	set_target_unit(NULL); //Il n'y a pas de cible au début. On met NULL pour éviter les valeurs aléatoires dans le pointeur.
+	
+	CCPoint turret_position = getPosition().rotateByAngle(CCPoint(0,0),_shooter_unit->getSprite()->getRotation()) + _shooter_unit->getSprite()->getPosition(); //Position de la tourelle dans le repère global
+	//CCPoint turret_position = pointTurret.rotateByAngle(CCPoint(0,0),angleUnit)+pointUnit;
+	
+	//Algo pour orienter la tourelle comme il faut
+	if (_target_unit)
+	{
+		float delta_x    = _target_unit->getSprite()->getPositionX() - turret_position.x; //Différence d'abscisse entre l'unité et la tourelle
+		float delta_y    = _target_unit->getSprite()->getPositionY() - turret_position.y; //turret_position étant la position de la tourelle en coordonnées cocos2dx
+		float distance   = _target_unit->getSprite()->getPosition().getDistance(getPosition()); //Distance entre l'unité et la tourelle
+		CCPoint vecteur_unitaire = CCPoint(delta_x/distance,delta_y/distance);
+		float angle = acos(vecteur_unitaire.x)+M_PI/2;
+		if(vecteur_unitaire.y<0) 
+		{
+			if(vecteur_unitaire.x>0) angle=M_PI-angle;
+			else angle=3*M_PI-angle;
+		}
+		setRotation(angle);
+	}
+	else //Tourelle droite
+	{
+		setRotation(0);
+	}
 }
 
 // --- GET ---
@@ -131,8 +149,8 @@ void Turret::check_attack()
 	{
 		if(!_target_unit) //Si le pointeur de cible n'est pas nul, on va regarder si on peut le faire tirer sur qqn
 		{
-			delta_x = _target_unit->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPositionX() - getSprite()->getPositionX(); //Ici
-			delta_y = _target_unit->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPositionY() - getSprite()->getPositionY(); //Ici
+			delta_x = _target_unit->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPositionX() - getPositionX(); //Ici
+			delta_y = _target_unit->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPositionY() - getPositionY(); //Ici
 		
 			distance = sqrt(delta_x*delta_x + delta_y*delta_y);
 			

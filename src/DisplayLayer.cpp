@@ -239,7 +239,27 @@ int DisplayLayer::init_file(string filename)
 	StringMatrix string_matrix;
 	
 	sprite_map["s00"]= {"tiles/ground/000.png",true,true,true,true};
-	sprite_map["f00"]= {"tiles/cliff/000.png",false,false,false,false};
+	
+										   //Up    Down  Right Left
+	sprite_map["f00"]= {"tiles/cliff/00.png",false,false,false,false};
+	sprite_map["f01"]= {"tiles/cliff/01.png",true, false, false,true};
+	sprite_map["f02"]= {"tiles/cliff/02.png",true, false,true, false};
+	sprite_map["f03"]= {"tiles/cliff/03.png",false,true, true, false};
+	sprite_map["f04"]= {"tiles/cliff/04.png",false, true, false,true};
+	sprite_map["f05"]= {"tiles/cliff/05.png",true, true, false,true};
+	sprite_map["f06"]= {"tiles/cliff/06.png",true, false, true, true};
+	sprite_map["f07"]= {"tiles/cliff/07.png",true, true, true, false};
+	sprite_map["f08"]= {"tiles/cliff/08.png",false,true, true, true};
+	sprite_map["f09"]= {"tiles/cliff/09.png",true, true, true, true};
+	sprite_map["f10"]= {"tiles/cliff/10.png",true, true, true, true};
+	sprite_map["f11"]= {"tiles/cliff/11.png",true, true, true, true};
+	sprite_map["f12"]= {"tiles/cliff/12.png",true, true, true, true};
+	sprite_map["f13"]= {"tiles/cliff/13.png",true, true, true, true};
+	sprite_map["f14"]= {"tiles/cliff/14.png",true, true, true, true};
+	sprite_map["f15"]= {"tiles/cliff/15.png",true, true, true, true};
+	sprite_map["f16"]= {"tiles/cliff/16.png",true, true, true, true};
+	sprite_map["f17"]= {"tiles/cliff/17.png",true, true, true, true};
+	
 
 	string_matrix.clear();
 	
