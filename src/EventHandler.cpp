@@ -4,6 +4,8 @@
 #include "EventReceiver.h"
 #include <algorithm>
 
+#include <iostream>
+
 void EventHandler::addReceiver(EventReceiver * eventReceiver) {
 	if(std::find(_receiver_list.begin(), _receiver_list.end(), eventReceiver) == _receiver_list.end()) {
 		_receiver_list.push_back(eventReceiver);

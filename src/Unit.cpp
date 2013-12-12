@@ -144,12 +144,14 @@ void Unit::set_name(string name)
 
 void Unit::set_hp(float hp)
 {
+	std::cout << "PV restants (avant modif) : " << _stat->get_hp() << ", nouvelle valeur de PV : " << hp << endl;
+	if (hp <= 0)
+	{
+		delete this;
+		return;
+	}
 	_bar->setValue((float)_stat->get_hp()/_stat->get_hp_max());
 	_stat->set_hp(hp);
-	if (get_hp() <= 0)
-	{
-		delete(this); //A mettre tout à la fin
-	}
 }
 
 void Unit::set_hp_max(float hp_max)
@@ -292,16 +294,20 @@ void Unit::update(float dt) {
 
 	update_range_map_tile_list();
 	//
-	check_attack();
+	vector<Turret *>::iterator it;
+	for(it=_turret_list.begin(); it!=_turret_list.end();it++) 
+	{
+		(*it)->update(dt);
+	}
 }
 
 bool Unit::map_tile_range(MapTile * map_tile) {
 	return getSprite()->getPosition().getDistance(map_tile->getSprite()->getPosition())<_stat->get_sight();
 }
 
-void Unit::check_attack()
+/*void Unit::check_attack()
 {
-	/*
+	
 	int i = 0;
 	float distance = get_stat()->get_range_max(); //hors de portée => valeur infinie
 	float delta_x, delta_y;
@@ -310,10 +316,10 @@ void Unit::check_attack()
 	{
 		i.check_attack();
 	}
-	*/
-	vector<Turret *>::iterator it;
-	for(it=_turret_list.begin(); it!=_turret_list.end();it++) 
-	{
-		(*it)->check_attack();
-	}
+	
+}*/
+
+void Unit::add_turret(float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit) {
+	_turret_list.push_back(new Turret(rotation, filename, game, layer, x_relative, y_relative, missile_speed, missile_filename, damage, cooldown, range_max, shooter_unit));
+	getSprite()->addChild(*(_turret_list.end()-1));
 }

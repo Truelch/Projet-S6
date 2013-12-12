@@ -48,6 +48,7 @@ Moveable::Moveable(float x, float y, float x_dest, float y_dest, float rotation,
 }
 
 Moveable::~Moveable() {
+	getGame()->getWorld()->DestroyBody(_body);
 }
 
 void Moveable::updateCoordonates() {
@@ -79,7 +80,7 @@ void Moveable::bodyInit(int x, int y, int rotation, float hitboxRadius) {
 	bodyDef.position.Set(x/PTM_RATIO, y/PTM_RATIO);
 	bodyDef.fixedRotation = true;
 
-	b2Body *body = getGame()->getWorld()->CreateBody(&bodyDef);
+	_body = getGame()->getWorld()->CreateBody(&bodyDef);
 
 	// Define another box shape for our dynamic body.
 	b2CircleShape dynamicBox;
@@ -90,9 +91,9 @@ void Moveable::bodyInit(int x, int y, int rotation, float hitboxRadius) {
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;	
 	fixtureDef.density = _density;
-	body->CreateFixture(&fixtureDef);	
+	_body->CreateFixture(&fixtureDef);	
 
-	getPhysicsSprite()->setB2Body(body);
+	getPhysicsSprite()->setB2Body(_body);
 	getPhysicsSprite()->setPTMRatio(PTM_RATIO);
 	getPhysicsSprite()->setPosition( ccp(x,y) );
 	getPhysicsSprite()->setRotation(rotation);
@@ -240,6 +241,10 @@ CCPoint Moveable::get_destination()
 float Moveable::get_move_speed()
 {
 	return _move_speed;
+}
+
+float Moveable::get_hitboxRadius() {
+	return _hitboxRadius*PTM_RATIO;
 }
 
 

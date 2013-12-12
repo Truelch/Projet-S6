@@ -16,6 +16,7 @@ class DisplayLayer;
 class Layer;
 class Player;
 class SelectionZone;
+class Missile;
 
 using namespace std;
 

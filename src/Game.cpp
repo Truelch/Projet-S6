@@ -13,6 +13,7 @@
 #include "UnitLayer.h"
 #include "ContactListener.h"
 #include "Building.h"
+#include "Missile.h"
 
 #include "TileLayer.h"
 #include "BuildingLayer.h"
@@ -47,14 +48,14 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	
 	float x,y;
 	_display_layer->coordonate_tile_to_cocos2dx(0,0,x,y);
-	_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
-	/*_display_layer->get_unit_layer()->get_unit(0)->get_turret_list().push_back(new Turret(0,"units/turret_tank_00.png", this, _display_layer->get_missile_layer(), -5, 0, 
-				10,"missiles/01.png", 12, 1.3, 500.0,_display_layer->get_unit_layer()->get_unit(0)));*/
-/*Turret(float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, 
-				float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit);*/		
+	_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],1000);
+	_display_layer->get_unit_layer()->get_unit(0)->add_turret(0,"units/turret_tank_00.png", this, _display_layer->get_missile_layer(), 0, 0, 
+				33.0,"missiles/01.png", 12, 1.3, 200.0,_display_layer->get_unit_layer()->get_unit(0));
 	
-	//_display_layer->coordonate_tile_to_cocos2dx(10,0,x,y);
-	//_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/modele_tank_01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],200);
+	_display_layer->coordonate_tile_to_cocos2dx(10,0,x,y);
+	_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],1000);
+	_display_layer->get_unit_layer()->get_unit(1)->add_turret(0,"units/turret_tank_01.png", this, _display_layer->get_missile_layer(), 0, 0, 
+				33.0,"missiles/02.png", 12, 1.3, 200.0,_display_layer->get_unit_layer()->get_unit(1));
 	/*
 	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
 	_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],100);
@@ -177,16 +178,31 @@ void Game::update(float dt)
 	}
 
 	getWorld()->Step(dt, 8, 1);
+
+	//Update de joueurs
+	vector<Player *>::iterator it;
 	
-	// --- Update les ressources pour tous les joueurs ? ---
-	//Problème, incompatibilité entre le i et _player_list.size()
-	//comparison between signed and unsigned integer expressions [-Werror=sign-compare]
-	/*
-	for(i=0;i<_player_list.size();i++)
+	for(it=_player_list.begin(); it!=_player_list.end();it++) 
 	{
-		_player_list[i]->update(dt);
+		(*it)->update(dt);
 	}
-	*/
+	
+	//Update d'unités
+	for(i=0; i!=get_display_layer()->get_unit_layer()->get_number_unit();i++) 
+	{
+		get_display_layer()->get_unit_layer()->get_unit(i)->update(dt);
+	}
+	//Pas besoin de faire ça pour les unités
+	/*for(i=0; i!=get_display_layer()->get_unit_layer()->get_number_unit();) 
+	{
+		if(!get_display_layer()->get_unit_layer()->get_unit(i)->update(dt)) i++;
+	}*/	
+	
+	//Update de missiles
+	for(i=0; i!=get_display_layer()->get_missile_layer()->get_number_missile();) 
+	{
+		if(!get_display_layer()->get_missile_layer()->get_missile(i)->update(dt)) i++;
+	}
 }
 
 void Game::set_tile_to_center_of_screen(int tile_x, int tile_y) {

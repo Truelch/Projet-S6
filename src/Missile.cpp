@@ -15,9 +15,10 @@ Missile::Missile(): Displayable()
 	//
 }
 
-Missile::Missile(float x, float y, float rotation, float x_dest, float y_dest, float move_speed, const char * filename, Game * game, Layer * layer, float range_max, int damage,
-				Player * player): Displayable(x, y, rotation, filename, game, layer), 
-				_origin(CCPoint(x,y)),_destination(CCPoint(x_dest,y_dest)), _move_speed(move_speed), _filename(filename), _range_max(range_max), _damage(damage), _player(player)
+Missile::Missile(float x, float y, float rotation, float x_dest, float y_dest, float move_speed, const char * filename, Game * game, Layer * layer, float range_max, float damage,
+				Player * player, Unit * shooter_unit): Displayable(x, y, rotation, filename, game, layer), 
+				_origin(CCPoint(x,y)),_destination(CCPoint(x_dest,y_dest)), _move_speed(move_speed), _filename(filename), _range_max(range_max), _damage(damage), 
+				_player(player), _shooter_unit(shooter_unit)
 {
 	//Création du vecteur unitaire de déplacement du Missile
 	float delta_x  = _destination.x - getSprite()->getPositionX();
@@ -54,7 +55,7 @@ float Missile::get_range_max()
 	return _range_max;
 }
 
-int Missile::get_damage()
+float Missile::get_damage()
 {
 	return _damage;
 }
@@ -62,6 +63,11 @@ int Missile::get_damage()
 Player * Missile::get_player()
 {
 	return _player;
+}
+
+Unit * Missile::get_shooter_unit()
+{
+	return _shooter_unit;
 }
 
 // --- SET ---
@@ -88,7 +94,7 @@ void Missile::set_range_max(float range_max)
 	_range_max = range_max;
 }
 
-void Missile::set_damage(int damage)
+void Missile::set_damage(float damage)
 {
 	_damage = damage;
 }
@@ -98,14 +104,20 @@ void Missile::set_player(Player * player)
 	_player = player;
 }
 
+void Missile::set_shooter_unit(Unit * shooter_unit)
+{
+	_shooter_unit = shooter_unit;
+}
+
 // --- METHODES ---
 
-void Missile::update(float dt)
+bool Missile::update(float dt)
 {
 	//Coeff unité de temps
 	//float coeff = 50;
 	//dt = 1/50 en temps normal
 	//Définition du vecteur unitaire de déplacement : contient 2 valeurs => CCPoint
+	/*
 	float delta_x = _destination.x - getSprite()->getPositionX();
 	float delta_y = _destination.y - getSprite()->getPositionY();
 	
@@ -123,26 +135,37 @@ void Missile::update(float dt)
 		//float angle = asin(delta_y/hyp) * (180/PI);
 		getSprite()->setRotation(angle); //Il faut appliquer la rotation au Sprite, qui est un attribut de Displayable
 	}
-
+	*/
+	
+	if(_movement.x != 0) //Pour éviter la division par zéro !
+	{
+		float angle;
+		if (_movement.x < 0)  angle = -1.* atan(_movement.y/_movement.x) * (180/PI) + 90;
+		else angle = -1.* atan(_movement.y/_movement.x) * (180/PI) + 270;
+		//float angle = asin(delta_y/hyp) * (180/PI);
+		getSprite()->setRotation(angle); //Il faut appliquer la rotation au Sprite, qui est un attribut de Displayable
+	}
+	
 	//On déplace le projectile
-	getSprite()->setPosition(CCPoint(getSprite()->getPosition().x+vect_x*dt,getSprite()->getPosition().y+vect_y*dt)); //(dt/coeff);
-
+	//getSprite()->setPosition(CCPoint(getSprite()->getPosition().x+vect_x*dt*_move_speed,getSprite()->getPosition().y+vect_y*dt*_move_speed)); //(dt/coeff);
+	getSprite()->setPosition(CCPoint(getSprite()->getPosition().x+_movement.x*dt*_move_speed,getSprite()->getPosition().y+_movement.y*dt*_move_speed)); //(dt/coeff);
+	
 	//Si la distance entre la position originale et la position actuelle du projectile est supérieure à la portée max => fait par check_collision()
 		
 	//Après le déplacement, vérifier si le projectile n'est pas rentré dans une unité ennemie
-	check_collision();
+	return check_collision();
 }
 
-void Missile::check_range()
+/*void Missile::check_range()
 {
-	/*
+	
 	int i = 0;
 	float distance;
 	float delta_x, delta_y;	
-	*/
-}
+	
+}*/
 
-void Missile::check_collision()
+bool Missile::check_collision()
 {
 	int i,j,k;
 	//float delta_x, delta_y;
@@ -156,7 +179,7 @@ void Missile::check_collision()
 	{	
 		//Destruction
 		delete this;
-		return; //Et hop on sort car on n'a plus rien à faire !
+		return true; //Et hop on sort car on n'a plus rien à faire !
 	}
 	else //Sinon on regarde s'il se collisionne avec une unité
 	{
@@ -196,16 +219,17 @@ void Missile::check_collision()
 					unit_container = _player->get_game()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[j][i]->get_unit_container();
 					for(k=0;k<unit_container.get_number_t();k++) 
 					{
-						if(unit_container.get_t(k)->getPlayer() != _player) //Propriétaire de l'unité vérifiée != propriétaire du missile
+						//
+						if(unit_container.get_t(k)->getPlayer() != _shooter_unit->getPlayer()) //Propriétaire de l'unité vérifiée != propriétaire du missile
 						{
 							distance = unit_container.get_t(k)->getSprite()->getPosition().getDistance(getSprite()->getPosition()); //Distance entre l'unité et le missile
-							if(distance <= _player->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->get_hitboxRadius())//Vérification de la distance
+							if(distance <= _player->get_game()->get_display_layer()->get_unit_layer()->get_unit(k)->get_hitboxRadius())//Vérification de la distance
 							{
 								//Explosion !
-								deal_dmg(_player->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)); //L'unité i se prend le projectile !
+								deal_dmg(unit_container.get_t(k)); //L'unité i se prend le projectile !
 								//Destruction
 								delete this;
-								break;
+								return true;
 							}
 						}
 					}
@@ -213,10 +237,19 @@ void Missile::check_collision()
 			}
 		}				
 	}
+	return false;
 }
 
 void Missile::deal_dmg(Unit * unit)
 {
+	//std::cout << "deal_dmg" << std::endl;
 	unit->set_hp(unit->get_hp()-_damage);
 	//Détruire le projectile et vérifier si l'unité a encore des pv !
 }
+
+/*void Missile::update(float dt)
+{
+	float move_x = getSprite()->getPositionX() + _movement.x * _move_speed * dt;
+	float move_y = getSprite()->getPositionY() + _movement.y * _move_speed * dt;
+	getSprite()->set_position(move_x,move_y);
+}*/

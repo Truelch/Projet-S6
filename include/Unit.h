@@ -89,9 +89,10 @@ class Unit : public Moveable
 		void on_player_range_tile(int x, int y, Player * player);
 		void on_player_unrange_tile(int x, int y, Player * player);
 		void update_bar_visibility();
+		void add_turret(float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit);
 
 		bool map_tile_range(MapTile * map_tile);
-		void check_attack(); //Vérifie pour chaque tourelle (traverse le container de turret et appelle la méthode check_attack de chaque turret)
+		//void check_attack(); //Vérifie pour chaque tourelle (traverse le container de turret et appelle la méthode check_attack de chaque turret)
 };
 
 #endif

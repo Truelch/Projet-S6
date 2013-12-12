@@ -196,7 +196,7 @@ void Player::update(float dt)
 	set_resources(_resources+coeff*dt*(float)nbr_source);
 	//Supply
 	//Théoriquement, seule la RAM augmente le supply, mais bon
-		
+	//std::cout << "Player::update()" << endl;	
 }
 
 int Player::count_building_type(string name)

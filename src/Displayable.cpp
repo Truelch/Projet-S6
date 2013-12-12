@@ -21,5 +21,6 @@ Displayable::Displayable(Game * game, CCSprite * sprite, Layer * layer): EventRe
 }
 
 Displayable::~Displayable() {
+	_layer->removeChild(_sprite);
 	//if(_sprite) delete _sprite;
 }

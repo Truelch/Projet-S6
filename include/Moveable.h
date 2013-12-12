@@ -12,6 +12,8 @@
 class Moveable : public PhysicsDisplayable
 {
 	private:
+		b2Body * _body;
+
 		int _tile_x;
 		int _tile_y;
 		//CCPoint _destination;
@@ -59,7 +61,7 @@ class Moveable : public PhysicsDisplayable
 		float   get_move_speed();
 		bool get_rest() { return _rest; }
 		bool get_mode_restore_position() { return _mode_restore_position; }
-		float get_hitboxRadius() { return _hitboxRadius; }
+		float get_hitboxRadius();
 
 		bool get_hold_position() { return _hold_position; }
 		int get_tile_x() { return _tile_x; }

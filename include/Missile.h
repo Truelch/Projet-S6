@@ -14,7 +14,8 @@ class Missile : public Displayable
 {
 	public:
 		Missile();
-		Missile(float x, float y, float rotation, float x_dest, float y_dest, float move_speed, const char * filename, Game * game, Layer * layer, float range_max, int damage, Player * player);
+		Missile(float x, float y, float rotation, float x_dest, float y_dest, float move_speed, const char * filename, Game * game, Layer * layer, float range_max, float damage, 
+				Player * player, Unit * shooter_unit);
 		~Missile();
 		
 		// --- METHODES ---
@@ -26,9 +27,10 @@ class Missile : public Displayable
 		
 		float   get_move_speed();
 		float   get_range_max();
-		int     get_damage();
+		float     get_damage();
 		//
 		Player * get_player();
+		Unit * get_shooter_unit();
 
 		// --- SET ---
 		void set_origin(float x_origin, float y_origin);  //Il ne faudrait pas l'utiliser
@@ -36,15 +38,16 @@ class Missile : public Displayable
 		
 		void set_move_speed(float move_speed);
 		void set_range_max(float range_max);
-		void set_damage(int damage);
+		void set_damage(float damage);
 		//
 		void set_player(Player * player);
+		void set_shooter_unit(Unit * shooter_unit);
 		
 		// --- METHODES ---
-		void update(float dt);
-		void check_collision();
+		bool update(float dt);
+		bool check_collision();
 		void deal_dmg(Unit * unit);
-		void check_range();
+		//void check_range();	
 		
 	private:
 		// --- ATTRIBUTS ---
@@ -54,11 +57,10 @@ class Missile : public Displayable
 		float        _move_speed;
 		const char * _filename;
 		float        _range_max;
-		int          _damage;
+		float        _damage;
 		//
 		Player *     _player;
-		
-		
+		Unit *       _shooter_unit;		
 };
 
 #endif
