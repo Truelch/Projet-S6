@@ -273,9 +273,3 @@ void Player::on_building_change_player(Building * building, Player * old_player,
 		}
 	}
 }
-
-void Player::on_hud_item_clicked(HudItem * hud_item) {
-	if(get_game()->get_main_player()==this) {
-		std::cout << "on_hud_item_clicked" << std::endl;
-	}
-}
