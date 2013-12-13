@@ -6,21 +6,21 @@
 class HudItem : public Displayable {
 	public:
 		typedef enum {
-			stopType,
-			holdPositionType,
-			moveType,
-			patrolType,
-		} ButtonType;
+			stopButtonType,
+			holdPositionButtonType,
+			moveButtonType,
+			patrolButtonType,
+		} HudItemType;
 
 		
-		HudItem(float x, float y, const char * filename, ButtonType buttonType,  Game * game, Layer * layer);
+		HudItem(float x, float y, const char * filename, HudItemType hudItemType,  Game * game, Layer * layer);
 
 		virtual Displayable::DisplayableType getType() { return Displayable::hudItemType; }
 
-		ButtonType getButtonType() { return _buttonType; }
+		HudItemType getButtonType() { return _hudItemType; }
 
 	private:
-		ButtonType _buttonType;
+		HudItemType _hudItemType;
 };
 
 #endif

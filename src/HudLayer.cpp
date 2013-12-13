@@ -25,9 +25,9 @@ void HudLayer::remove_hud_item(HudItem * hud_item) {
 	_list_hud_item.erase(std::remove(_list_hud_item.begin(), _list_hud_item.end(), hud_item), _list_hud_item.end());
 }
 
-void HudLayer::add_hud_item(int x, int y, const char * filename, HudItem::ButtonType buttonType) {
+void HudLayer::add_hud_item(int x, int y, const char * filename, HudItem::HudItemType hudItemType) {
 	CCPoint point = get_game()->convert_opengl_point_to_layer_point(x,y,this);
-	_list_hud_item.push_back( new HudItem(point.x, point.y, filename, buttonType, get_game(), this) );
+	_list_hud_item.push_back( new HudItem(point.x, point.y, filename, hudItemType, get_game(), this) );
 }
 
 HudLayer::~HudLayer() {

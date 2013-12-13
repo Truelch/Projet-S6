@@ -21,7 +21,6 @@
 #include "MissileLayer.h"
 #include "Building.h"
 #include "Game.h"
-#define COEFF     2.1
 
 
 typedef struct {
@@ -60,7 +59,7 @@ DisplayLayer::~DisplayLayer() {
 	delete _selection_zone_layer;
 }
 
-float DisplayLayer::get_tile_size_cocos() { return (float)_tile_size/COEFF; }
+float DisplayLayer::get_tile_size_cocos() { return (float)_tile_size/CCDirector::sharedDirector()->getContentScaleFactor(); }
 
 void DisplayLayer::addDebugLine(CCPoint p1, CCPoint p2) {
 	_debug_line.push_back({b2Vec2(p1.x/PTM_RATIO,p1.y/PTM_RATIO),b2Vec2(p2.x/PTM_RATIO,p2.y/PTM_RATIO)});
@@ -211,13 +210,13 @@ void DisplayLayer::init2()
 }
 
 void DisplayLayer::coordonate_tile_to_cocos2dx(int x, int y, float& cocos_x, float& cocos_y) {
-	cocos_x = (_tile_size*x)/COEFF;
-	cocos_y = (_tile_size*y)/COEFF;
+	cocos_x = (_tile_size*x)/CCDirector::sharedDirector()->getContentScaleFactor();
+	cocos_y = (_tile_size*y)/CCDirector::sharedDirector()->getContentScaleFactor();
 }
 
 void DisplayLayer::coordonate_cocos2dx_to_tile(float cocos_x, float cocos_y, int& x, int& y) {
-	x = (int)floor((cocos_x*COEFF+_tile_size/2)/_tile_size);
-	y = (int)floor((cocos_y*COEFF+_tile_size/2)/_tile_size);
+	x = (int)floor((cocos_x*CCDirector::sharedDirector()->getContentScaleFactor()+_tile_size/2)/_tile_size);
+	y = (int)floor((cocos_y*CCDirector::sharedDirector()->getContentScaleFactor()+_tile_size/2)/_tile_size);
 }
 
 int DisplayLayer::init_file(string filename)
@@ -315,8 +314,8 @@ int DisplayLayer::init_file(string filename)
 		for(i=0;i<_map_width;i++)
 		{
 			//Faut-il donner le chemin vers l'image ou seulement le nom de fichier de l'image ?
-			x = (1/COEFF)*_tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
-			y = (1/COEFF)*_tile_size*j;
+			x = (1/CCDirector::sharedDirector()->getContentScaleFactor())*_tile_size*i; //128 = _tile_size => créer cet attribut dans TileLayer ?
+			y = (1/CCDirector::sharedDirector()->getContentScaleFactor())*_tile_size*j;
 			_background_layer->get_map_displayable_matrix()[j].push_back(new MapDisplayable(x,y,"tiles/000.png",get_game(),_background_layer)); //Cela marche-t-il ?
 		}
 	}

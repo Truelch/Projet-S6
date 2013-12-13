@@ -6,9 +6,10 @@
 #include "DisplayLayer.h"
 #include "FogOfWarLayer.h"
 
-#define SIDE 130
+#define SIDE 128
 
 FogOfWarDisplayable::FogOfWarDisplayable(float x, float y, Game * game, Layer * layer, FogStatus fogStatus): Displayable(game, new CCSprite(), layer), _fogStatus(fogStatus) {
+	getGame()->get_display_layer()->get_tile_size_pixel();
 	int bytes = SIDE * SIDE * 4;
 	void* textureData = malloc(bytes);
 	memset(textureData, INT32_MAX, bytes);

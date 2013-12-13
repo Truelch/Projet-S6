@@ -88,7 +88,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_hud_layer->setZOrder(2);
 	addChild(_hud_layer);
 
-	_hud_layer->add_hud_item(381,607,"widgets/stop.png",HudItem::stopType);
+	_hud_layer->add_hud_item(381,607,"widgets/stop.png",HudItem::stopButtonType);
 
 	//_hud = new Hud(256,180,"hud.png", this, _hud_layer);
 	
