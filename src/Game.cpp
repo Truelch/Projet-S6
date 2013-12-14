@@ -98,6 +98,8 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_cursor = new Cursor(0,0,"fleche.png",this,_cursor_layer);
 
 	this->schedule( schedule_selector( Game::update ), 1.0 / 30 );	
+
+	std::cout << CCFileUtils::sharedFileUtils()->getSearchPaths()[1] << std::endl;
 }
 
 Game::~Game() {
