@@ -271,21 +271,10 @@ CCPoint Game::convert_opengl_point_to_layer_point_with_new_offset(int opengl_x, 
 }
 
 CCPoint Game::convert_opengl_point_to_layer_point(int opengl_x, int opengl_y, Layer * layer) {
-	CCPoint map_point;
 	float offset_x,offset_y,offset_z;
-	float cocos_x, cocos_y;
-	CCSize frameSize = EGLView::sharedOpenGLView()->getFrameSize();
-
-	opengl_x=frameSize.width/2+((opengl_x-frameSize.width/2)/layer->getScaleX());
-	opengl_y=frameSize.height/2+((opengl_y-frameSize.height/2)/layer->getScaleY());
-
 	layer->getCamera()->getCenterXYZ(&offset_x,&offset_y,&offset_z);
-	coordinateOpenglToCocos2dx(opengl_x,opengl_y,cocos_x,cocos_y);
 
-	map_point.x = cocos_x+offset_x;
-	map_point.y = cocos_y+offset_y;
-
-	return map_point;
+	return convert_opengl_point_to_layer_point_with_new_offset(opengl_x, opengl_y, layer, offset_x, offset_y);
 }
 
 void Game::mouse_left_button_down() {
