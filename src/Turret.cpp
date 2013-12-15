@@ -191,7 +191,7 @@ void Turret::check_attack()
 	float distance/* = 0*/;
 	float min_distance = _range_max +10.0; //=> infini
 	int index = -1; //Pas d'index => pas de cible
-	CCPoint turret_position = getPosition().rotateByAngle(CCPoint(0,0),get_unit(_shooter_unit)->getSprite()->getRotation()) + get_unit(_shooter_unit)->getSprite()->getPosition();;
+	CCPoint turret_position = getPosition().rotateByAngle(CCPoint(0,0),get_unit(_shooter_unit)->getSprite()->getRotation()) + get_unit(_shooter_unit)->getSprite()->getPosition();
 	//float x,y;
 	//float delta_x,delta_y;
 
@@ -219,6 +219,7 @@ void Turret::check_attack()
 	
 	if(get_unit(_target_unit)) //Il y a une cible
 	{
+		rotate_to_target();
 		//turret_position = getPosition().rotateByAngle(CCPoint(0,0),_shooter_unit->getSprite()->getRotation()) + _shooter_unit->getSprite()->getPosition();
 		float distance = turret_position.getDistance(get_unit(_target_unit)->getSprite()->getPosition());
 		//if(_target_unit==_shooter_unit){std::cout << "TROLOLOOOOOO !!!" << endl;}		
@@ -317,4 +318,23 @@ void Turret::remove_unit(Container<Unit>& unit_list)
 void Turret::change_unit(Unit * unit, Container<Unit>& unit_list) {
 	if(unit_list.get_number_t()!=0) unit_list.remove_t(0);
 	unit_list.add_t(unit);
+}
+
+void Turret::rotate_to_target()
+{
+	if(get_unit(_target_unit)) //get_unit(_target_unit) <=> get_number_unit()==1 : Condition normalement vérifiée, mais ne sait jamais ...
+	{
+		CCPoint turret_position = getPosition().rotateByAngle(CCPoint(0,0),get_unit(_shooter_unit)->getSprite()->getRotation()) + get_unit(_shooter_unit)->getSprite()->getPosition();
+		float distance = turret_position.getDistance(get_unit(_target_unit)->getSprite()->getPosition());
+		float delta_x  = - (get_unit(_target_unit)->getSprite()->getPositionX() - turret_position.x)/distance;
+		float delta_y  = - (get_unit(_target_unit)->getSprite()->getPositionY() - turret_position.y)/distance;
+		if(delta_x != 0) //Pour éviter la division par zéro !
+		{
+			float angle;
+			if (delta_x < 0)  angle = -1.* atan(delta_y/delta_x) * (180/M_PI) + 90;
+			else angle = -1.* atan(delta_y/delta_x) * (180/M_PI) + 270;
+			angle -= get_unit(_shooter_unit)->getSprite()->getRotation(); //Retirer l'angle de l'unité
+			setRotation(angle); //Il faut appliquer la rotation au Sprite, qui est un attribut de Displayable
+		}
+	}
 }

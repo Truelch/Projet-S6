@@ -299,6 +299,21 @@ void Unit::update(float dt) {
 	{
 		(*it)->update(dt);
 	}
+	//Régénération
+	if(_stat->get_hp() < _stat->get_hp_max())
+	{
+		std::cout << "Régénération (hp = " << _stat->get_hp() << "/" << _stat->get_hp_max() << ") + " << dt*_stat->get_hp_regen() << std::endl;
+		if(_stat->get_hp()+dt*_stat->get_hp_regen() < _stat->get_hp_max())
+		{
+			//std::cout << "Régénération partielle (IF)" << std::endl;
+			set_hp(_stat->get_hp()+dt*_stat->get_hp_regen());
+		}
+		else
+		{
+			//std::cout << "Régénération finie (ELSE)" << std::endl;
+			set_hp(_stat->get_hp_max());
+		}
+	}
 }
 
 bool Unit::map_tile_range(MapTile * map_tile) {

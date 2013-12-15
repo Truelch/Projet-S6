@@ -5,6 +5,7 @@
 #include "Displayable.h"
 #include "Container.h"
 
+
 using namespace cocos2d;
 
 class Turret : public CCSprite
@@ -49,13 +50,15 @@ class Turret : public CCSprite
 		void   change_unit(Unit * unit, Container<Unit>& unit_list);
 		int    get_number_unit(Container<Unit> unit_list) { return unit_list.get_number_t(); }
 		
+		void   rotate_to_target();
+		
 	private:
 		// --- Attributs ---
 		float           _rotation;
 		CCPoint         _relative_position;
 		float           _missile_speed;
 		const char *    _missile_filename;		
-		float             _damage;	
+		float           _damage;	
 		float           _current_cooldown; //temps écoulé depuis le dernier tir. Si il vaut cooldown, il ne s'incrémente plus et le projectile est prêt à être tiré.
 		float           _cooldown;
 		float           _range_max;

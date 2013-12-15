@@ -27,6 +27,7 @@ using namespace std;
 
 Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _scroll_up_mouse(false), _scroll_down_mouse(false), _scroll_left_key(false), _scroll_right_key(false), _scroll_up_key(false), _scroll_down_key(false), _mouse_button_left_down(false), _key_left_alt(false), _key_right_alt(false), _selection_zone_enable(false), _mouse_x(0), _mouse_y(0), _old_x(0), _old_y(0), _mouse_initiate(false)
 {
+	int i =0;
 	std::cout << "Constructeur de Game" << std::endl;
 	_display_layer = new DisplayLayer(this);
 	if(_display_layer->init_file("map/map1")==EXIT_FAILURE) {
@@ -47,15 +48,23 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_main_player = _player_list[0];
 	
 	float x,y;
-	_display_layer->coordonate_tile_to_cocos2dx(0,0,x,y);
-	_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],1000);
-	_display_layer->get_unit_layer()->get_unit(0)->add_turret(0,"units/turret_tank_00.png", this, _display_layer->get_missile_layer(), 0, 0, 
-				33.0,"missiles/01.png", 12, 1.3, 200.0,_display_layer->get_unit_layer()->get_unit(0));
+	//Amis
+	for(i=0;i<10;i++)
+	{
+		_display_layer->coordonate_tile_to_cocos2dx(i+5,10,x,y);
+		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],600);
+		_display_layer->get_unit_layer()->get_unit(i)->add_turret(0,"units/turret_tank_00.png", this, _display_layer->get_missile_layer(), 0, 0, 
+					50.0,"missiles/01.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i));
+	}
 	
-	_display_layer->coordonate_tile_to_cocos2dx(10,0,x,y);
-	_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],1000);
-	_display_layer->get_unit_layer()->get_unit(1)->add_turret(0,"units/turret_tank_01.png", this, _display_layer->get_missile_layer(), 0, 0, 
-				33.0,"missiles/02.png", 12, 1.3, 200.0,_display_layer->get_unit_layer()->get_unit(1));
+	//Ennemis
+	for(i=0;i<10;i++)
+	{
+		_display_layer->coordonate_tile_to_cocos2dx(i+5,20,x,y);
+		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_01.png", "tank",100,100,5.0,100,100,5.0,6.0,100, _player_list[1],600);
+		_display_layer->get_unit_layer()->get_unit(i+10)->add_turret(0,"units/turret_tank_01.png", this, _display_layer->get_missile_layer(), 0, 0, 
+					50.0,"missiles/02.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i+10));
+	}
 	/*
 	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
 	_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],100);
@@ -465,6 +474,7 @@ void Game::key_press(int key) {
 		_key_right_alt=true;
 		set_bar_visible(true);
 	}
+	else if(key=='Q') CCDirector::sharedDirector()->end();
 }
 
 void Game::key_release(int key) {
