@@ -86,3 +86,10 @@ void EventHandler::on_building_change_player(Building * building, Player * old_p
 	}
 }
 
+
+void EventHandler::on_hud_item_clicked(HudItem * hud_item) {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->on_hud_item_clicked(hud_item);
+	}
+}

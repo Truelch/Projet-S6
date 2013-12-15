@@ -7,6 +7,7 @@
 #include "TileLayer.h"
 #include "Unit.h"
 #include "Building.h"
+#include "HudItem.h"
 
 Player::Player(): EventReceiver(), _game(NULL)
 {
