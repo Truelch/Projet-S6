@@ -191,8 +191,8 @@ void Turret::check_attack()
 		
 		else
 		{
-			std::cout << "check_attack3" << std::endl;
-			std::cout << "WTF (Turret.cpp)" << std::endl;
+			//std::cout << "check_attack3" << std::endl;
+			//std::cout << "WTF (Turret.cpp)" << std::endl;
 		}
 	}	
 

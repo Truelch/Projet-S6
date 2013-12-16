@@ -366,9 +366,7 @@ int DisplayLayer::init_file(string filename)
 		_fog_of_war_layer->get_map_fog_matrix().push_back(vector<FogOfWarDisplayable *>());
 		for(i=0;i<_map_width;i++)
 		{
-			coordonate_tile_to_cocos2dx(i,j,x,y);
-
-			_fog_of_war_layer->get_map_fog_matrix()[j].push_back(new FogOfWarDisplayable(x,y,get_game(),_fog_of_war_layer,FogOfWarDisplayable::undiscovered));
+			_fog_of_war_layer->get_map_fog_matrix()[j].push_back(new FogOfWarDisplayable(i,j,get_game(),_fog_of_war_layer,FogOfWarDisplayable::undiscovered));
 		}
 	}
 	
