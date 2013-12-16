@@ -17,6 +17,8 @@ Player::Player(): EventReceiver(), _game(NULL)
 
 Player::Player(Game * game, string name, Color color, int player_number, int team_number):EventReceiver(game->getEventHandler()), _name(name), _color(color), _player_number(player_number), _team_number(team_number), _game(game)
 {
+	set_killed(0);
+	set_losses(0);
 	init();
 	//Boucle pour trouver le QG
 }
@@ -109,6 +111,16 @@ void Player::set_hq(Building * hq)
 void Player::set_resources(int resources)
 {
 	_resources = resources;
+}
+
+void Player::set_killed(int killed)
+{
+	_killed = killed;
+}
+
+void Player::set_losses(int losses)
+{
+	_losses = losses;
 }
 
 // --- METHODES ---

@@ -47,6 +47,8 @@ Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float m
 }
 
 Unit::~Unit() {
+	_player->set_losses(_player->get_losses()+1);
+	//Ajouter kill pour le tueur
 	delete _bar;
 	Container<Unit>::on_destroyed(this);
 	getLayer()->removeChild(getPhysicsSprite());
@@ -144,7 +146,7 @@ void Unit::set_name(string name)
 
 void Unit::set_hp(float hp)
 {
-	std::cout << "PV restants (avant modif) : " << _stat->get_hp() << ", nouvelle valeur de PV : " << hp << endl;
+	//std::cout << "PV restants (avant modif) : " << _stat->get_hp() << ", nouvelle valeur de PV : " << hp << endl;
 	if (hp <= 0)
 	{
 		delete this;
@@ -267,7 +269,8 @@ void Unit::update_range_map_tile_list() {
 	}
 }
 
-void Unit::on_displayable_contact(Displayable * displayableA, Displayable * displayableB) {
+void Unit::on_displayable_contact(Displayable * displayableA, Displayable * displayableB)
+{
 	Unit * unit = NULL;
 	if(displayableA==this) {
 		if(displayableB->getType()==Displayable::unitType) {
@@ -286,7 +289,8 @@ void Unit::on_displayable_contact(Displayable * displayableA, Displayable * disp
 	Moveable::on_displayable_contact(displayableA, displayableB);
 }
 
-void Unit::update(float dt) {
+void Unit::update(float dt) 
+{
 	Moveable::update(dt);
 
 	_bar->getSprite()->setPositionX(getSprite()->getPositionX());
@@ -302,7 +306,7 @@ void Unit::update(float dt) {
 	//Régénération
 	if(_stat->get_hp() < _stat->get_hp_max())
 	{
-		std::cout << "Régénération (hp = " << _stat->get_hp() << "/" << _stat->get_hp_max() << ") + " << dt*_stat->get_hp_regen() << std::endl;
+		//std::cout << "Régénération (hp = " << _stat->get_hp() << "/" << _stat->get_hp_max() << ") + " << dt*_stat->get_hp_regen() << std::endl;
 		if(_stat->get_hp()+dt*_stat->get_hp_regen() < _stat->get_hp_max())
 		{
 			//std::cout << "Régénération partielle (IF)" << std::endl;
@@ -316,7 +320,8 @@ void Unit::update(float dt) {
 	}
 }
 
-bool Unit::map_tile_range(MapTile * map_tile) {
+bool Unit::map_tile_range(MapTile * map_tile)
+{
 	return getSprite()->getPosition().getDistance(map_tile->getSprite()->getPosition())<_stat->get_sight();
 }
 
@@ -334,7 +339,8 @@ bool Unit::map_tile_range(MapTile * map_tile) {
 	
 }*/
 
-void Unit::add_turret(float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit) {
+void Unit::add_turret(float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit) 
+{
 	_turret_list.push_back(new Turret(rotation, filename, game, layer, x_relative, y_relative, missile_speed, missile_filename, damage, cooldown, range_max, shooter_unit));
 	getSprite()->addChild(*(_turret_list.end()-1));
 }

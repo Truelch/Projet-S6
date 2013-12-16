@@ -29,6 +29,9 @@ class Stat
 		string get_type_armor();
 		float get_prod_time();
 		float get_sight();
+		//
+		int get_level();
+		int get_killed();
 
 		// --- SET ---
 		void set_name(string name);
@@ -42,6 +45,9 @@ class Stat
 		void set_armor_type(string armor_type);
 		void set_prod_time(float prod_time);
 		void set_sight(float sight);
+		//
+		void set_level(int level);
+		void set_killed(int killed);
 	
 	private:		
 		// --- ATTRIBUTS ---
@@ -56,6 +62,9 @@ class Stat
 		string   _type_armor;
 		float    _prod_time;
 		float    _sight;
+		//
+		int      _level;  //Niveau de l'unité pour déterminer l'exp gagnée en la tuant => appeler cet attribut "rank" ? et le level serait le niveau actuel de l'unité
+		int      _killed; //Unités tuées par l'unité
 		
 };
 

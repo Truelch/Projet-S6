@@ -141,6 +141,7 @@ void Moveable::goToDestination() {
 			if(vecteur_unitaire.x>0) angle=M_PI-angle;
 			else angle=3*M_PI-angle;
 		}
+		//std::cout << "Angle : " << angle << std::endl;
 		getPhysicsSprite()->getB2Body()->SetTransform(getPhysicsSprite()->getB2Body()->GetPosition(), angle);
 	}
 
