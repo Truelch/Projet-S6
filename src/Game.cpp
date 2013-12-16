@@ -22,6 +22,7 @@
 #include "SelectionZone.h"
 #include "Cursor.h"
 #include "EventHandler.h"
+#include "FogOfWarLayer.h"
 
 USING_NS_CC;
 
@@ -29,7 +30,6 @@ using namespace std;
 
 Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _scroll_up_mouse(false), _scroll_down_mouse(false), _scroll_left_key(false), _scroll_right_key(false), _scroll_up_key(false), _scroll_down_key(false), _mouse_button_left_down(false), _key_left_alt(false), _key_right_alt(false), _selection_zone_enable(false), _mouse_x(0), _mouse_y(0), _old_x(0), _old_y(0), _mouse_initiate(false), _hud_item_mouse(NULL)
 {
-	int i =0;
 	std::cout << "Constructeur de Game" << std::endl;
 	_display_layer = new DisplayLayer(this);
 	if(_display_layer->init_file("map/map1")==EXIT_FAILURE) {
@@ -49,24 +49,30 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	
 	_main_player = _player_list[0];
 	
-	float x,y;
+	float x,y,x2,y2;
+	_display_layer->coordonate_tile_to_cocos2dx(4,0,x,y);
+	_display_layer->coordonate_tile_to_cocos2dx(3,0,x2,y2);
+	_display_layer->get_unit_layer()->add_unit(x,y,x2,y2,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],200);
+
+	/*
+	int i=0;
 	//Amis
 	for(i=0;i<10;i++)
 	{
 		_display_layer->coordonate_tile_to_cocos2dx(i+5,10,x,y);
-		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],600);
-		_display_layer->get_unit_layer()->get_unit(i)->add_turret(0,"units/turret_tank_00.png", this, _display_layer->get_missile_layer(), 0, 0, 
-					50.0,"missiles/01.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i));
+		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],200);
+		_display_layer->get_unit_layer()->get_unit(_display_layer->get_unit_layer()->get_number_unit()-1)->add_turret(0,"units/turret_tank_00.png", this, _display_layer->get_missile_layer(), 0, 0,50.0,"missiles/01.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(_display_layer->get_unit_layer()->get_number_unit()-1));
 	}
 	
 	//Ennemis
 	for(i=0;i<10;i++)
 	{
 		_display_layer->coordonate_tile_to_cocos2dx(i+5,20,x,y);
-		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_01.png", "tank",100,100,5.0,100,100,5.0,6.0,100, _player_list[1],600);
-		_display_layer->get_unit_layer()->get_unit(i+10)->add_turret(0,"units/turret_tank_01.png", this, _display_layer->get_missile_layer(), 0, 0, 
-					50.0,"missiles/02.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i+10));
+		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_01.png", "tank",100,100,5.0,100,100,5.0,6.0,100, _player_list[1],200);
+		_display_layer->get_unit_layer()->get_unit(_display_layer->get_unit_layer()->get_number_unit()-1)->add_turret(0,"units/turret_tank_01.png", this, _display_layer->get_missile_layer(), 0, 0, 50.0,"missiles/02.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(_display_layer->get_unit_layer()->get_number_unit()-1));
 	}
+	*/
+
 	/*
 	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
 	_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],100);
@@ -91,7 +97,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_display_layer->get_building_layer()->addChild(building->getSprite());
 	*/
 
-	_display_layer->get_building_layer()->add_building(10,5,"buildings/ram01.png",this,_display_layer->get_building_layer(),0,0,"batiment1",_main_player,200);
+	//_display_layer->get_building_layer()->add_building(10,5,"buildings/ram01.png",this,_display_layer->get_building_layer(),0,0,"batiment1",_main_player,200);
 
 	set_tile_to_center_of_screen(4,3);
 
@@ -109,8 +115,6 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_cursor = new Cursor(0,0,"fleche.png",this,_cursor_layer);
 
 	this->schedule( schedule_selector( Game::update ), 1.0 / 30 );	
-
-	std::cout << CCFileUtils::sharedFileUtils()->getSearchPaths()[1] << std::endl;
 }
 
 Game::~Game() {
@@ -182,6 +186,8 @@ void Game::update(float dt)
 	{
 		_display_layer->get_unit_layer()->get_unit(i)->update(dt);
 	}
+
+	_display_layer->get_fog_of_war_layer()->update();
 
 	getWorld()->Step(dt, 8, 1);
 
@@ -510,7 +516,7 @@ void Game::key_release(int key) {
 
 void Game::mouse_wheel_up() {
 	CCPoint map_point, screen_point;
-	if(_display_layer->getScale()<1) {
+	if(_display_layer->getScale()<2) {
 		map_point = convert_opengl_point_to_layer_point(_mouse_x,_mouse_y,_display_layer);
 		_display_layer->setScale(_display_layer->getScale()+0.05);
 		set_map_point_to_opengl_point(map_point,_mouse_x,_mouse_y);

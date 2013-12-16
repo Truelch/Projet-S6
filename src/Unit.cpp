@@ -144,7 +144,6 @@ void Unit::set_name(string name)
 
 void Unit::set_hp(float hp)
 {
-	std::cout << "PV restants (avant modif) : " << _stat->get_hp() << ", nouvelle valeur de PV : " << hp << endl;
 	if (hp <= 0)
 	{
 		delete this;
@@ -302,15 +301,12 @@ void Unit::update(float dt) {
 	//Régénération
 	if(_stat->get_hp() < _stat->get_hp_max())
 	{
-		std::cout << "Régénération (hp = " << _stat->get_hp() << "/" << _stat->get_hp_max() << ") + " << dt*_stat->get_hp_regen() << std::endl;
 		if(_stat->get_hp()+dt*_stat->get_hp_regen() < _stat->get_hp_max())
 		{
-			//std::cout << "Régénération partielle (IF)" << std::endl;
 			set_hp(_stat->get_hp()+dt*_stat->get_hp_regen());
 		}
 		else
 		{
-			//std::cout << "Régénération finie (ELSE)" << std::endl;
 			set_hp(_stat->get_hp_max());
 		}
 	}

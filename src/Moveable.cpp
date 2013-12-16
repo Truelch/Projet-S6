@@ -45,6 +45,8 @@ Moveable::Moveable(float x, float y, float x_dest, float y_dest, float rotation,
 	if(!getGame()->get_main_player()->get_map_tile_info()[tile_y][tile_x].visible) {
 		getSprite()->setScale(0);
 	}
+
+	getSprite()->setRotation(rotation);
 }
 
 Moveable::~Moveable() {

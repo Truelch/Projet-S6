@@ -253,8 +253,8 @@ void Turret::check_attack()
 		
 		else
 		{
-			std::cout << "check_attack3" << std::endl;
-			std::cout << "WTF (Turret.cpp)" << std::endl;
+			//std::cout << "check_attack3" << std::endl;
+			//std::cout << "WTF (Turret.cpp)" << std::endl;
 		}
 		/*
 		if(distance <= _range_max) //A portée
@@ -284,7 +284,7 @@ void Turret::fire()
 	//std::cout << "fire()" << endl;
 	if(_current_cooldown >= _cooldown)
 	{
-		std::cout << "PAN !!!" << endl;
+		//std::cout << "PAN !!!" << endl;
 		_current_cooldown = 0;
 		//Instancier un projectile
 		float x          = get_unit(_shooter_unit)->getSprite()->getPositionX() + _relative_position.x - getTextureRect().size.height/2.0; //Position de l'unité décallée de la position relative de la tourelle
