@@ -32,7 +32,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 {
 	std::cout << "Constructeur de Game" << std::endl;
 	_display_layer = new DisplayLayer(this);
-	if(_display_layer->init_file("map/map1")==EXIT_FAILURE) {
+	if(_display_layer->init_file(CCFileUtils::sharedFileUtils()->getSearchPaths()[0]+"../map/map1")==EXIT_FAILURE) {
 		std::cerr << "ERREUR : fichier map invalide" << std::endl;
 	}
 	//_display_layer->setZOrder(1);
@@ -57,19 +57,22 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	/*
 	int i=0;
 	//Amis
-	for(i=0;i<10;i++)
+	int a = 3;
+	for(i=0;i<a;i++)
 	{
-		_display_layer->coordonate_tile_to_cocos2dx(i+5,10,x,y);
-		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],200);
-		_display_layer->get_unit_layer()->get_unit(_display_layer->get_unit_layer()->get_number_unit()-1)->add_turret(0,"units/turret_tank_00.png", this, _display_layer->get_missile_layer(), 0, 0,50.0,"missiles/01.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(_display_layer->get_unit_layer()->get_number_unit()-1));
+		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,10,x,y);
+		_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],600);
+		_display_layer->get_unit_layer()->get_unit(i)->add_turret(0,"units/turret_tank_00.png", this, _display_layer->get_missile_layer(), /*-3.0, 8.0,*/0.0,0.0,
+					50.0,"missiles/01.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i));
 	}
 	
 	//Ennemis
-	for(i=0;i<10;i++)
+	for(i=0;i<a;i++)
 	{
-		_display_layer->coordonate_tile_to_cocos2dx(i+5,20,x,y);
-		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_01.png", "tank",100,100,5.0,100,100,5.0,6.0,100, _player_list[1],200);
-		_display_layer->get_unit_layer()->get_unit(_display_layer->get_unit_layer()->get_number_unit()-1)->add_turret(0,"units/turret_tank_01.png", this, _display_layer->get_missile_layer(), 0, 0, 50.0,"missiles/02.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(_display_layer->get_unit_layer()->get_number_unit()-1));
+		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,20,x,y);
+		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_01.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[1],600);
+		_display_layer->get_unit_layer()->get_unit(i+a)->add_turret(0,"units/turret_tank_01.png", this, _display_layer->get_missile_layer(), 0, 0, 
+					50.0,"missiles/02.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i+a));
 	}
 	*/
 
@@ -125,6 +128,13 @@ Game::~Game() {
 	delete _cursor;
 }
 
+// --- SET ---
+
+void Game::set_time_elapsed(float time_elapsed)
+{
+	_time_elapsed = time_elapsed;
+}
+
 // --- GET ---
 
 int Game::get_map_width()
@@ -141,6 +151,9 @@ DisplayLayer * Game::get_display_layer()
 {
 	return _display_layer;
 }
+
+
+// --- METHODES ---
 
 void Game::update(float dt)
 {

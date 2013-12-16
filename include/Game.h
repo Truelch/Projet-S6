@@ -41,8 +41,12 @@ class Game : public Scene
 		Player * get_main_player() { return _main_player; }
 		const vector<Player *>& get_player_list() { return _player_list; }
 		
-		// --- SET ---
+		float get_time_elapsed() { return _time_elapsed; }
 		
+		// --- SET ---
+		void set_time_elapsed(float time_elapsed);
+		
+		// --- METHODES ---
 		
 		// implement the "static node()" method manually
 		//CREATE_FUNC(Game);
@@ -65,6 +69,7 @@ class Game : public Scene
 		virtual void key_release(int key);
 		virtual void mouse_wheel_up();
 		virtual void mouse_wheel_down();
+		
 		
 	private:
 		void set_bar_visible(bool visible);
@@ -106,6 +111,8 @@ class Game : public Scene
 		bool _mouse_initiate;
 
 		HudItem * _hud_item_mouse;
+		
+		float _time_elapsed; //Temps écoulé depuis le début du jeu
 };
 
 #endif

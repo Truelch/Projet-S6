@@ -33,7 +33,7 @@ void Container<T>::add_t(T * t) {
 
 template <typename T>
 void Container<T>::remove_t(int index) {
-	if(index>0 && index<(int)_list.size()) {
+	if(index>=0 && index<(int)_list.size()) {
 		typename std::vector<T *>::iterator it = _list.begin()+index;
 		_list.erase(it);
 	}

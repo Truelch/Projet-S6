@@ -18,9 +18,10 @@ Stat::Stat(float x, float y, float x_dest, float y_dest, float rotation, float m
 	set_armor_type(armor_type);
 	set_prod_time(prod_time);
 	set_sight(sight);
+	//
+	set_level(0); //à mettre dans les arguments d'entrée du constructeur
+	set_killed(0);
 }
-
-// --- METHODES ---
 
 // --- GET ---
 
@@ -79,6 +80,15 @@ float Stat::get_sight()
 	return _sight;
 }
 
+int Stat::get_level()
+{
+	return _level;
+}
+
+int Stat::get_killed()
+{
+	return _killed;
+}
 
 // --- SET ---
 
@@ -136,3 +146,15 @@ void Stat::set_sight(float sight)
 {
 	_sight = sight;
 }
+
+void Stat::set_level(int level)
+{
+	_level = level;
+}
+
+void Stat::set_killed(int killed)
+{
+	_killed = killed;
+}
+
+// --- METHODES ---

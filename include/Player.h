@@ -56,6 +56,9 @@ class Player: public EventReceiver
 		Building *               _hq;
 		// ---
 		int _resources;
+		
+		int _killed; //Unités tuées
+		int _losses; //Unités perdues
 		// ---
 		std::vector<std::vector<TileInfo> > _map_tile_info;
 		
@@ -80,6 +83,9 @@ class Player: public EventReceiver
 		Building *                      get_hq();
 		// ---
 		int get_resources() { return _resources;}
+		
+		int get_killed() { return _killed;}
+		int get_losses() { return _losses;}
 		// ---
 		
 		//
@@ -100,6 +106,9 @@ class Player: public EventReceiver
 		void set_hq(Building * hq);                //hq = HeadQuarters => Processeur
 		// ---
 		void set_resources(int resources);
+		
+		void set_killed(int killed);
+		void set_losses(int losses);
 		// ---
 		
 		// --- METHODES ---

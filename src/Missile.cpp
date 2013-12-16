@@ -242,7 +242,23 @@ bool Missile::check_collision()
 
 void Missile::deal_dmg(Unit * unit)
 {
+	//Vérifier si l'unité meurt => +1 kill
+	if(unit->get_hp()/*+unit->get_armor()*/-_damage<=0)
+	{
+		//L'unité DEVRAIT mourir
+		_player->set_killed(_player->get_killed()+1);
+	}
 	//std::cout << "deal_dmg" << std::endl;
+	/*
+	if(_damage>unit->get_armor)
+	{
+		unit->set_hp(unit->get_hp()+_unit->get_armor()-_damage);
+	}
+	else //Dégâts minimums
+	{
+		unit->set_hp(unit->get_hp()-_1);
+	}
+	*/
 	unit->set_hp(unit->get_hp()-_damage);
 	//Détruire le projectile et vérifier si l'unité a encore des pv !
 }

@@ -192,8 +192,6 @@ void Turret::check_attack()
 	float min_distance = _range_max +10.0; //=> infini
 	int index = -1; //Pas d'index => pas de cible
 	CCPoint turret_position = getPosition().rotateByAngle(CCPoint(0,0),get_unit(_shooter_unit)->getSprite()->getRotation()) + get_unit(_shooter_unit)->getSprite()->getPosition();
-	//float x,y;
-	//float delta_x,delta_y;
 
 	if(!get_unit(_target_unit) /*|| (distance > _range_max && get_unit(_shooter_unit)->get_ai_stat()->get_hold_position()==True)*/)
 	{			
@@ -201,9 +199,7 @@ void Turret::check_attack()
 		{
 			if(get_unit(_shooter_unit)->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getPlayer() != get_unit(_shooter_unit)->getPlayer()) //Propriétaire de l'unité vérifiée != propriétaire du missile
 			{
-				//turret_position = getPosition().rotateByAngle(CCPoint(0,0),_shooter_unit->getSprite()->getRotation()) + _shooter_unit->getSprite()->getPosition();
-				distance = turret_position.getDistance(get_unit(_shooter_unit)->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPosition());
-				//std::cout << this << " Distance =" << distance << std::endl;		
+				distance = turret_position.getDistance(get_unit(_shooter_unit)->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPosition());	
 				if (distance <= _range_max && distance < min_distance)
 				{
 					min_distance = distance;
@@ -220,35 +216,16 @@ void Turret::check_attack()
 	if(get_unit(_target_unit)) //Il y a une cible
 	{
 		rotate_to_target();
-		//turret_position = getPosition().rotateByAngle(CCPoint(0,0),_shooter_unit->getSprite()->getRotation()) + _shooter_unit->getSprite()->getPosition();
 		float distance = turret_position.getDistance(get_unit(_target_unit)->getSprite()->getPosition());
-		//if(_target_unit==_shooter_unit){std::cout << "TROLOLOOOOOO !!!" << endl;}		
 		
 		if(distance <= _range_max) //A portée
 		{
 			fire();
 		}
 		
-		else if (distance > _range_max) //Hors de portée : il n'y a plus de cibles et on vérifie si y en a à portée
+		else if (distance > _range_max) //Hors de portée : il n'y a plus de cible et on vérifie si y en a à portée
 		{
-			remove_unit(_target_unit);
-			for(i = 0 ; i < get_unit(_shooter_unit)->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_number_unit() ; i++)
-			{
-				if(get_unit(_shooter_unit)->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getPlayer() != get_unit(_shooter_unit)->getPlayer()) //Propriétaire de l'unité vérifiée != propriétaire du missile
-				{
-					turret_position = getPosition().rotateByAngle(CCPoint(0,0),get_unit(_shooter_unit)->getSprite()->getRotation()) + get_unit(_shooter_unit)->getSprite()->getPosition();
-					distance = turret_position.getDistance(get_unit(_shooter_unit)->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPosition());
-					if (distance <= _range_max && distance < min_distance)
-					{
-						min_distance = distance;
-						index = i;
-					}
-					if(index!=-1)
-					{
-						change_unit(get_unit(_shooter_unit)->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(index),_target_unit);
-					}
-				}
-			}			
+			remove_unit(_target_unit); //On vide le pointeur de cible	
 		}
 		
 		else
@@ -331,10 +308,46 @@ void Turret::rotate_to_target()
 		if(delta_x != 0) //Pour éviter la division par zéro !
 		{
 			float angle;
-			if (delta_x < 0)  angle = -1.* atan(delta_y/delta_x) * (180/M_PI) + 90;
-			else angle = -1.* atan(delta_y/delta_x) * (180/M_PI) + 270;
-			angle -= get_unit(_shooter_unit)->getSprite()->getRotation(); //Retirer l'angle de l'unité
+			
+			if (delta_x < 0)  angle = -1.* atan(delta_y/delta_x) * (180/M_PI) - 90;
+			else angle = -1.* atan(delta_y/delta_x) * (180/M_PI) /*- 180*/+90;  //angle =0;
+			if(get_unit(_target_unit)->getPlayer()->get_name()=="joueur2")
+			{
+				std::cout << "Angle (avant modif) : " << angle << std::endl;
+				std::cout << "Angle (unité) : " << get_unit(_shooter_unit)->getSprite()->getRotation() << std::endl;
+			}			
+			
+			angle += get_unit(_shooter_unit)->getSprite()->getRotation(); //Retirer l'angle de l'unité
 			setRotation(angle); //Il faut appliquer la rotation au Sprite, qui est un attribut de Displayable
-		}
+			
+			
+			/*if (delta_x < 0)  angle = -1.* atan(delta_y/delta_x) + M_PI;
+			else angle = -1.* atan(delta_y/delta_x) + 3*M_PI;
+			angle -= get_unit(_shooter_unit)->getSprite()->getRotation(); //Retirer l'angle de l'unité
+			setRotation(angle); //Il faut appliquer la rotation au Sprite, qui est un attribut de Displayable*/
+			/*
+			angle = acos(delta_x) + M_PI/2;
+			if(delta_y < 0)
+			{
+				if(delta_x > 0) 
+				{
+					angle = M_PI - angle;
+				}
+				else
+				{
+					angle = 3*M_PI - angle;
+				}
+				angle*=180/M_PI;
+				if(get_unit(_target_unit)->getPlayer()->get_name()=="joueur2")
+				{
+					std::cout << "Angle (avant modif) : " << angle << std::endl;
+					std::cout << "Angle (unité) : " << get_unit(_shooter_unit)->getSprite()->getRotation() << std::endl;
+				}
+				
+				angle -= get_unit(_shooter_unit)->getSprite()->getRotation();
+				if(get_unit(_target_unit)->getPlayer()->get_name()=="joueur2") std::cout << "Angle total : " << angle << std::endl;
+				setRotation(angle);
+			}*/
+		}		
 	}
 }
