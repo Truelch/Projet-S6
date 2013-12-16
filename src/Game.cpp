@@ -54,7 +54,6 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_display_layer->coordonate_tile_to_cocos2dx(3,0,x2,y2);
 	_display_layer->get_unit_layer()->add_unit(x,y,x2,y2,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],200);
 
-	/*
 	int i=0;
 	//Amis
 	int a = 3;
@@ -62,7 +61,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	{
 		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,10,x,y);
 		_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],600);
-		_display_layer->get_unit_layer()->get_unit(i)->add_turret(0,"units/turret_tank_00.png", this, _display_layer->get_missile_layer(), /*-3.0, 8.0,*/0.0,0.0,
+		_display_layer->get_unit_layer()->get_unit(i)->add_turret(0,"units/turret_tank_00.png", this, _display_layer->get_missile_layer(), 0.0,0.0,
 					50.0,"missiles/01.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i));
 	}
 	
@@ -74,7 +73,6 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 		_display_layer->get_unit_layer()->get_unit(i+a)->add_turret(0,"units/turret_tank_01.png", this, _display_layer->get_missile_layer(), 0, 0, 
 					50.0,"missiles/02.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i+a));
 	}
-	*/
 
 	/*
 	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);

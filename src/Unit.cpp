@@ -306,10 +306,7 @@ void Unit::update(float dt)
 	//Régénération
 	if(_stat->get_hp() < _stat->get_hp_max())
 	{
-<<<<<<< HEAD
-=======
 		//std::cout << "Régénération (hp = " << _stat->get_hp() << "/" << _stat->get_hp_max() << ") + " << dt*_stat->get_hp_regen() << std::endl;
->>>>>>> d0ff0e705070019832aa00dfa6b5226c7f9de1db
 		if(_stat->get_hp()+dt*_stat->get_hp_regen() < _stat->get_hp_max())
 		{
 			set_hp(_stat->get_hp()+dt*_stat->get_hp_regen());
