@@ -32,7 +32,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	int i =0;
 	std::cout << "Constructeur de Game" << std::endl;
 	_display_layer = new DisplayLayer(this);
-	if(_display_layer->init_file("map/map1")==EXIT_FAILURE) {
+	if(_display_layer->init_file(CCFileUtils::sharedFileUtils()->getSearchPaths()[0]+"../map/map1")==EXIT_FAILURE) {
 		std::cerr << "ERREUR : fichier map invalide" << std::endl;
 	}
 	//_display_layer->setZOrder(1);
