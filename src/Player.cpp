@@ -285,3 +285,54 @@ void Player::on_building_change_player(Building * building, Player * old_player,
 		}
 	}
 }
+
+//Boutons
+void Player::on_hud_item_clicked(HudItem * hud_item)
+{
+	if(this==get_game()->get_main_player()) //On vérifie si c'est le main Player
+	{
+		/*
+			stopButtonType,
+			holdPositionButtonType,
+			moveButtonType,
+			patrolButtonType,
+			retreatButtonType,
+		*/
+		if(hud_item->getButtonType()==HudItem::stopButtonType)
+		{
+			int i;
+			for(i=0;i<get_number_unit_selected();i++) //On traverse toutes les unités sélectionnées et on sette leur destination à leur position actuelle pour les immobiliser
+			{
+				get_unit_selected(i)->set_destination(get_unit_selected(i)->getSprite()->getPositionX(),get_unit_selected(i)->getSprite()->getPositionY());
+			}
+		}
+		
+		else if(hud_item->getButtonType()==HudItem::holdPositionButtonType) // Même effet !
+		{
+			int i;
+			for(i=0;i<get_number_unit_selected();i++) //On traverse toutes les unités sélectionnées et on sette leur destination à leur position actuelle pour les immobiliser
+			{
+				get_unit_selected(i)->set_destination(get_unit_selected(i)->getSprite()->getPositionX(),get_unit_selected(i)->getSprite()->getPositionY());
+			}
+		}
+		
+		else if(hud_item->getButtonType()==HudItem::moveButtonType)
+		{
+			//
+		}
+		
+		else if(hud_item->getButtonType()==HudItem::patrolButtonType)
+		{
+			//
+		}
+		
+		else if(hud_item->getButtonType()==HudItem::retreatButtonType)
+		{
+			int i;
+			for(i=0;i<get_number_unit_selected();i++) //On traverse toutes les unités sélectionnées et on sette leur destination à la position du QG
+			{
+				get_unit_selected(i)->set_destination(get_hq()->getSprite()->getPositionX(),get_hq()->getSprite()->getPositionY());
+			}
+		}
+	}
+}

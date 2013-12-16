@@ -129,6 +129,9 @@ class Player: public EventReceiver
 
 		virtual void on_building_change_player(Building * building, Player * old_player, Player * new_player);
 		
+		//
+		void on_hud_item_clicked(HudItem * hud_item);
+		
 };
 
 #endif

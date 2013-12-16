@@ -145,45 +145,6 @@ void Turret::set_range_max(float range_max)
 }*/
 
 // --- METHODES ---
-/*
-void Turret::check_attack()
-{
-	int i = 0;
-	float distance         = _range_max+10.0; //hors de portée => valeur infinie
-	float current_distance = _range_max;
-	//float delta_x, delta_y;
-	//std::cout << "Turret::check_attack()" << endl;
-	//Pour accéder aux container d'unités !	
-	for(i = 0 ; i < _shooter_unit->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_number_unit() ; i++) //Ici
-	{
-		if(_shooter_unit!=get_shooter_unit()->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)) {
-			if(!_target_unit) //Si le pointeur de cible n'est pas nul, on va regarder si on peut le faire tirer sur qqn
-			{
-				std::cout << "if(!_target_unit)" << endl;
-				//delta_x = _target_unit->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPositionX() - getPositionX(); //Ici
-				//delta_y = _target_unit->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPositionY() - getPositionY(); //Ici
-			
-				CCPoint position = getPosition() + _shooter_unit->getSprite()->getPosition();
-				distance = position.getDistance(get_shooter_unit()->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPosition());
-			
-				//std::cout << this << "\t" << getPosition().x << "," << getPosition().y << " -> " << get_shooter_unit()->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPosition().x << "," << get_shooter_unit()->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i)->getSprite()->getPosition().y << " = ok" << distance << std::endl;
-				if(distance <= current_distance && distance <= _range_max)
-				{
-					//
-					std::cout << "if((distance <= current_distance) && (distance <= _range_max))" << endl;
-					_target_unit = _shooter_unit->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_unit(i); //la cible devient
-				}
-			}
-			if(_target_unit) //Il y a une cible
-			{
-				
-				std::cout << "if(_target_unit)" << endl;
-				fire();
-			}
-		}
-	}
-}
-*/
 
 void Turret::check_attack()
 {
@@ -233,25 +194,6 @@ void Turret::check_attack()
 			std::cout << "check_attack3" << std::endl;
 			std::cout << "WTF (Turret.cpp)" << std::endl;
 		}
-		/*
-		if(distance <= _range_max) //A portée
-		{
-			fire();
-		}
-		else if(distance > _range_max ) //Pas à portée + Pas tenir la position => Poursuivre
-		{
-			//Si on fait déplacer l'unité directement sur la position de l'unité, elle va se mettre en contact
-			//Il faut la faire avancer pas à pas
-			delta_x = (_target_unit->getSprite()->getPositionX() - _shooter_unit->getSprite()->getPositionX())/distance;//unitaire
-			delta_y = (_target_unit->getSprite()->getPositionY() - _shooter_unit->getSprite()->getPositionY())/distance;//unitaire
-			//x = _target_unit->getSprite()->getPositionX();
-			//y = _target_unit->getSprite()->getPositionY();
-			_shooter_unit->set_destination(_shooter_unit->getSprite()->getPositionX()+delta_x,_shooter_unit->getSprite()->getPositionY()+delta_y);
-		}
-		else if() //Pas à portée + Tenir position => Définir la cible comme étant l'unité la plus proche
-		{
-			for(i = 0 ; i < _shooter_unit->getPlayer()->get_game()->get_display_layer()->get_unit_layer()->get_number_unit() ; i++)
-		}*/
 	}	
 
 }
@@ -311,12 +253,13 @@ void Turret::rotate_to_target()
 			
 			if (delta_x < 0)  angle = -1.* atan(delta_y/delta_x) * (180/M_PI) - 90;
 			else angle = -1.* atan(delta_y/delta_x) * (180/M_PI) /*- 180*/+90;  //angle =0;
+			/*
 			if(get_unit(_target_unit)->getPlayer()->get_name()=="joueur2")
 			{
 				std::cout << "Angle (avant modif) : " << angle << std::endl;
 				std::cout << "Angle (unité) : " << get_unit(_shooter_unit)->getSprite()->getRotation() << std::endl;
 			}			
-			
+			*/
 			angle += get_unit(_shooter_unit)->getSprite()->getRotation(); //Retirer l'angle de l'unité
 			setRotation(angle); //Il faut appliquer la rotation au Sprite, qui est un attribut de Displayable
 			
