@@ -29,14 +29,14 @@ class CloseButton : public MenuItem {
 	public:
 		CloseButton(const char * filenameSelected, const char * filenameUnselected = NULL): MenuItem(filenameSelected,filenameUnselected) {}
 
-		virtual void operator()() { cocos2d::CCDirector::sharedDirector()->end(); }
+		virtual void operator()();
 };
 
 class PlayButton : public MenuItem {
 	public:
 		PlayButton(const char * filenameSelected, const char * filenameUnselected = NULL): MenuItem(filenameSelected,filenameUnselected) {}
 
-		virtual void operator()() { cocos2d::CCDirector::sharedDirector()->replaceScene(((AppDelegate *)(cocos2d::CCApplication::sharedApplication()))->get_game()); }
+		virtual void operator()();
 };
 
 class Menu : public Scene {

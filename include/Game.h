@@ -97,6 +97,9 @@ class Game : public Scene
 		bool _selection_zone_enable;
 
 		HudItem * _hud_item_mouse;
+
+		std::vector<std::string> _list_music;
+		unsigned int _index_current_music;
 };
 
 #endif

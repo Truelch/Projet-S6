@@ -7,6 +7,7 @@
 #include "UnitLayer.h"
 #include "Unit.h"
 #include "TileLayer.h"
+#include "EventHandler.h"
 
 #define PI 3.14159265
 
@@ -242,6 +243,7 @@ bool Missile::check_collision()
 
 void Missile::deal_dmg(Unit * unit)
 {
+	unit->getGame()->getEventHandler()->on_unit_shooted(unit);
 	//Vérifier si l'unité meurt => +1 kill
 	if(unit->get_hp()/*+unit->get_armor()*/-_damage<=0)
 	{

@@ -10,6 +10,7 @@ class Displayable;
 class Player;
 class Building;
 class HudItem;
+class Missile;
 
 class EventHandler {
 	public:
@@ -34,6 +35,11 @@ class EventHandler {
 		void on_building_change_player(Building * building, Player * old_player, Player * new_player);
 
 		void on_hud_item_clicked(HudItem * hud_item);
+
+		void on_unit_shoot(Missile * missile);
+		void on_unit_shooted(Unit * unit);
+
+		void on_player_select_unit(Player * player, std::vector<Unit *> unit);
 
 	private:
 		std::vector<EventReceiver *> _receiver_list;

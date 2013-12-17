@@ -93,3 +93,24 @@ void EventHandler::on_hud_item_clicked(HudItem * hud_item) {
 		_receiver_list[i]->on_hud_item_clicked(hud_item);
 	}
 }
+
+void EventHandler::on_unit_shoot(Missile * missile) {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->on_unit_shoot(missile);
+	}
+}
+
+void EventHandler::on_unit_shooted(Unit * unit) {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->on_unit_shooted(unit);
+	}
+}
+
+void EventHandler::on_player_select_unit(Player * player, std::vector<Unit *> unit) {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->on_player_select_unit(player,unit);
+	}
+}

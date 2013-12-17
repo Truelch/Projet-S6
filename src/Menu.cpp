@@ -2,6 +2,7 @@
 #include "Menu.h"
 
 #include "EGLView.h"
+#include "SimpleAudioEngine.h"
 
 MenuItem::MenuItem(const char * filenameSelected, const char * filenameUnselected): cocos2d::CCSprite(), _selected(false) {
 	initWithFile(filenameSelected);
@@ -47,6 +48,15 @@ MenuItem::~MenuItem() {
 	if(_textureUnselected) delete _textureUnselected;
 }
 
+void CloseButton::operator()() {
+	cocos2d::CCDirector::sharedDirector()->end();
+}
+
+void PlayButton::operator()() {
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
+	cocos2d::CCDirector::sharedDirector()->replaceScene(((AppDelegate *)(cocos2d::CCApplication::sharedApplication()))->get_game());
+}
+
 Menu::Menu(const char * wallpaperFilename): Scene(), _wallpaper(cocos2d::CCSprite::create(wallpaperFilename)), _layer(new cocos2d::CCLayer()), _menu_item_mouse(NULL) {
 	addChild(_layer);
 	_layer->addChild(_wallpaper);
@@ -57,7 +67,6 @@ Menu::Menu(const char * wallpaperFilename): Scene(), _wallpaper(cocos2d::CCSprit
 	_layer->setScaleX(size.width/_wallpaper->getTextureRect().size.width);
 	_layer->setScaleY(size.height/_wallpaper->getTextureRect().size.height);
 	_wallpaper->setPosition(cocos2d::CCPoint(270,180));
-
 }
 
 Menu::~Menu() {

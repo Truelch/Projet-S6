@@ -2,6 +2,8 @@
 #include "AppMacros.h"
 #include <iostream>
 #include <algorithm>
+#include <random>
+#include <chrono>
 
 #include "Unit.h"
 #include "Player.h"
@@ -23,11 +25,13 @@
 #include "EventHandler.h"
 #include "FogOfWarLayer.h"
 
+#include "SimpleAudioEngine.h"
+
 USING_NS_CC;
 
 using namespace std;
 
-Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _scroll_up_mouse(false), _scroll_down_mouse(false), _scroll_left_key(false), _scroll_right_key(false), _scroll_up_key(false), _scroll_down_key(false), _mouse_button_left_down(false), _key_left_alt(false), _key_right_alt(false), _selection_zone_enable(false), _hud_item_mouse(NULL)
+Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _scroll_up_mouse(false), _scroll_down_mouse(false), _scroll_left_key(false), _scroll_right_key(false), _scroll_up_key(false), _scroll_down_key(false), _mouse_button_left_down(false), _key_left_alt(false), _key_right_alt(false), _selection_zone_enable(false), _hud_item_mouse(NULL), _index_current_music(-1)
 {
 	std::cout << "Constructeur de Game" << std::endl;
 	_display_layer = new DisplayLayer(this);
@@ -35,7 +39,8 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 		std::cerr << "ERREUR : fichier map invalide" << std::endl;
 	}
 	//_display_layer->setZOrder(1);
-	_display_layer->setScale(0.2);
+	_display_layer->setScaleY(0.2);
+	_display_layer->setScaleX(1);
 	addChild(_display_layer);
 
 	_selectionZone = new SelectionZone(CCPoint(0,0), CCPoint(0,0), this, _display_layer->get_selection_zone_layer(), ccc4(0,255,255,68));
@@ -49,7 +54,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_main_player = _player_list[0];
 
 	int i=0;
-	float x,y,x2,y2;
+	float x,y;
 	//Amis
 	int a = 10;
 	for(i=0;i<a;i++)
@@ -71,7 +76,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	
 	//BOSS
 	_display_layer->coordonate_tile_to_cocos2dx(25,20,x,y);
-	_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,5,5.0f,1.0f,"units/boss/boss_01.png", "boss",1000,1000,1.0,100,100,1.0,6.0,100, _player_list[1],600);
+	_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,5,5.0f,1.0f,"units/boss/boss_01.png", "boss",1000,1000,1.0,100,100,1.0,6.0,100, _player_list[0],600);
 	_display_layer->get_unit_layer()->get_unit(i+a)->add_turret(0,"units/boss/big_turret_01.png", this, _display_layer->get_missile_layer(), 0, 0, 
 					50.0,"missiles/02.png", 75, 5, 500,_display_layer->get_unit_layer()->get_unit(2*a));
 	
@@ -116,6 +121,19 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 
 	//_hud = new Hud(256,180,"hud.png", this, _hud_layer);
 	
+	_list_music.push_back("audio/01 Animus Vox.mp3");
+	_list_music.push_back("audio/02 Bad Wings.mp3");
+	_list_music.push_back("audio/03 How To Be Eaten By A Woman.mp3");
+	_list_music.push_back("audio/04 A Dream Within A Dream.mp3");
+	_list_music.push_back("audio/05 Fistful Of Silence.mp3");
+	_list_music.push_back("audio/06 Between Two Points - Feat. Swan.mp3");
+	_list_music.push_back("audio/07 We Swarm.mp3");
+	_list_music.push_back("audio/08 Drive It Like You Stole It.mp3");
+	_list_music.push_back("audio/09 Fortune Days.mp3");
+	_list_music.push_back("audio/10 Starve The Ego, Feed The Soul.mp3");
+
+	shuffle(_list_music.begin(), _list_music.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
+
 	this->schedule( schedule_selector( Game::update ), 1.0 / 30 );	
 }
 
@@ -153,6 +171,15 @@ void Game::update(float dt)
 	float x,y,z,n;
 	CCSize size;
 	float vitesse_scroling=(300.0/_display_layer->getScale())*dt;
+
+	if(!CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying()) {
+		_index_current_music+=1;
+		if(_index_current_music==_list_music.size()) {
+			_index_current_music=0;
+			shuffle(_list_music.begin(), _list_music.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
+		}
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(_list_music[_index_current_music].c_str());
+	}
 
 	if(_scroll_left_mouse || _scroll_left_key) {
 		_display_layer->getCamera()->getCenterXYZ(&x,&y,&z);
@@ -286,17 +313,65 @@ void Game::set_map_point_to_opengl_point(CCPoint map_point, int opengl_x, int op
 }
 
 void Game::mouse_left_button_down() {
-	int tile_x, tile_y, i,j,k;
+	int i;
 	CCPoint point;
-	Unit * unit_selected = NULL;
 	Container<Unit> unit_container;
-	bool unit_already_selected=false;
 	CCSize size;
 	CCPoint pos;
 
 	_mouse_button_left_down=true;
 
-	if(get_mouse_y()<520) {
+	if(get_mouse_y()>=520) {
+		point = convert_opengl_point_to_layer_point(get_mouse_x(),get_mouse_y(),_hud_layer);
+		for(i=0;i<_hud_layer->get_number_hud_item();i++) {
+			size = _hud_layer->get_hud_item(i)->getSprite()->getTextureRect().size;
+			pos = _hud_layer->get_hud_item(i)->getSprite()->getPosition();
+			if(_hud_layer->get_hud_item(i)->containsPoint(point)) {
+				_hud_item_mouse=_hud_layer->get_hud_item(i);
+				break;
+			}
+		}
+	}
+}
+
+void Game::mouse_left_button_up() {
+	_mouse_button_left_down=false;
+	Unit * unit_selected = NULL;
+	vector<Unit *> list_unit_selected;
+	Container<Unit> unit_container;
+	vector<Unit *>::iterator it;
+	int tile_x, tile_y, i,j,k;
+	bool unit_already_selected=false;
+	CCPoint point;
+
+	if(_selection_zone_enable) {
+		list_unit_selected = _selectionZone->get_list_unit();
+		for(it=list_unit_selected.begin();it!=list_unit_selected.end();) {
+			if((*it)->getPlayer()!=_main_player) list_unit_selected.erase(it);
+			else it++;
+		}
+
+		if(list_unit_selected.size()>0) {
+			for(i=0;i<_main_player->get_number_unit_selected();) {
+				if( std::find(list_unit_selected.begin(), list_unit_selected.end(), _main_player->get_unit_selected(i)) == list_unit_selected.end() ) {
+					_main_player->remove_unit_selected(_main_player->get_unit_selected(i));
+				}
+				else i++;
+			}
+			for(i=0;i<(int)list_unit_selected.size();i++) {
+				if(!_main_player->test_unit_selected(list_unit_selected[i])) {
+					_main_player->add_unit_selected(list_unit_selected[i]);
+				}
+			}
+		}
+		getEventHandler()->on_player_select_unit(_main_player,list_unit_selected);
+
+		_selection_zone_enable=false;
+		_selectionZone->setP1(CCPoint(0,0));
+		_selectionZone->setP2(CCPoint(0,0));
+		_selectionZone->update();
+	}
+	else if(get_mouse_y()<520) {
 		point = convert_opengl_point_to_layer_point(get_mouse_x(),get_mouse_y(),_display_layer);
 		_display_layer->coordonate_cocos2dx_to_tile(point.x, point.y, tile_x, tile_y);
 
@@ -326,52 +401,11 @@ void Game::mouse_left_button_down() {
 			}
 
 			if(!unit_already_selected) _main_player->add_unit_selected(unit_selected);
-		}
-	}
-	else {
-		point = convert_opengl_point_to_layer_point(get_mouse_x(),get_mouse_y(),_hud_layer);
-		for(i=0;i<_hud_layer->get_number_hud_item();i++) {
-			size = _hud_layer->get_hud_item(i)->getSprite()->getTextureRect().size;
-			pos = _hud_layer->get_hud_item(i)->getSprite()->getPosition();
-			if(_hud_layer->get_hud_item(i)->containsPoint(point)) {
-				_hud_item_mouse=_hud_layer->get_hud_item(i);
-				break;
-			}
-		}
-	}
-}
 
-void Game::mouse_left_button_up() {
-	_mouse_button_left_down=false;
-	vector<Unit *> unit_selected;
-	vector<Unit *>::iterator it;
-	int i;
-	CCPoint point;
-	if(_selection_zone_enable) {
-		unit_selected = _selectionZone->get_list_unit();
-		for(it=unit_selected.begin();it!=unit_selected.end();) {
-			if((*it)->getPlayer()!=_main_player) unit_selected.erase(it);
-			else it++;
+			list_unit_selected.clear();
+			list_unit_selected.push_back(unit_selected);
+			getEventHandler()->on_player_select_unit(_main_player,list_unit_selected);
 		}
-
-		if(unit_selected.size()>0) {
-			for(i=0;i<_main_player->get_number_unit_selected();) {
-				if( std::find(unit_selected.begin(), unit_selected.end(), _main_player->get_unit_selected(i)) == unit_selected.end() ) {
-					_main_player->remove_unit_selected(_main_player->get_unit_selected(i));
-				}
-				else i++;
-			}
-			for(i=0;i<(int)unit_selected.size();i++) {
-				if(!_main_player->test_unit_selected(unit_selected[i])) {
-					_main_player->add_unit_selected(unit_selected[i]);
-				}
-			}
-		}
-
-		_selection_zone_enable=false;
-		_selectionZone->setP1(CCPoint(0,0));
-		_selectionZone->setP2(CCPoint(0,0));
-		_selectionZone->update();
 	}
 
 	point = convert_opengl_point_to_layer_point(get_mouse_x(),get_mouse_y(),_hud_layer);
@@ -471,7 +505,7 @@ void Game::key_release(int key) {
 
 void Game::mouse_wheel_up() {
 	CCPoint map_point, screen_point;
-	if(_display_layer->getScale()<2) {
+	if(_display_layer->getScale()<1) {
 		map_point = convert_opengl_point_to_layer_point(get_mouse_x(),get_mouse_y(),_display_layer);
 		_display_layer->setScale(_display_layer->getScale()+0.05);
 		set_map_point_to_opengl_point(map_point,get_mouse_x(),get_mouse_y());

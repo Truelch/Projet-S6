@@ -9,6 +9,9 @@ class MapTile;
 class Player;
 class Building;
 class HudItem;
+class Missile;
+
+#include <vector>
 
 class EventReceiver {
 	public:
@@ -31,6 +34,11 @@ class EventReceiver {
 		virtual void on_building_change_player(Building * building, Player * old_player, Player * new_player) {}
 
 		virtual void on_hud_item_clicked(HudItem * hud_item) {}
+
+		virtual void on_unit_shoot(Missile * missile) {}
+		virtual void on_unit_shooted(Unit * unit) {}
+
+		virtual void on_player_select_unit(Player * player, std::vector<Unit *> unit) {}
 
 	private:
 		EventHandler * _eventHandler;
