@@ -121,16 +121,12 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 
 	//_hud = new Hud(256,180,"hud.png", this, _hud_layer);
 	
-	_list_music.push_back("audio/01 Animus Vox.mp3");
 	_list_music.push_back("audio/02 Bad Wings.mp3");
 	_list_music.push_back("audio/03 How To Be Eaten By A Woman.mp3");
 	_list_music.push_back("audio/04 A Dream Within A Dream.mp3");
 	_list_music.push_back("audio/05 Fistful Of Silence.mp3");
-	_list_music.push_back("audio/06 Between Two Points - Feat. Swan.mp3");
-	_list_music.push_back("audio/07 We Swarm.mp3");
 	_list_music.push_back("audio/08 Drive It Like You Stole It.mp3");
 	_list_music.push_back("audio/09 Fortune Days.mp3");
-	_list_music.push_back("audio/10 Starve The Ego, Feed The Soul.mp3");
 
 	shuffle(_list_music.begin(), _list_music.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
 

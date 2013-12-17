@@ -25,16 +25,12 @@ int main(int argc, char **argv)
 	std::vector<std::string> _list_background_music;
 
 	_list_background_music.push_back("audio/Daft Punk - Tron Uprising.mp3");
-	_list_background_music.push_back("audio/01 Animus Vox.mp3");
 	_list_background_music.push_back("audio/02 Bad Wings.mp3");
 	_list_background_music.push_back("audio/03 How To Be Eaten By A Woman.mp3");
 	_list_background_music.push_back("audio/04 A Dream Within A Dream.mp3");
 	_list_background_music.push_back("audio/05 Fistful Of Silence.mp3");
-	_list_background_music.push_back("audio/06 Between Two Points - Feat. Swan.mp3");
-	_list_background_music.push_back("audio/07 We Swarm.mp3");
 	_list_background_music.push_back("audio/08 Drive It Like You Stole It.mp3");
 	_list_background_music.push_back("audio/09 Fortune Days.mp3");
-	_list_background_music.push_back("audio/10 Starve The Ego, Feed The Soul.mp3");
 
 	unsigned int i;
 	for(i=0; i<_list_background_music.size(); i++) {
