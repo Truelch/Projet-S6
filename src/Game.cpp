@@ -20,7 +20,6 @@
 #include "BuildingLayer.h"
 #include "MissileLayer.h"
 #include "SelectionZone.h"
-#include "Cursor.h"
 #include "EventHandler.h"
 #include "FogOfWarLayer.h"
 
@@ -28,7 +27,7 @@ USING_NS_CC;
 
 using namespace std;
 
-Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _scroll_up_mouse(false), _scroll_down_mouse(false), _scroll_left_key(false), _scroll_right_key(false), _scroll_up_key(false), _scroll_down_key(false), _mouse_button_left_down(false), _key_left_alt(false), _key_right_alt(false), _selection_zone_enable(false), _mouse_x(0), _mouse_y(0), _old_x(0), _old_y(0), _mouse_initiate(false), _hud_item_mouse(NULL)
+Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _scroll_up_mouse(false), _scroll_down_mouse(false), _scroll_left_key(false), _scroll_right_key(false), _scroll_up_key(false), _scroll_down_key(false), _mouse_button_left_down(false), _key_left_alt(false), _key_right_alt(false), _selection_zone_enable(false), _hud_item_mouse(NULL)
 {
 	std::cout << "Constructeur de Game" << std::endl;
 	_display_layer = new DisplayLayer(this);
@@ -48,13 +47,9 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_player_list.push_back( new Player(this, "joueur2", Player::red, 2, 2) );
 	
 	_main_player = _player_list[0];
-	
-	float x,y,x2,y2;
-	_display_layer->coordonate_tile_to_cocos2dx(4,0,x,y);
-	_display_layer->coordonate_tile_to_cocos2dx(3,0,x2,y2);
-	_display_layer->get_unit_layer()->add_unit(x,y,x2,y2,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],200);
 
 	int i=0;
+	float x,y,x2,y2;
 	//Amis
 	int a = 3;
 	for(i=0;i<a;i++)
@@ -70,9 +65,13 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	{
 		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,20,x,y);
 		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_01.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[1],600);
-		_display_layer->get_unit_layer()->get_unit(i+a)->add_turret(0,"units/turret_tank_01.png", this, _display_layer->get_missile_layer(), 0, 0, 
-					50.0,"missiles/02.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i+a));
+		_display_layer->get_unit_layer()->get_unit(i+a)->add_turret(0,"units/turret_tank_01.png", this, _display_layer->get_missile_layer(), 0, 0, 50.0,"missiles/02.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i+a));
 	}
+
+	
+	_display_layer->coordonate_tile_to_cocos2dx(4,0,x,y);
+	_display_layer->coordonate_tile_to_cocos2dx(3,0,x2,y2);
+	_display_layer->get_unit_layer()->add_unit(x,y,x2,y2,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],200);
 
 	/*
 	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
@@ -110,11 +109,6 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 
 	//_hud = new Hud(256,180,"hud.png", this, _hud_layer);
 	
-	_cursor_layer = new Layer(this);
-	_cursor_layer->setZOrder(3);
-	addChild(_cursor_layer);
-	_cursor = new Cursor(0,0,"fleche.png",this,_cursor_layer);
-
 	this->schedule( schedule_selector( Game::update ), 1.0 / 30 );	
 }
 
@@ -122,16 +116,9 @@ Game::~Game() {
 	delete _contactListener;
 	delete _display_layer;
 	delete _hud_layer;
-	delete _cursor_layer;
-	delete _cursor;
 }
 
 // --- SET ---
-
-void Game::set_time_elapsed(float time_elapsed)
-{
-	_time_elapsed = time_elapsed;
-}
 
 // --- GET ---
 
@@ -234,12 +221,6 @@ void Game::set_tile_to_center_of_screen(int tile_x, int tile_y) {
 	set_point_to_center_of_screen(CCPoint(x,y));
 }
 
-void Game::get_center_of_screen(int& x, int& y) {
-	CCSize frame_size = EGLView::sharedOpenGLView()->getFrameSize();
-	x=(frame_size.width)/2;
-	y=(frame_size.height)/2;
-}
-
 void Game::set_point_to_center_of_screen(CCPoint point) {
 	int x,y;
 	get_center_of_screen(x,y);
@@ -297,29 +278,6 @@ void Game::set_map_point_to_opengl_point(CCPoint map_point, int opengl_x, int op
 	_display_layer->getCamera()->setEyeXYZ(new_offset.x,new_offset.y,offset_z);
 }
 
-CCPoint Game::convert_opengl_point_to_layer_point_with_new_offset(int opengl_x, int opengl_y, Layer * layer, float offset_x, float offset_y) {
-	CCPoint map_point;
-	float cocos_x, cocos_y;
-	CCSize frameSize = EGLView::sharedOpenGLView()->getFrameSize();
-
-	opengl_x=frameSize.width/2+((opengl_x-frameSize.width/2)/layer->getScaleX());
-	opengl_y=frameSize.height/2+((opengl_y-frameSize.height/2)/layer->getScaleY());
-
-	coordinateOpenglToCocos2dx(opengl_x,opengl_y,cocos_x,cocos_y);
-
-	map_point.x = cocos_x+offset_x;
-	map_point.y = cocos_y+offset_y;
-
-	return map_point;
-}
-
-CCPoint Game::convert_opengl_point_to_layer_point(int opengl_x, int opengl_y, Layer * layer) {
-	float offset_x,offset_y,offset_z;
-	layer->getCamera()->getCenterXYZ(&offset_x,&offset_y,&offset_z);
-
-	return convert_opengl_point_to_layer_point_with_new_offset(opengl_x, opengl_y, layer, offset_x, offset_y);
-}
-
 void Game::mouse_left_button_down() {
 	int tile_x, tile_y, i,j,k;
 	CCPoint point;
@@ -331,8 +289,8 @@ void Game::mouse_left_button_down() {
 
 	_mouse_button_left_down=true;
 
-	if(_mouse_y<520) {
-		point = convert_opengl_point_to_layer_point(_mouse_x,_mouse_y,_display_layer);
+	if(get_mouse_y()<520) {
+		point = convert_opengl_point_to_layer_point(get_mouse_x(),get_mouse_y(),_display_layer);
 		_display_layer->coordonate_cocos2dx_to_tile(point.x, point.y, tile_x, tile_y);
 
 		for(i=tile_x-1;i<tile_x+2;i++) {
@@ -364,7 +322,7 @@ void Game::mouse_left_button_down() {
 		}
 	}
 	else {
-		point = convert_opengl_point_to_layer_point(_mouse_x,_mouse_y,_hud_layer);
+		point = convert_opengl_point_to_layer_point(get_mouse_x(),get_mouse_y(),_hud_layer);
 		for(i=0;i<_hud_layer->get_number_hud_item();i++) {
 			size = _hud_layer->get_hud_item(i)->getSprite()->getTextureRect().size;
 			pos = _hud_layer->get_hud_item(i)->getSprite()->getPosition();
@@ -409,7 +367,7 @@ void Game::mouse_left_button_up() {
 		_selectionZone->update();
 	}
 
-	point = convert_opengl_point_to_layer_point(_mouse_x,_mouse_y,_hud_layer);
+	point = convert_opengl_point_to_layer_point(get_mouse_x(),get_mouse_y(),_hud_layer);
 	if(_hud_item_mouse && _hud_item_mouse->containsPoint(point)) {
 		getEventHandler()->on_hud_item_clicked(_hud_item_mouse);
 	}
@@ -423,9 +381,9 @@ void Game::mouse_right_button_down() {
 
 	//le hud va de (27,0) a (452,100) en coordonnee cocos
 	
-	if(_mouse_y<520) {
+	if(get_mouse_y()<520) {
 
-		map_point = convert_opengl_point_to_layer_point(_mouse_x,_mouse_y,_display_layer);
+		map_point = convert_opengl_point_to_layer_point(get_mouse_x(),get_mouse_y(),_display_layer);
 
 		for(i=0;i<_main_player->get_number_unit_selected();i++) {
 			_main_player->get_unit_selected(i)->set_destination(map_point.x,map_point.y);
@@ -434,27 +392,11 @@ void Game::mouse_right_button_down() {
 }
 
 void Game::mouse_move( int x, int y) {
-	CCSize frameSize = EGLView::sharedOpenGLView()->getFrameSize();
-	if(_mouse_initiate) {
-		_mouse_x+=x-_old_x;
-		_mouse_y+=y-_old_y;
-	}
-	else {
-		_mouse_x=x;
-		_mouse_y=y;
-		_mouse_initiate=true;
-	}
-	_old_x=x;
-	_old_y=y;
-	if(_mouse_x<0) _mouse_x=0;
-	else if(_mouse_x>frameSize.width) _mouse_x=frameSize.width;
-	if(_mouse_y<0) _mouse_y=0;
-	else if(_mouse_y>frameSize.height) _mouse_y=frameSize.height;
-
+	Scene::mouse_move(x,y);
 
 	CCPoint point;
 	if(_mouse_button_left_down) {
-		point = convert_opengl_point_to_layer_point(_mouse_x,_mouse_y,_display_layer);
+		point = convert_opengl_point_to_layer_point(get_mouse_x(),get_mouse_y(),_display_layer);
 		if(_selection_zone_enable) {
 			_selectionZone->setP2(point);
 			_selectionZone->update();
@@ -467,21 +409,16 @@ void Game::mouse_move( int x, int y) {
 		}
 	}
 
-	point = convert_opengl_point_to_layer_point(_mouse_x,_mouse_y,_cursor_layer);
-	point.x+=_cursor->getSprite()->getTextureRect().size.width/2.0;
-	point.y-=_cursor->getSprite()->getTextureRect().size.height/2.0;
-	_cursor->getSprite()->setPosition(point);
-
-	if(_mouse_x<10) _scroll_left_mouse = true;
+	if(get_mouse_x()<10) _scroll_left_mouse = true;
 	else _scroll_left_mouse = false;
 
-	if(_mouse_x>EGLView::sharedOpenGLView()->getViewPortRect().getMaxX()-74) _scroll_right_mouse = true;
+	if(get_mouse_x()>EGLView::sharedOpenGLView()->getViewPortRect().getMaxX()-74) _scroll_right_mouse = true;
 	else _scroll_right_mouse = false;
 
-	if(_mouse_y<10) _scroll_up_mouse = true;
+	if(get_mouse_y()<10) _scroll_up_mouse = true;
 	else _scroll_up_mouse = false;
 
-	if(_mouse_y>EGLView::sharedOpenGLView()->getViewPortRect().getMaxY()-10) _scroll_down_mouse = true;
+	if(get_mouse_y()>EGLView::sharedOpenGLView()->getViewPortRect().getMaxY()-10) _scroll_down_mouse = true;
 	else _scroll_down_mouse = false;
 }
 
@@ -528,9 +465,9 @@ void Game::key_release(int key) {
 void Game::mouse_wheel_up() {
 	CCPoint map_point, screen_point;
 	if(_display_layer->getScale()<2) {
-		map_point = convert_opengl_point_to_layer_point(_mouse_x,_mouse_y,_display_layer);
+		map_point = convert_opengl_point_to_layer_point(get_mouse_x(),get_mouse_y(),_display_layer);
 		_display_layer->setScale(_display_layer->getScale()+0.05);
-		set_map_point_to_opengl_point(map_point,_mouse_x,_mouse_y);
+		set_map_point_to_opengl_point(map_point,get_mouse_x(),get_mouse_y());
 	}
 }
 

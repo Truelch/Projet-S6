@@ -19,7 +19,6 @@ class Displayable : public EventReceiver
 			displayableType,
 			barType,
 			corpseType,
-			cursorType,
 			fogOfWarDisplayableType,
 			hudType,
 			hudItemType,
