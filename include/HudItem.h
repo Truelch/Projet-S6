@@ -10,6 +10,7 @@ class HudItem : public Displayable {
 			holdPositionButtonType,
 			moveButtonType,
 			patrolButtonType,
+			retreatButtonType,
 		} HudItemType;
 
 		

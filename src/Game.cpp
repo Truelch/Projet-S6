@@ -51,28 +51,31 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	int i=0;
 	float x,y,x2,y2;
 	//Amis
-	int a = 3;
+	int a = 10;
 	for(i=0;i<a;i++)
 	{
 		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,10,x,y);
-		_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],600);
-		_display_layer->get_unit_layer()->get_unit(i)->add_turret(0,"units/turret_tank_00.png", this, _display_layer->get_missile_layer(), 0.0,0.0,
+		_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,5,5.0f,1.0f,"units/tank/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],600);
+		_display_layer->get_unit_layer()->get_unit(i)->add_turret(0,"units/tank/turret_tank_00.png", this, _display_layer->get_missile_layer(), /*-3.0, 8.0,*/0.0,0.0,
 					50.0,"missiles/01.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i));
 	}
 	
 	//Ennemis
 	for(i=0;i<a;i++)
 	{
-		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,20,x,y);
-		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/model_tank_01.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[1],600);
-		_display_layer->get_unit_layer()->get_unit(i+a)->add_turret(0,"units/turret_tank_01.png", this, _display_layer->get_missile_layer(), 0, 0, 50.0,"missiles/02.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i+a));
+		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,25,x,y);
+		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,5.0f,1.0f,"units/tank/model_tank_01.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[1],600);
+		_display_layer->get_unit_layer()->get_unit(i+a)->add_turret(0,"units/tank/turret_tank_01.png", this, _display_layer->get_missile_layer(), 0, 0, 
+					50.0,"missiles/02.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i+a));
 	}
-
 	
-	_display_layer->coordonate_tile_to_cocos2dx(4,0,x,y);
-	_display_layer->coordonate_tile_to_cocos2dx(3,0,x2,y2);
-	_display_layer->get_unit_layer()->add_unit(x,y,x2,y2,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],200);
-
+	//BOSS
+	_display_layer->coordonate_tile_to_cocos2dx(25,20,x,y);
+	_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,5,5.0f,1.0f,"units/boss/boss_01.png", "boss",1000,1000,1.0,100,100,1.0,6.0,100, _player_list[1],600);
+	_display_layer->get_unit_layer()->get_unit(i+a)->add_turret(0,"units/boss/big_turret_01.png", this, _display_layer->get_missile_layer(), 0, 0, 
+					50.0,"missiles/02.png", 75, 5, 500,_display_layer->get_unit_layer()->get_unit(2*a));
+	
+	
 	/*
 	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
 	_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],100);
@@ -105,7 +108,11 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_hud_layer->setZOrder(2);
 	addChild(_hud_layer);
 
-	_hud_layer->add_hud_item(381,607,"widgets/stop.png",HudItem::stopButtonType);
+	_hud_layer->add_hud_item(789,600,"widgets/move.png",HudItem::moveButtonType);
+	_hud_layer->add_hud_item(856,600,"widgets/stop.png",HudItem::stopButtonType);
+	_hud_layer->add_hud_item(921,600,"widgets/hold_position.png",HudItem::holdPositionButtonType);
+	_hud_layer->add_hud_item(789,666,"widgets/patrol.png",HudItem::patrolButtonType);
+	
 
 	//_hud = new Hud(256,180,"hud.png", this, _hud_layer);
 	
