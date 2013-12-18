@@ -8,6 +8,7 @@
 #include "Unit.h"
 #include "Building.h"
 #include "HudItem.h"
+#include "SimpleAudioEngine.h"
 
 Player::Player(): EventReceiver(), _game(NULL)
 {
@@ -334,5 +335,17 @@ void Player::on_hud_item_clicked(HudItem * hud_item)
 				get_unit_selected(i)->set_destination(get_hq()->getSprite()->getPositionX(),get_hq()->getSprite()->getPositionY());
 			}
 		}
+	}
+}
+
+void Player::on_unit_shoot(Missile * missile) {
+	if(get_game()->get_main_player()==this) {
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("audio/laser.ogg");
+	}
+}
+
+void Player::on_unit_shooted(Unit * unit) {
+	if(get_game()->get_main_player()==this) {
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("audio/hit.ogg");
 	}
 }

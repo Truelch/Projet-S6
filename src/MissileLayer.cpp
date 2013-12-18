@@ -4,6 +4,8 @@
 
 #include "MapTile.h"
 #include "Missile.h"
+#include "Game.h"
+#include "EventHandler.h"
 
 MissileLayer::MissileLayer(): Layer()
 {
@@ -28,6 +30,7 @@ void MissileLayer::add_missile(float x, float y, float rotation, float x_dest, f
 				Player * player, Unit * shooter_unit) 
 {
 	Missile * missile = new Missile(x, y, rotation, x_dest, y_dest, move_speed, filename, game, layer, range_max, damage, player, shooter_unit);
+	get_game()->getEventHandler()->on_unit_shoot(missile);
 	_missile_list.add_t(missile);
 }
 

@@ -17,7 +17,6 @@ class Layer;
 class Player;
 class SelectionZone;
 class Missile;
-class Cursor;
 class HudLayer;
 class HudItem;
 
@@ -34,27 +33,21 @@ class Game : public Scene
 		// --- GET ---
 		DisplayLayer * get_display_layer();
 		HudLayer * get_hud_layer() { return _hud_layer; }
-		Layer * get_cursor_layer() { return _cursor_layer; }
 		Player * get_main_player() { return _main_player; }
 		const vector<Player *>& get_player_list() { return _player_list; }
 		
-		float get_time_elapsed() { return _time_elapsed; }
 		
 		// --- SET ---
-		void set_time_elapsed(float time_elapsed);
 		
 		// --- METHODES ---
 		
 		// implement the "static node()" method manually
 		//CREATE_FUNC(Game);
 
-		void get_center_of_screen(int& x, int& y);
-		void set_point_to_center_of_screen(cocos2d::CCPoint point);
-		void set_tile_to_center_of_screen(int tile_x, int tile_y);
 		bool check_out_of_map_whith_new_scrolling(float& offset_x, float& offset_y);
 		void set_map_point_to_opengl_point(cocos2d::CCPoint map_point, int opengl_x, int opengl_y);
-		cocos2d::CCPoint convert_opengl_point_to_layer_point(int opengl_x, int opengl_y, Layer * layer);
-		cocos2d::CCPoint convert_opengl_point_to_layer_point_with_new_offset(int opengl_x, int opengl_y, Layer * layer, float offset_x, float offset_y);
+		void set_point_to_center_of_screen(cocos2d::CCPoint point);
+		void set_tile_to_center_of_screen(int tile_x, int tile_y);
 
 		virtual void update(float dt);
 
@@ -78,9 +71,6 @@ class Game : public Scene
 
 		HudLayer * _hud_layer;
 
-		Layer * _cursor_layer;
-		Cursor * _cursor;
-
 		bool _scroll_left_mouse;
 		bool _scroll_right_mouse;
 		bool _scroll_up_mouse;
@@ -100,13 +90,10 @@ class Game : public Scene
 		SelectionZone * _selectionZone;
 		bool _selection_zone_enable;
 
-		int _mouse_x, _mouse_y;
-		int _old_x, _old_y;
-		bool _mouse_initiate;
-
 		HudItem * _hud_item_mouse;
-		
-		float _time_elapsed; //Temps écoulé depuis le début du jeu
+
+		std::vector<std::string> _list_music;
+		unsigned int _index_current_music;
 };
 
 #endif

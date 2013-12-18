@@ -8,7 +8,7 @@ int closeEventHandle() {
 }
 
 
-float leght_pixel_to_cocos(int lenght) {
+float lenght_pixel_to_cocos(int lenght) {
 	EGLView* pEGLView = EGLView::sharedOpenGLView();
 	return (float)lenght/(pEGLView->getFrameZoomFactor()*pEGLView->getScaleX());
 }

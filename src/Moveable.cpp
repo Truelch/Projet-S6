@@ -43,7 +43,7 @@ Moveable::Moveable(float x, float y, float x_dest, float y_dest, float rotation,
 
 	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(x,y,tile_x,tile_y);
 	if(!getGame()->get_main_player()->get_map_tile_info()[tile_y][tile_x].visible) {
-		getSprite()->setScale(0);
+		set_visible(false);
 	}
 
 	getSprite()->setRotation(rotation);
@@ -69,9 +69,9 @@ void Moveable::updateCoordonates() {
 		}
 
 		if(!getGame()->get_main_player()->get_map_tile_info()[_tile_y][_tile_x].visible) {
-			getSprite()->setScale(0);
+			set_visible(false);
 		}
-		else getSprite()->setScale(1);
+		else set_visible(true);
 	}
 }
 
@@ -358,14 +358,28 @@ bool Moveable::test_point_in_moveable(CCPoint point) {
 
 void Moveable::on_player_range_tile(int x, int y, Player * player) {
 	if(getGame()->get_main_player()==player && x==_tile_x && y==_tile_y) {
-		getSprite()->setScale(1);
+		set_visible(true);
 	}
 }
 
 void Moveable::on_player_unrange_tile(int x, int y, Player * player) {
 	if(getGame()->get_main_player()==player && x==_tile_x && y==_tile_y) {
-		getSprite()->setScale(0);
+		set_visible(false);
 	}
 	
+}
+
+void Moveable::set_visible(bool visible) {
+	if(visible) {
+		getSprite()->setScaleX(1);
+		getSprite()->setScaleY(1.2);
+	} else {
+		getSprite()->setScaleX(0);
+		getSprite()->setScaleY(0);
+	}
+}
+
+bool Moveable::get_visible() {
+	return getSprite()->getScaleX()!=0 && getSprite()->getScaleY()!=0;
 }
 

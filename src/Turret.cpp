@@ -19,16 +19,12 @@ Turret::Turret(): CCSprite()
 	//
 }
 
-Turret::Turret(float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, 
-				float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit): 
-				CCSprite(), 
-				_rotation(rotation), _relative_position(CCPoint(x_relative,y_relative)), _missile_speed(missile_speed), _missile_filename(missile_filename), _damage(damage), _cooldown(cooldown),
-				_range_max(range_max)
+Turret::Turret(float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit): CCSprite(), _rotation(rotation), _relative_position(CCPoint(x_relative,y_relative)), _missile_speed(missile_speed), _missile_filename(missile_filename), _damage(damage), _cooldown(cooldown),_range_max(range_max)
 {
 	initWithFile(filename);
 	change_unit(shooter_unit,_shooter_unit);
-	_relative_position.x+=getTextureRect().size.height/2.0;
-	_relative_position.y+=getTextureRect().size.width/2.0;
+	_relative_position.x+=shooter_unit->getSprite()->getTextureRect().size.height/2.0;
+	_relative_position.y+=shooter_unit->getSprite()->getTextureRect().size.width/2.0;
 	setPosition(_relative_position);
 	
 	//set_target_unit(NULL); //Il n'y a pas de cible au début. On met NULL pour éviter les valeurs aléatoires dans le pointeur.
@@ -206,8 +202,8 @@ void Turret::fire()
 		//std::cout << "PAN !!!" << endl;
 		_current_cooldown = 0;
 		//Instancier un projectile
-		float x          = get_unit(_shooter_unit)->getSprite()->getPositionX() + _relative_position.x - getTextureRect().size.height/2.0; //Position de l'unité décallée de la position relative de la tourelle
-		float y          = get_unit(_shooter_unit)->getSprite()->getPositionY() + _relative_position.y - getTextureRect().size.width/2.0;
+		float x          = get_unit(_shooter_unit)->getSprite()->getPositionX() + _relative_position.x - get_unit(_shooter_unit)->getSprite()->getTextureRect().size.height/2.0; //Position de l'unité décallée de la position relative de la tourelle
+		float y          = get_unit(_shooter_unit)->getSprite()->getPositionY() + _relative_position.y - get_unit(_shooter_unit)->getSprite()->getTextureRect().size.width/2.0;
 		float rotation   = get_unit(_shooter_unit)->getSprite()->getRotation();
 		float x_dest     = get_unit(_target_unit)->getSprite()->getPositionX();
 		float y_dest     = get_unit(_target_unit)->getSprite()->getPositionY();

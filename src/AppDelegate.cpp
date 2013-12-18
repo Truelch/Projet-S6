@@ -4,8 +4,10 @@
 #include <string>
 
 #include "Game.h"
+#include "Menu.h"
 #include "AppMacros.h"
 #include "EGLView.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 using namespace std;
@@ -70,10 +72,18 @@ bool AppDelegate::applicationDidFinishLaunching() {
     pDirector->setAnimationInterval(1.0 / 60);
 
     // create a scene. it's an autorelease object
-	Game * game = new Game();
+	_game = new Game();
+	_menu = new Menu("widgets/menu.png");
+	_menu->add_menu_item(new PlayButton("widgets/jouer_1.png","widgets/jouer_0.png"));
+	_menu->add_menu_item(new CloseButton("widgets/quitter_1.png","widgets/quitter_0.png"));
+	_menu->update_position();
+
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->setEffectsVolume(0.1);
+	if(!CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("audio/Daft Punk - Tron Uprising.mp3",true);
 
     // run
-    pDirector->runWithScene(game);
+    pDirector->runWithScene(_menu);
 
     return true;
 }
