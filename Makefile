@@ -3,7 +3,7 @@ SHELL := /bin/bash
 
 EXECUTABLE = Game
 
-INCLUDES = -Iinclude -Icocos2d-x-2.1.5/external -Icocos2d-x-2.1.5/external/Box2D -Icocos2d-x-2.1.5/extensions -Icocos2d-x-2.1.5/external/chipmunk/include/chipmunk
+INCLUDES = -Iinclude -Icocos2d-x-2.1.5/external -Icocos2d-x-2.1.5/external/Box2D -Icocos2d-x-2.1.5/extensions -Icocos2d-x-2.1.5/external/chipmunk/include/chipmunk -Icocos2d-x-2.1.5/CocosDenshion/include
 
 SOURCES = $(shell ls src/*.cpp)
 
@@ -18,7 +18,7 @@ STATICLIBS += \
 	$(LIB_DIR)/libbox2d.a \
 	$(LIB_DIR)/libchipmunk.a
 
-SHAREDLIBS += -lcocos2d -lX11 $(shell if [ -e /usr/lib/libXrandr.so ]; then echo "-lXrandr"; fi)
+SHAREDLIBS += -lcocos2d -lX11 $(shell if [ -e /usr/lib/libXrandr.so ]; then echo "-lXrandr"; fi) -lcocosdenshion
 COCOS_LIBS = $(LIB_DIR)/libcocos2d.so $(LIB_DIR)/libglfw.so.3
 
 $(TARGET): $(OBJECTS) $(STATICLIBS) $(COCOS_LIBS) $(CORE_MAKEFILE_LIST)
