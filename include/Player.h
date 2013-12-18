@@ -14,6 +14,7 @@
 using namespace std;
 
 class HudItem;
+class AI;
 
 class Player: public EventReceiver
 {
@@ -62,6 +63,9 @@ class Player: public EventReceiver
 		// ---
 		std::vector<std::vector<TileInfo> > _map_tile_info;
 		
+		//
+		
+		
 		
 	public:
 		Player();
@@ -98,6 +102,9 @@ class Player: public EventReceiver
 		Game * get_game();
 		const std::vector<std::vector<TileInfo> >& get_map_tile_info() { return _map_tile_info; }
 		
+		//
+		
+		
 		// --- SET ---
 		void set_name(string name);
 		void set_color(Color color);
@@ -120,7 +127,7 @@ class Player: public EventReceiver
 		virtual void on_unit_range_tile(int x, int y, Unit * unit);
 		virtual void on_unit_unrange_tile(int x, int y, Unit * unit);
 		
-		void update(float dt);
+		virtual void update(float dt);
 		int  count_building_type(string name);
 		int  supply_provided();
 

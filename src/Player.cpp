@@ -204,9 +204,9 @@ void Player::add_unit_selected(Unit * unit) {
 void Player::update(float dt)
 {
 	//Ajout de ressources
-	int nbr_source = count_building_type("Source");
-	float coeff = 1.0; //Variable d'ajustement
-	set_resources(_resources+coeff*dt*(float)nbr_source);
+	//int nbr_source = count_building_type("Source");
+	//float coeff = 1.0; //Variable d'ajustement
+	//set_resources(_resources+coeff*dt*(float)nbr_source);
 	//Supply
 	//Théoriquement, seule la RAM augmente le supply, mais bon
 	//std::cout << "Player::update()" << endl;	

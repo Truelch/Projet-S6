@@ -5,6 +5,7 @@
 
 #include "Unit.h"
 #include "Player.h"
+#include "AIPlayer.h"
 #include "EGLView.h"
 #include "GL/glfw.h"
 #include "DisplayLayer.h"
@@ -45,14 +46,13 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	getWorld()->SetContactListener(_contactListener);
 
 	_player_list.push_back( new Player(this, "joueur1", Player::blue, 1, 1) );
-	_player_list.push_back( new Player(this, "joueur2", Player::red, 2, 2) );
+	_player_list.push_back( new AIPlayer(this, "joueur2", Player::red, 2, 2) );
 	
+	//Human Player
 	_main_player = _player_list[0];
+	//AI
 	
-	float x,y,x2,y2;
-	_display_layer->coordonate_tile_to_cocos2dx(4,0,x,y);
-	_display_layer->coordonate_tile_to_cocos2dx(3,0,x2,y2);
-	_display_layer->get_unit_layer()->add_unit(x,y,x2,y2,-90,5,5.0f,1.0f,"units/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],200);
+	float x,y;
 
 	int i=0;
 	//Amis
@@ -146,16 +146,6 @@ void Game::set_time_elapsed(float time_elapsed)
 
 // --- GET ---
 
-int Game::get_map_width()
-{
-	return _map_width;
-}
-
-int Game::get_map_height()
-{
-	return _map_height;
-}
-
 DisplayLayer * Game::get_display_layer()
 {
 	return _display_layer;
@@ -237,6 +227,9 @@ void Game::update(float dt)
 	{
 		if(!get_display_layer()->get_missile_layer()->get_missile(i)->update(dt)) i++;
 	}
+	
+	//Update de l'AI
+	get_player_list()[1]->update(dt);
 }
 
 void Game::set_tile_to_center_of_screen(int tile_x, int tile_y) {

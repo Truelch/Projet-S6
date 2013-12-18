@@ -13,11 +13,13 @@ AI::AI(): EventReceiver()
 {
 	//
 	std::cout << "Constructeur d'AI" << std::endl;
+	set_periodic_time(0);
 }
 
-AI::AI(Scene * scene, Difficulty difficulty): EventReceiver(scene->getEventHandler()), _scene(scene)
+AI::AI(Scene * scene, Player * player, Difficulty difficulty): EventReceiver(scene->getEventHandler()), _scene(scene)
 {
 	//
+	_player = player;
 	std::cout << "Constructeur d'AI" << std::endl;
 	if(difficulty==d_easy)
 	{
@@ -43,15 +45,18 @@ AI::AI(Scene * scene, Difficulty difficulty): EventReceiver(scene->getEventHandl
 		set_dt_time(0.0);
 		set_omniscience(true);
 	}	
+	set_periodic_time(0);
 }
 
-AI::AI(Scene * scene, AI::PlayStyle play_style, float coeff_ressource, float dt_time, bool omniscience): EventReceiver(scene->getEventHandler()), _scene(scene)
+AI::AI(Scene * scene, Player * player, AI::PlayStyle play_style, float coeff_ressource, float dt_time, bool omniscience): EventReceiver(scene->getEventHandler()), _scene(scene)
 {
+	_player = player;
 	std::cout << "Constructeur d'AI" << std::endl;
 	set_play_style(play_style);
 	set_coeff_ressource(coeff_ressource);
 	set_dt_time(dt_time);
 	set_omniscience(omniscience);
+	set_periodic_time(0);
 }
 
 
@@ -85,6 +90,11 @@ bool AI::get_omniscience()
 float AI::get_percent_life_min()
 {
 	return _percent_life_min;
+}
+
+float AI::get_periodic_time()
+{
+	return _periodic_time;
 }
 
 //
@@ -191,6 +201,11 @@ void AI::set_percent_life_min(float percent_life_min)
 	_percent_life_min = percent_life_min;
 }
 
+void AI::set_periodic_time(float periodic_time)
+{
+	_periodic_time = periodic_time;
+}
+
 void AI::set_scene(Scene * scene)
 {
 	_scene = scene;
@@ -203,6 +218,16 @@ void AI::set_player(Player * player)
 
 // --- METHODES ---
 
+void AI::update(float dt)
+{
+	set_periodic_time(_periodic_time+dt);
+	if(_periodic_time>10)
+	{
+		set_periodic_time(0);
+		ai_handler();
+	}
+}
+
 void AI::ai_monitor()
 {
 	// --- Affectation des ordres aux unités ---
@@ -211,14 +236,48 @@ void AI::ai_monitor()
 	// --- Ordre de construction des unités ---
 }
 
+void AI::ai_handler() // PRESENTATION
+{
+	//Pour la présentation
+	float percent_of_life;
+	float percent_life_min = 0.2;
+	int x,y,x_max,y_max,i;
+	int max_index = _player->get_game()->get_main_player()->get_unit_container().get_number_t();
+	if(max_index == 0) return;
+	x_max = _player->get_game()->get_display_layer()->get_map_width();
+	y_max = _player->get_game()->get_display_layer()->get_map_height();
+	
+	int random_index = rand() % max_index;
+
+	for(i=0;i<_player->get_unit_container().get_number_t();i++)
+	{
+		percent_of_life = _player->get_unit_container().get_t(i)->get_hp()/(float)_player->get_unit_container().get_t(i)->get_hp_max();
+		if (percent_of_life > percent_life_min) //Unité en état de combattre
+		{
+			x = _player->get_game()->get_main_player()->get_unit_container().get_t(random_index)->getSprite()->getPositionX();
+			y = _player->get_game()->get_main_player()->get_unit_container().get_t(random_index)->getSprite()->getPositionY();
+			_player->get_unit_container().get_t(i)->set_destination(x,y);
+		}
+			
+		else //hp trop faibles
+		{
+			//x, y random !
+			std::cout << x_max << "," << y_max << std::endl;
+			x = rand() % x_max;
+			y = rand() % y_max;	
+			_player->get_unit_container().get_t(i)->set_destination(x,y);
+		}
+	}
+}
+
 
 
 // --- METHODES APPELEES PAR LE MONITOR
 
 void AI::affecting_order()
 {
-	/*
 	
+	/*
 	int i;
 	float percent_of_life;
 	float need_scout, need_capture, need_attack, need_defense;
@@ -419,8 +478,8 @@ void AI::defense_management()
 void AI::scout_management()
 {
 	int x,y,x_max,y_max,i;
-	x_max = _player->get_game()->get_map_width();
-	y_max = _player->get_game()->get_map_height();
+	x_max = _player->get_game()->get_display_layer()->get_map_width();
+	y_max = _player->get_game()->get_display_layer()->get_map_height();
 	//A partir du conteneur de scout formé, on donne les ordres à chacun
 	//Ici, on envoie les unités dans des directions random, en faisant attention à ce qu'elles aillent tout de même vers du terrain non-exploré
 	for(i=0;i<_scout_list.get_number_t();i++) //On traverse le container à unité qui scoutent

@@ -56,6 +56,7 @@ class AI : public EventReceiver {
 		float      _dt_time;          //temps min entre chaque action. Ex : facile : 2 sec ; normal : 0.5 ; difficile : 0	
 		bool       _omniscience;      //true : l'AI sait tout ce qui se passe et ne fait pas de décisions aléatoires (pour le scout et assauts de début de partie par ex)		
 		float      _percent_life_min; //pourcentage minimal de la vie pour laquelle l'unité est autorisée à combattre
+		float      _periodic_time;
 		
 		/*
 		AIAttackManager *  _ai_attack_manager;
@@ -79,8 +80,8 @@ class AI : public EventReceiver {
 		
 	public:
 		AI(); //constructeur par défaut
-		AI(Scene * scene, Difficulty difficulty); //remplit tous les paramètres en fonction du string d'entrée
-		AI(Scene * scene, PlayStyle play_style, float coeff_ressource, float dt_time, bool omniscience); //version + souple permettant de tout remplir à la main dans le cadre d'une AI paramétrable en détails
+		AI(Scene * scene, Player * player, Difficulty difficulty); //remplit tous les paramètres en fonction du string d'entrée
+		AI(Scene * scene, Player * player, PlayStyle play_style, float coeff_ressource, float dt_time, bool omniscience); //version + souple permettant de tout remplir à la main dans le cadre d'une AI paramétrable en détails
 								 //ou alors appeler le constructeur défaut et remplir avec des set ? Non, en fait c'est une mauvaise idée.		
 		
 		// --- GET ---
@@ -90,6 +91,7 @@ class AI : public EventReceiver {
 		float      get_dt_time();
 		bool       get_omniscience();
 		float      get_percent_life_min();
+		float      get_periodic_time();
 		
 		/*
 		AIAttackManager *  get_ai_attack_manager();
@@ -120,15 +122,18 @@ class AI : public EventReceiver {
 		void set_dt_time(float dt_time);
 		void set_omniscience(bool omniscience);
 		void set_percent_life_min(float percent_life_min);
+		void set_periodic_time(float periodic_time);
 		
 		void set_scene(Scene * scene);
 		void set_player(Player * player);
 		
 		
 		// --- METHODES ---
+		void update(float dt);
 		void ai_monitor();
 		void affecting_order();
 		void build_order();
+		void ai_handler();
 		
 		float compute_need_attack();
 		float compute_need_defense();
