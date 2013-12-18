@@ -53,7 +53,6 @@ void CloseButton::operator()() {
 }
 
 void PlayButton::operator()() {
-	CocosDenshion::SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
 	cocos2d::CCDirector::sharedDirector()->replaceScene(((AppDelegate *)(cocos2d::CCApplication::sharedApplication()))->get_game());
 }
 

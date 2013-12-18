@@ -67,11 +67,13 @@ class Moveable : public PhysicsDisplayable
 		int get_tile_x() { return _tile_x; }
 		int get_tile_y() { return _tile_y; }
 		virtual Displayable::DisplayableType getType() { return Displayable::moveableType; }
+		bool get_visible();
 		
 		// --- SET ---
 		bool set_destination(float x_dest, float y_dest);
 		void set_move_speed(float move_speed);
 		void set_hold_position(bool hold_position);
+		void set_visible(bool visible);
 
 		virtual void on_displayable_contact(Displayable * displayableA, Displayable * displayableB);
 		virtual void on_player_range_tile(int x, int y, Player * player);

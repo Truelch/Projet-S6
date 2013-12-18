@@ -19,10 +19,7 @@ Unit::Unit(): Moveable(), _player(NULL)
 	//
 }
 
-Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float groundFixture, float density, const char * filename, Game * game, Layer * layer, string name, 
-			float hp, float hp_max, float hp_regen, float power, float power_max, float power_regen, float armor, float prod_time, Player * player, float sight/*,
-			float rotation, const char * turret_filename, float x_relative, float y_relative, float missile_speed, const char */): 
-			Moveable(x, y, x_dest, y_dest, rotation, move_speed, 22.4f, groundFixture, density, filename, game, layer), _player(player), _selected(false), _bar_visible(false)
+Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float move_speed, float hitboxRadius, float groundFixture, float density, const char * filename, Game * game, Layer * layer, string name, float hp, float hp_max, float hp_regen, float power, float power_max, float power_regen, float armor, float prod_time, Player * player, float sight): Moveable(x, y, x_dest, y_dest, rotation, move_speed, 22.4f, groundFixture, density, filename, game, layer), _player(player), _selected(false), _bar_visible(false)
 {
 	_stat = new Stat();
 	_stat->set_name(name);
