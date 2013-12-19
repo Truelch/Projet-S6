@@ -12,6 +12,7 @@ class Container {
 
 	public:
 		Container();
+		Container(Container const& container);
 		~Container();
 
 		T * get_t(int index);

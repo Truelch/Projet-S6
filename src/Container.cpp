@@ -14,6 +14,12 @@ Container<T>::Container() {
 }
 
 template <typename T>
+Container<T>::Container(Container const& container) {
+	_list=container._list;
+	_instance_list.push_back(this);
+}
+
+template <typename T>
 Container<T>::~Container() {
 	_instance_list.erase(std::remove(_instance_list.begin(), _instance_list.end(), this), _instance_list.end());
 }

@@ -84,7 +84,6 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	}
 	
 	
-	
 	//BOSS
 	_display_layer->coordonate_tile_to_cocos2dx(25,20,x,y);
 	_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,1,68.0f,5.0f,1.0f,"units/boss/boss_00.png", "boss",1000,1000,1.0,100,100,1.0,6.0,100, _player_list[1],600);
@@ -102,6 +101,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 					75.0,"missiles/00.png", 5, 2, 300,_display_layer->get_unit_layer()->get_unit(a*3));	
 	_display_layer->get_unit_layer()->get_unit(a*3)->add_turret(0,"units/boss/turret_00.png", this, _display_layer->get_missile_layer(), -25, -43, 
 					75.0,"missiles/00.png", 5, 2, 300,_display_layer->get_unit_layer()->get_unit(a*3));	
+
 	/*
 	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
 	_display_layer->get_unit_layer()->add_unit(100,200,100,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[1],100);

@@ -44,6 +44,9 @@ Unit::Unit(float x, float y, float x_dest, float y_dest, float rotation, float m
 }
 
 Unit::~Unit() {
+	//pour eviter que l'unitee se désafficher alors quel est deja detruite
+	getGame()->getEventHandler()->removeReceiver(this);
+
 	_player->set_losses(_player->get_losses()+1);
 	//Ajouter kill pour le tueur
 	delete _bar;

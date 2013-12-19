@@ -32,7 +32,7 @@ MapHud::MapHud(int x, int y, float width, float height, Game * game, Layer * lay
 	getSprite()->initWithTexture(_texture);
 	_texture->autorelease();
 
-	float scale = fmaxf( width/getSprite()->getTextureRect().size.width,height/getSprite()->getTextureRect().size.height );
+	float scale = fminf( width/getSprite()->getTextureRect().size.width,height/getSprite()->getTextureRect().size.height )*1.1;
 	getSprite()->setScale(scale);
 
 	textureData = malloc(bytes);
@@ -92,7 +92,7 @@ void MapHud::update_unit() {
 	for(tile_x=0;tile_x<width_map;tile_x++) {
 		for(tile_y=0;tile_y<height_map;tile_y++) {
 			unit_container = getGame()->get_display_layer()->get_tile_layer()->get_map_tile_matrix()[tile_y][tile_x]->get_unit_container();
-			if(!getGame()->get_main_player()->get_map_tile_info()[tile_y][tile_x].discovered)
+			if(!getGame()->get_main_player()->get_map_tile_info()[tile_y][tile_x].visible)
 				_texture_unit->setPixelAt(CCPointMake(tile_x,height_map-tile_y-1),ccc4(0,0,0,0));
 			else if(unit_container.get_number_t()>0) {
 				if(unit_container.get_t(0)->getPlayer()==getGame()->get_main_player())

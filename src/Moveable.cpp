@@ -32,6 +32,8 @@ Moveable::Moveable(float x, float y, float x_dest, float y_dest, float rotation,
 	_tile_x=-1;
 	_tile_y=-1;
 	updateCoordonates();
+	if(_tile_x<0 || _tile_x>=getGame()->get_display_layer()->get_map_width() || _tile_y<0 || _tile_y>=getGame()->get_display_layer()->get_map_height())
+		std::cerr << "ERREUR : Moveable construit en dehors de la map" << std::endl;
 	
 	vecteur_path.Set(x_dest - getSprite()->getPositionX(), y_dest - getSprite()->getPositionY());
 	if(vecteur_path.Length()<0.000001) {
