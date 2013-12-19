@@ -31,9 +31,6 @@ class Game : public Scene
 
 		
 		// --- GET ---
-		int get_map_width();
-		int get_map_height();
-		
 		DisplayLayer * get_display_layer();
 		HudLayer * get_hud_layer() { return _hud_layer; }
 		Player * get_main_player() { return _main_player; }
@@ -67,9 +64,6 @@ class Game : public Scene
 	private:
 		void set_bar_visible(bool visible);
 
-
-		int _map_width;
-		int _map_height;
 
 		ContactListener * _contactListener;
 		
