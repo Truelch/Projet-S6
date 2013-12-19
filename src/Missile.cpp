@@ -16,10 +16,7 @@ Missile::Missile(): Displayable()
 	//
 }
 
-Missile::Missile(float x, float y, float rotation, float x_dest, float y_dest, float move_speed, const char * filename, Game * game, Layer * layer, float range_max, float damage,
-				Player * player, Unit * shooter_unit): Displayable(x, y, rotation, filename, game, layer), 
-				_origin(CCPoint(x,y)),_destination(CCPoint(x_dest,y_dest)), _move_speed(move_speed), _filename(filename), _range_max(range_max), _damage(damage), 
-				_player(player), _shooter_unit(shooter_unit)
+Missile::Missile(float x, float y, float rotation, float x_dest, float y_dest, float move_speed, const char * filename, Game * game, Layer * layer, float range_max, float damage,Player * player, Unit * shooter_unit): Displayable(x, y, rotation, filename, game, layer), _origin(CCPoint(x,y)),_destination(CCPoint(x_dest,y_dest)), _move_speed(move_speed), _filename(filename), _range_max(range_max), _damage(damage), _player(player), _shooter_unit(shooter_unit), _tile_x(-1), _tile_y(-1)
 {
 	//Création du vecteur unitaire de déplacement du Missile
 	float delta_x  = _destination.x - getSprite()->getPositionX();
@@ -114,6 +111,17 @@ void Missile::set_shooter_unit(Unit * shooter_unit)
 
 bool Missile::update(float dt)
 {
+	int old_tile_x=_tile_x;
+	int old_tile_y=_tile_y;
+	CCPoint position = getSprite()->getPosition();
+	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(position.x, position.y, _tile_x, _tile_y);
+	if(old_tile_x!=_tile_x || old_tile_y!=_tile_y) {
+		if(!getGame()->get_main_player()->get_map_tile_info()[_tile_y][_tile_x].visible) {
+			set_visible(false);
+		}
+		else set_visible(true);
+	}
+
 	//Coeff unité de temps
 	//float coeff = 50;
 	//dt = 1/50 en temps normal
@@ -221,7 +229,7 @@ bool Missile::check_collision()
 					for(k=0;k<unit_container.get_number_t();k++) 
 					{
 						//
-						if(unit_container.get_t(k)->getPlayer() != _shooter_unit->getPlayer()) //Propriétaire de l'unité vérifiée != propriétaire du missile
+						if(unit_container.get_t(k)->getPlayer() != _player) //Propriétaire de l'unité vérifiée != propriétaire du missile
 						{
 							distance = unit_container.get_t(k)->getSprite()->getPosition().getDistance(getSprite()->getPosition()); //Distance entre l'unité et le missile
 							if(distance <= _player->get_game()->get_display_layer()->get_unit_layer()->get_unit(k)->get_hitboxRadius())//Vérification de la distance
@@ -271,3 +279,30 @@ void Missile::deal_dmg(Unit * unit)
 	float move_y = getSprite()->getPositionY() + _movement.y * _move_speed * dt;
 	getSprite()->set_position(move_x,move_y);
 }*/
+
+void Missile::set_visible(bool visible) {
+	if(visible) {
+		getSprite()->setScaleX(1);
+		getSprite()->setScaleY(1.2);
+	} else {
+		getSprite()->setScaleX(0);
+		getSprite()->setScaleY(0);
+	}
+}
+
+bool Missile::get_visible() {
+	return getSprite()->getScaleX()!=0 && getSprite()->getScaleY()!=0;
+}
+
+void Missile::on_player_range_tile(int x, int y, Player * player) {
+	if(getGame()->get_main_player()==player && x==_tile_x && y==_tile_y) {
+		set_visible(true);
+	}
+}
+
+void Missile::on_player_unrange_tile(int x, int y, Player * player) {
+	if(getGame()->get_main_player()==player && x==_tile_x && y==_tile_y) {
+		set_visible(false);
+	}
+}
+

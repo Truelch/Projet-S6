@@ -31,6 +31,7 @@ class Missile : public Displayable
 		//
 		Player * get_player();
 		Unit * get_shooter_unit();
+		bool get_visible();
 
 		// --- SET ---
 		void set_origin(float x_origin, float y_origin);  //Il ne faudrait pas l'utiliser
@@ -42,12 +43,16 @@ class Missile : public Displayable
 		//
 		void set_player(Player * player);
 		void set_shooter_unit(Unit * shooter_unit);
+		void set_visible(bool visible);
 		
 		// --- METHODES ---
 		bool update(float dt);
 		bool check_collision();
 		void deal_dmg(Unit * unit);
 		//void check_range();	
+
+		virtual void on_player_range_tile(int x, int y, Player * player);
+		virtual void on_player_unrange_tile(int x, int y, Player * player);
 		
 	private:
 		// --- ATTRIBUTS ---
@@ -61,6 +66,10 @@ class Missile : public Displayable
 		//
 		Player *     _player;
 		Unit *       _shooter_unit;		
+
+		int _tile_x;
+		int _tile_y;
+
 };
 
 #endif

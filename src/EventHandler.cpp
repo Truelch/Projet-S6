@@ -114,3 +114,10 @@ void EventHandler::on_player_select_unit(Player * player, std::vector<Unit *> un
 		_receiver_list[i]->on_player_select_unit(player,unit);
 	}
 }
+
+void EventHandler::on_screen_change() {
+	unsigned int i;
+	for(i=0; i<_receiver_list.size(); i++) {
+		_receiver_list[i]->on_screen_change();
+	}
+}

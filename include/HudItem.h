@@ -11,10 +11,12 @@ class HudItem : public Displayable {
 			moveButtonType,
 			patrolButtonType,
 			retreatButtonType,
+			mapButtonType,
 		} HudItemType;
 
 		
 		HudItem(int x, int y, const char * filename, HudItemType hudItemType,  Game * game, Layer * layer);
+		HudItem(int x, int y, CCSprite * sprite, HudItemType hudItemType,  Game * game, Layer * layer);
 
 		virtual Displayable::DisplayableType getType() { return Displayable::hudItemType; }
 

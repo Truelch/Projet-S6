@@ -37,7 +37,7 @@ class Displayable : public EventReceiver
 	public:
 		Displayable();
 		Displayable(float x, float y, float rotation, const char * filename, Game * game, Layer * layer);
-		Displayable(Game * _game, CCSprite * sprite, Layer * layer);
+		Displayable(Game * game, CCSprite * sprite, Layer * layer);
 		virtual ~Displayable();
 
 		bool containsPoint(CCPoint point);
@@ -50,6 +50,7 @@ class Displayable : public EventReceiver
 		void setGame(Game * game) { _game = game; }
 		void setSprite(CCSprite * sprite) { _sprite = sprite; }
 		void setLayer(Layer * layer) { _layer = layer; }
+
 	private:
 		CCSprite * _sprite;
 		Game * _game;

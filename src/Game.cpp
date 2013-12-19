@@ -24,6 +24,7 @@
 #include "SelectionZone.h"
 #include "EventHandler.h"
 #include "FogOfWarLayer.h"
+#include "MapHud.h"
 
 #include "SimpleAudioEngine.h"
 
@@ -59,7 +60,7 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	for(i=0;i<a;i++)
 	{
 		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,10,x,y);
-		_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,5,22.4f,5.0f,1.0f,"units/tank/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],600);
+		_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,5,22.4f,5.0f,1.0f,"units/tank/model_tank_00.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[0],300);
 		_display_layer->get_unit_layer()->get_unit(i)->add_turret(0,"units/tank/turret_tank_00.png", this, _display_layer->get_missile_layer(), /*-3.0, 8.0,*/0.0,0.0,50.0,"missiles/01.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i));
 	}
 	
@@ -67,14 +68,14 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	for(i=0;i<a;i++)
 	{
 		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,25,x,y);
-		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,22.4,5.0f,1.0f,"units/tank/model_tank_01.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[1],600);
+		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,22.4,5.0f,1.0f,"units/tank/model_tank_01.png", "tank",100,100,1.0,100,100,1.0,6.0,100, _player_list[1],300);
 		_display_layer->get_unit_layer()->get_unit(i+a)->add_turret(0,"units/tank/turret_tank_01.png", this, _display_layer->get_missile_layer(), 0, 0, 
 					50.0,"missiles/02.png", 12, 1.3, 250.0,_display_layer->get_unit_layer()->get_unit(i+a));
 	}
 	
 	//BOSS
 	_display_layer->coordonate_tile_to_cocos2dx(25,20,x,y);
-	_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,5,22.4f,5.0f,1.0f,"units/boss/boss_01.png", "boss",1000,1000,1.0,100,100,1.0,6.0,100, _player_list[0],600);
+	_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,5,65.0f,5.0f,10.0f,"units/boss/boss_01.png", "boss",1000,1000,1.0,100,100,1.0,6.0,100, _player_list[0],300);
 	_display_layer->get_unit_layer()->get_unit(i+a)->add_turret(0,"units/boss/big_turret_01.png", this, _display_layer->get_missile_layer(), 0, 0, 50.0,"missiles/02.png", 75, 5, 500,_display_layer->get_unit_layer()->get_unit(2*a));
 	
 	
@@ -105,18 +106,6 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	//_display_layer->get_building_layer()->add_building(10,5,"buildings/ram01.png",this,_display_layer->get_building_layer(),0,0,"batiment1",_main_player,200);
 
 	set_tile_to_center_of_screen(4,3);
-
-	_hud_layer = new HudLayer(this,"hud.png");
-	_hud_layer->setZOrder(2);
-	addChild(_hud_layer);
-
-	_hud_layer->add_hud_item(789,600,"widgets/move.png",HudItem::moveButtonType);
-	_hud_layer->add_hud_item(856,600,"widgets/stop.png",HudItem::stopButtonType);
-	_hud_layer->add_hud_item(921,600,"widgets/hold_position.png",HudItem::holdPositionButtonType);
-	_hud_layer->add_hud_item(789,666,"widgets/patrol.png",HudItem::patrolButtonType);
-	
-
-	//_hud = new Hud(256,180,"hud.png", this, _hud_layer);
 	
 	_list_music.push_back("audio/02 Bad Wings.mp3");
 	_list_music.push_back("audio/03 How To Be Eaten By A Woman.mp3");
@@ -126,6 +115,20 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_list_music.push_back("audio/09 Fortune Days.mp3");
 
 	shuffle(_list_music.begin(), _list_music.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
+
+	_hud_layer = new HudLayer(this,"hud/hud.png");
+	_hud_layer->setZOrder(2);
+	addChild(_hud_layer);
+
+	_hud_layer->add_hud_item(789,600,"widgets/move.png",HudItem::moveButtonType);
+	_hud_layer->add_hud_item(856,600,"widgets/stop.png",HudItem::stopButtonType);
+	_hud_layer->add_hud_item(921,600,"widgets/hold_position.png",HudItem::holdPositionButtonType);
+	_hud_layer->add_hud_item(789,666,"widgets/patrol.png",HudItem::patrolButtonType);
+	_hud_layer->add_map_hud(104,664,lenght_pixel_to_cocos(200),lenght_pixel_to_cocos(200));
+	update(1.0/30);
+	((MapHud *)(_hud_layer->get_hud_item(_hud_layer->get_number_hud_item()-1)))->update_unit();
+
+	//_hud = new Hud(256,180,"hud/hud.png", this, _hud_layer);
 
 	this->schedule( schedule_selector( Game::update ), 1.0 / 30 );	
 }
@@ -165,6 +168,7 @@ void Game::update(float dt)
 	CCSize size;
 	float vitesse_scroling=(300.0/_display_layer->getScale())*dt;
 
+	/*
 	if(!CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying()) {
 		_index_current_music+=1;
 		if(_index_current_music==_list_music.size()) {
@@ -173,6 +177,7 @@ void Game::update(float dt)
 		}
 		CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(_list_music[_index_current_music].c_str());
 	}
+	*/
 
 	if(_scroll_left_mouse || _scroll_left_key) {
 		_display_layer->getCamera()->getCenterXYZ(&x,&y,&z);
@@ -205,6 +210,9 @@ void Game::update(float dt)
 		_display_layer->getCamera()->setCenterXYZ(x,n,z);
 		_display_layer->getCamera()->getEyeXYZ(&x,&y,&z);
 		_display_layer->getCamera()->setEyeXYZ(x,n,z);
+	}
+	if(_scroll_left_mouse || _scroll_left_key || _scroll_right_mouse || _scroll_right_key || _scroll_up_mouse || _scroll_up_key || _scroll_down_mouse || _scroll_down_key) {
+		getEventHandler()->on_screen_change();
 	}
 
 	for(i=0;i<_display_layer->get_unit_layer()->get_number_unit();i++)
@@ -502,12 +510,14 @@ void Game::mouse_wheel_up() {
 		map_point = convert_opengl_point_to_layer_point(get_mouse_x(),get_mouse_y(),_display_layer);
 		_display_layer->setScale(_display_layer->getScale()+0.05);
 		set_map_point_to_opengl_point(map_point,get_mouse_x(),get_mouse_y());
+		getEventHandler()->on_screen_change();
 	}
 }
 
 void Game::mouse_wheel_down() {
 	if(_display_layer->getScale()>0.1)
 		_display_layer->setScale(_display_layer->getScale()-0.05);
+		getEventHandler()->on_screen_change();
 }
 
 void Game::set_bar_visible(bool visible) {

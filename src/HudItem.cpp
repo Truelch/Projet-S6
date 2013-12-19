@@ -9,3 +9,9 @@ HudItem::HudItem(int x, int y, const char * filename, HudItemType hudItemType, G
 	getSprite()->initWithFile(filename);
 	getSprite()->setPosition(point);
 }
+
+HudItem::HudItem(int x, int y, CCSprite * sprite, HudItemType hudItemType,  Game * game, Layer * layer): Displayable(game,sprite,layer), _hudItemType(hudItemType) {
+	CCPoint point = getGame()->convert_opengl_point_to_layer_point(x,y,layer);
+	getSprite()->setPosition(point);
+}
+

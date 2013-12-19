@@ -9,7 +9,7 @@ class Building;
 class MapTile : public MapDisplayable {
 	public:
 		MapTile();
-		MapTile(float x, float y, const char * filename, Game * game, Layer * layer, bool crossUp = true, bool crossDown = true, bool crossRight = true, bool crossLeft = true);
+		MapTile(std::string id, float x, float y, const char * filename, Game * game, Layer * layer, bool crossUp = true, bool crossDown = true, bool crossRight = true, bool crossLeft = true);
 
 		Building * get_building() { return _building; }
 		Container<Unit>& get_unit_container() { return _unit_container; }
@@ -28,6 +28,7 @@ class MapTile : public MapDisplayable {
 		bool get_crossDown() { return _crossDown; }
 		bool get_crossRight() { return _crossRight; }
 		bool get_crossLeft() { return _crossLeft; }
+		std::string get_id() { return _id; }
 		bool test_achievable();
 
 		void set_building( Building * building ) { _building = building; }
@@ -42,6 +43,7 @@ class MapTile : public MapDisplayable {
 		Container<Unit> _unit_container;
 
 		int _tile_x, _tile_y;
+		std::string _id;
 };
 
 #endif

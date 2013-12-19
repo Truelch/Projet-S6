@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Hud.h"
 #include "EGLView.h"
+#include "MapHud.h"
 
 HudLayer::HudLayer(Game * game, const char * filename): Layer(game) {
 	CCPoint origine = EGLView::sharedOpenGLView()->getVisibleOrigin();
@@ -27,6 +28,10 @@ void HudLayer::remove_hud_item(HudItem * hud_item) {
 
 void HudLayer::add_hud_item(int x, int y, const char * filename, HudItem::HudItemType hudItemType) {
 	_list_hud_item.push_back( new HudItem(x,y, filename, hudItemType, get_game(), this) );
+}
+
+void HudLayer::add_map_hud(int x, int y, float width, float height) {
+	_list_hud_item.push_back( new MapHud(x,y, width, height, get_game(), this) );
 }
 
 HudLayer::~HudLayer() {

@@ -32,6 +32,16 @@ using namespace std;
 class DisplayLayer : public Layer
 {
 	public:
+		typedef struct {
+			std::string sprite;
+			bool        crossUp;
+			bool        crossDown;
+			bool        crossRight;
+			bool        crossLeft;
+			ccColor4B	colorMap;
+		} TileID;
+
+	public:
 		DisplayLayer();
 		DisplayLayer(Game * game);
 		~DisplayLayer();
@@ -58,6 +68,8 @@ class DisplayLayer : public Layer
 		float get_tile_size_cocos();
 		int get_map_width() { return (int)_map_width; }
 		int get_map_height() { return (int)_map_height; }
+
+		std::map<std::string,TileID>& get_sprite_map() { return _sprite_map; }
 		
 		// --- SET ---
 		
@@ -94,6 +106,8 @@ class DisplayLayer : public Layer
 		} Line;
 		vector<Line> _debug_line;
 		bool _debug_mode;
+
+		std::map<std::string,TileID> _sprite_map;
 };
 
 #endif

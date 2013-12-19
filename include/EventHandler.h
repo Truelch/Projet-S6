@@ -41,6 +41,8 @@ class EventHandler {
 
 		void on_player_select_unit(Player * player, std::vector<Unit *> unit);
 
+		void on_screen_change();
+
 	private:
 		std::vector<EventReceiver *> _receiver_list;
 };

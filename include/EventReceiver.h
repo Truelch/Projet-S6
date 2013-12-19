@@ -40,6 +40,8 @@ class EventReceiver {
 
 		virtual void on_player_select_unit(Player * player, std::vector<Unit *> unit) {}
 
+		virtual void on_screen_change() {}
+
 	private:
 		EventHandler * _eventHandler;
 };

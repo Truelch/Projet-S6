@@ -22,6 +22,7 @@ class HudLayer : public Layer {
 		Hud * get_hud() { return _hud; }
 
 		void add_hud_item(int x, int y, const char * filename, HudItem::HudItemType hudItemType);
+		void add_map_hud(int x, int y, float width, float height);
 		HudItem * get_hud_item(int index);
 		void remove_hud_item(HudItem * hud_item);
 		int get_number_hud_item() { return _list_hud_item.size(); }
