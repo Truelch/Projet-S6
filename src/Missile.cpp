@@ -115,7 +115,9 @@ bool Missile::update(float dt)
 	int old_tile_y=_tile_y;
 	CCPoint position = getSprite()->getPosition();
 	getGame()->get_display_layer()->coordonate_cocos2dx_to_tile(position.x, position.y, _tile_x, _tile_y);
-	if(old_tile_x!=_tile_x || old_tile_y!=_tile_y) {
+	if(_tile_x<0 || _tile_x>=getGame()->get_display_layer()->get_map_width() || _tile_y<0 || _tile_y>=getGame()->get_display_layer()->get_map_height())
+		set_visible(false);
+	else if(old_tile_x!=_tile_x || old_tile_y!=_tile_y) {
 		if(!getGame()->get_main_player()->get_map_tile_info()[_tile_y][_tile_x].visible) {
 			set_visible(false);
 		}
@@ -232,7 +234,7 @@ bool Missile::check_collision()
 						if(unit_container.get_t(k)->getPlayer() != _player) //Propriétaire de l'unité vérifiée != propriétaire du missile
 						{
 							distance = unit_container.get_t(k)->getSprite()->getPosition().getDistance(getSprite()->getPosition()); //Distance entre l'unité et le missile
-							if(distance <= _player->get_game()->get_display_layer()->get_unit_layer()->get_unit(k)->get_hitboxRadius())//Vérification de la distance
+							if(distance <= unit_container.get_t(k)->get_hitboxRadius())//Vérification de la distance
 							{
 								//Explosion !
 								deal_dmg(unit_container.get_t(k)); //L'unité i se prend le projectile !

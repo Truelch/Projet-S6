@@ -64,16 +64,14 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	{
 		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,10,x,y);
 		_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,4,22.4f,5.0f,1.0f,"units/tank/model_tank_01.png", "tank",200,200,1.0,100,100,1.0,6.0,100, _player_list[0],400);
-		_display_layer->get_unit_layer()->get_unit(i)->add_turret(0,"units/tank/turret_tank_01.png", this, _display_layer->get_missile_layer(), -3.0, 8.0,
-					75.0,"missiles/01.png", 30, 1.5, 250.0,_display_layer->get_unit_layer()->get_unit(i));
+		_display_layer->get_unit_layer()->get_unit(i)->add_turret(0,"units/tank/turret_tank_01.png", this, _display_layer->get_missile_layer(), -3.0, 8.0,75.0,"missiles/01.png", 30, 1.5, 250.0,_display_layer->get_unit_layer()->get_unit(i));
 	}
 	
 	for(i=0;i<a;i++)
 	{
 		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,8,x,y);
-		_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,10,22.4f,5.0f,1.0f,"units/moto/moto_01.png", "moto",50,50,1.0,100,100,1.0,6.0,100, _player_list[0],400);
-		_display_layer->get_unit_layer()->get_unit(i+a)->add_turret(0,"units/moto/turret_moto.png", this, _display_layer->get_missile_layer(), 0, 0,
-					100.0,"missiles/01.png", 5, 1.5, 200.0,_display_layer->get_unit_layer()->get_unit(i+a));
+		_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,10,15.0f,5.0f,1.0f,"units/moto/moto_01.png", "moto",50,50,1.0,100,100,1.0,6.0,100, _player_list[0],400);
+		_display_layer->get_unit_layer()->get_unit(i+a)->add_turret(0,"units/moto/turret_moto.png", this, _display_layer->get_missile_layer(), 0, 0,100.0,"missiles/01.png", 5, 1.5, 200.0,_display_layer->get_unit_layer()->get_unit(i+a));
 	}	
 	
 	
@@ -82,17 +80,15 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	{
 		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,25,x,y);
 		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,22.4,5.0f,1.0f,"units/tank/model_tank_00.png", "tank",200,200,1.0,100,100,1.0,6.0,100, _player_list[1],600);
-		_display_layer->get_unit_layer()->get_unit(i+a*2)->add_turret(0,"units/tank/turret_tank_00.png", this, _display_layer->get_missile_layer(), -3.0, 8.0, 
-					75.0,"missiles/00.png", 30, 1.5, 250.0,_display_layer->get_unit_layer()->get_unit(i+a*2));
+		_display_layer->get_unit_layer()->get_unit(i+a*2)->add_turret(0,"units/tank/turret_tank_00.png", this, _display_layer->get_missile_layer(), -3.0, 8.0, 75.0,"missiles/00.png", 30, 1.5, 250.0,_display_layer->get_unit_layer()->get_unit(i+a*2));
 	}
 	
 	
 	
 	//BOSS
 	_display_layer->coordonate_tile_to_cocos2dx(25,20,x,y);
-	_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,1,22.4f,5.0f,1.0f,"units/boss/boss_00.png", "boss",1000,1000,1.0,100,100,1.0,6.0,100, _player_list[1],600);
-	_display_layer->get_unit_layer()->get_unit(a*3)->add_turret(0,"units/boss/big_turret_00.png", this, _display_layer->get_missile_layer(), 0, 0, 
-					75.0,"missiles/00.png", 75, 5, 400,_display_layer->get_unit_layer()->get_unit(a*3));
+	_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,1,68.0f,5.0f,1.0f,"units/boss/boss_00.png", "boss",1000,1000,1.0,100,100,1.0,6.0,100, _player_list[1],600);
+	_display_layer->get_unit_layer()->get_unit(a*3)->add_turret(0,"units/boss/big_turret_00.png", this, _display_layer->get_missile_layer(), 0, 0, 75.0,"missiles/00.png", 75, 5, 400,_display_layer->get_unit_layer()->get_unit(a*3));
 	//
 	_display_layer->get_unit_layer()->get_unit(a*3)->add_turret(0,"units/boss/turret_00.png", this, _display_layer->get_missile_layer(), 50, 0, 
 					75.0,"missiles/00.png", 5, 2, 300,_display_layer->get_unit_layer()->get_unit(a*3));
