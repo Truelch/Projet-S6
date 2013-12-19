@@ -124,7 +124,6 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 
 	Building * building = new Building(tile, "ram01.png", this, 0, 0);
 	_display_layer->get_building_layer()->addChild(building->getSprite());
-	*/
 
 	//_display_layer->get_building_layer()->add_building(10,5,"buildings/ram01.png",this,_display_layer->get_building_layer(),0,0,"batiment1",_main_player,200);
 
