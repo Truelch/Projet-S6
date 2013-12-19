@@ -14,6 +14,7 @@ AI::AI(): EventReceiver()
 	//
 	std::cout << "Constructeur d'AI" << std::endl;
 	set_periodic_time(0);
+	set_go(false);
 }
 
 AI::AI(Scene * scene, Player * player, Difficulty difficulty): EventReceiver(scene->getEventHandler()), _scene(scene)
@@ -46,6 +47,7 @@ AI::AI(Scene * scene, Player * player, Difficulty difficulty): EventReceiver(sce
 		set_omniscience(true);
 	}	
 	set_periodic_time(0);
+	set_go(false);
 }
 
 AI::AI(Scene * scene, Player * player, AI::PlayStyle play_style, float coeff_ressource, float dt_time, bool omniscience): EventReceiver(scene->getEventHandler()), _scene(scene)
@@ -57,6 +59,7 @@ AI::AI(Scene * scene, Player * player, AI::PlayStyle play_style, float coeff_res
 	set_dt_time(dt_time);
 	set_omniscience(omniscience);
 	set_periodic_time(0);
+	set_go(false);
 }
 
 
@@ -95,6 +98,11 @@ float AI::get_percent_life_min()
 float AI::get_periodic_time()
 {
 	return _periodic_time;
+}
+
+bool AI::get_go()
+{
+	return _go;
 }
 
 //
@@ -206,6 +214,11 @@ void AI::set_periodic_time(float periodic_time)
 	_periodic_time = periodic_time;
 }
 
+void AI::set_go(bool go)
+{
+	_go = go;
+}
+
 void AI::set_scene(Scene * scene)
 {
 	_scene = scene;
@@ -221,7 +234,11 @@ void AI::set_player(Player * player)
 void AI::update(float dt)
 {
 	set_periodic_time(_periodic_time+dt);
-	if(_periodic_time>10)
+	if((_periodic_time>75) && (_go==false))
+	{
+		_go = true;
+	}
+	if((_periodic_time>10) && (_go==true))
 	{
 		set_periodic_time(0);
 		ai_handler();
@@ -251,21 +268,24 @@ void AI::ai_handler() // PRESENTATION
 
 	for(i=0;i<_player->get_unit_container().get_number_t();i++)
 	{
-		percent_of_life = _player->get_unit_container().get_t(i)->get_hp()/(float)_player->get_unit_container().get_t(i)->get_hp_max();
-		if (percent_of_life > percent_life_min) //Unité en état de combattre
+		if(_player->get_unit_container().get_t(i)->get_name()!="boss")
 		{
-			x = _player->get_game()->get_main_player()->get_unit_container().get_t(random_index)->getSprite()->getPositionX();
-			y = _player->get_game()->get_main_player()->get_unit_container().get_t(random_index)->getSprite()->getPositionY();
-			_player->get_unit_container().get_t(i)->set_destination(x,y);
-		}
+			percent_of_life = _player->get_unit_container().get_t(i)->get_hp()/(float)_player->get_unit_container().get_t(i)->get_hp_max();
+			if (percent_of_life > percent_life_min) //Unité en état de combattre
+			{
+				x = _player->get_game()->get_main_player()->get_unit_container().get_t(random_index)->getSprite()->getPositionX();
+				y = _player->get_game()->get_main_player()->get_unit_container().get_t(random_index)->getSprite()->getPositionY();
+				_player->get_unit_container().get_t(i)->set_destination(x,y);
+			}
 			
-		else //hp trop faibles
-		{
-			//x, y random !
-			std::cout << x_max << "," << y_max << std::endl;
-			x = rand() % x_max;
-			y = rand() % y_max;	
-			_player->get_unit_container().get_t(i)->set_destination(x,y);
+			else //hp trop faibles
+			{
+				//x, y random !
+				std::cout << x_max << "," << y_max << std::endl;
+				x = rand() % x_max;
+				y = rand() % y_max;	
+				_player->get_unit_container().get_t(i)->set_destination(x,y);
+			}
 		}
 	}
 }

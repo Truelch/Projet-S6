@@ -57,6 +57,7 @@ class AI : public EventReceiver {
 		bool       _omniscience;      //true : l'AI sait tout ce qui se passe et ne fait pas de décisions aléatoires (pour le scout et assauts de début de partie par ex)		
 		float      _percent_life_min; //pourcentage minimal de la vie pour laquelle l'unité est autorisée à combattre
 		float      _periodic_time;
+		bool       _go;
 		
 		/*
 		AIAttackManager *  _ai_attack_manager;
@@ -92,6 +93,7 @@ class AI : public EventReceiver {
 		bool       get_omniscience();
 		float      get_percent_life_min();
 		float      get_periodic_time();
+		bool       get_go();
 		
 		/*
 		AIAttackManager *  get_ai_attack_manager();
@@ -123,6 +125,7 @@ class AI : public EventReceiver {
 		void set_omniscience(bool omniscience);
 		void set_percent_life_min(float percent_life_min);
 		void set_periodic_time(float periodic_time);
+		void set_go(bool go);
 		
 		void set_scene(Scene * scene);
 		void set_player(Player * player);
