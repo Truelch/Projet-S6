@@ -9,6 +9,10 @@
 #include "Building.h"
 #include "HudItem.h"
 #include "SimpleAudioEngine.h"
+#include "UnitLayer.h"
+#include "SimpleAudioEngine.h"
+#include "AppDelegate.h"
+#include "VictoryScene.h"
 
 Player::Player(): EventReceiver(), _game(NULL)
 {
@@ -150,6 +154,7 @@ bool Player::is_ally(Player * player)
 
 void Player::on_unit_destroyed(Unit * unit) {
 	unsigned int i;
+	int j;
 	int x,y;
 	if(unit->getPlayer()==this) {
 		const vector<MapTile *>& range_map_tile_list = unit->get_range_map_tile_list();
@@ -161,6 +166,14 @@ void Player::on_unit_destroyed(Unit * unit) {
 				get_game()->getEventHandler()->on_player_unrange_tile(x,y,this);
 			}
 		}
+	}
+	else {
+		for(j=0;j<get_game()->get_display_layer()->get_unit_layer()->get_number_unit();j++) {
+			if(get_game()->get_display_layer()->get_unit_layer()->get_unit(j)->getPlayer()!=this)
+				break;
+		}
+		if(j==get_game()->get_display_layer()->get_unit_layer()->get_number_unit())
+			cocos2d::CCDirector::sharedDirector()->replaceScene(((AppDelegate *)(cocos2d::CCApplication::sharedApplication()))->get_victory_scene());
 	}
 }
 

@@ -281,7 +281,6 @@ void AI::ai_handler() // PRESENTATION
 			else //hp trop faibles
 			{
 				//x, y random !
-				std::cout << x_max << "," << y_max << std::endl;
 				x = rand() % x_max;
 				y = rand() % y_max;	
 				_player->get_unit_container().get_t(i)->set_destination(x,y);

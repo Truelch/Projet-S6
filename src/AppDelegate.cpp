@@ -8,6 +8,7 @@
 #include "AppMacros.h"
 #include "EGLView.h"
 #include "SimpleAudioEngine.h"
+#include "VictoryScene.h"
 
 USING_NS_CC;
 using namespace std;
@@ -77,6 +78,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	_menu->add_menu_item(new PlayButton("widgets/jouer_1.png","widgets/jouer_0.png"));
 	_menu->add_menu_item(new CloseButton("widgets/quitter_1.png","widgets/quitter_0.png"));
 	_menu->update_position();
+	_victory_scene = new VictoryScene("victoire.png");
 
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->setEffectsVolume(0.1);
 	if(!CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying())

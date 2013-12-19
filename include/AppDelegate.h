@@ -5,6 +5,7 @@
 
 class Game;
 class Menu;
+class VictoryScene;
 
 /**
 @brief    The cocos2d Application.
@@ -16,6 +17,7 @@ class  AppDelegate : private cocos2d::CCApplication
 	private:
 		Game * _game;
 		Menu * _menu;
+		VictoryScene * _victory_scene;
 
 	public:
 		AppDelegate();
@@ -42,6 +44,7 @@ class  AppDelegate : private cocos2d::CCApplication
 
 		Game * get_game() { return _game; }
 		Menu * get_menu() { return _menu; }
+		VictoryScene * get_victory_scene() { return _victory_scene; }
 };
 
 #endif // _APP_DELEGATE_H_
