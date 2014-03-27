@@ -107,6 +107,10 @@ void MapHud::update_unit() {
 	_texture_unit->apply();
 }
 
+void MapHud::on_unit_destroyed(Unit * unit) {
+	update_unit();
+}
+
 void MapHud::on_moveable_change_map_tile(int x, int y, Moveable * moveable) {
 	update_unit();
 }

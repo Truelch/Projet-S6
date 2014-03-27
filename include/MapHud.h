@@ -18,6 +18,7 @@ class MapHud : public HudItem {
 		virtual void on_player_unrange_tile(int x, int y, Player * player);
 		virtual void on_screen_change();
 		virtual void on_moveable_change_map_tile(int x, int y, Moveable * moveable);
+		virtual void on_unit_destroyed(Unit * unit);
 
 	private:
 		CCTexture2DMutable * _texture;

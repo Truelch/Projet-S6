@@ -32,13 +32,26 @@ using namespace std;
 class DisplayLayer : public Layer
 {
 	public:
+		typedef enum {
+			none,
+			collision,
+			gradient,
+		} Joint;
+		typedef struct {
+			Joint        up;
+			Joint        upRight;
+			Joint        right;
+			Joint        downRigh;
+			Joint        down;
+			Joint        downLeft;
+			Joint        left;
+			Joint        upLeft;
+		} JointSet;
 		typedef struct {
 			std::string sprite;
-			bool        crossUp;
-			bool        crossDown;
-			bool        crossRight;
-			bool        crossLeft;
-			ccColor4B	colorMap;
+			JointSet     jointSet;
+			int          level;
+			ccColor4B    colorMap;
 		} TileID;
 
 	public:
@@ -77,9 +90,36 @@ class DisplayLayer : public Layer
 		void init2();
 		void coordonate_tile_to_cocos2dx(int x, int y, float& cocos_x, float& cocos_y);
 		void coordonate_cocos2dx_to_tile(float cocos_x, float cocos_y, int& x, int& y);
-		int init_file(std::string filename);
+
+		char init_file(std::string filename);
 		
 	private:
+	
+		class TileSetItem {
+			public:
+				TileSetItem(int i, int j): _i(i), _j(j), _sprite(""), _falsity(0) {}
+				TileSetItem(int i, int j, std::string sprite, int falsity): _i(i), _j(j), _sprite(sprite), _falsity(falsity) {}
+				bool operator<(const TileSetItem& t) const {
+					if(_falsity!=t._falsity)
+						return _falsity<t._falsity;
+					if(_i!=t._i)
+						return _i<t._i;
+					return _j<t._j;
+				}
+				bool operator==(const TileSetItem& t) const {
+					return _i==t._i && _j==t._j;
+				}
+				int _i,_j;
+				std::string _sprite;
+				int _falsity;
+		};
+
+		std::string search_sprite(JointSet jointSet, int level);
+		void check_string_tile(const StringMatrix& string_matrix, unsigned int i, unsigned int j, std::string& new_sprite, int& falsity);
+		void check_string_matrix(StringMatrix& string_matrix);
+		char read_plain_text_file(string filename, StringMatrix& string_matrix);
+		char read_tmx_file(string filename, StringMatrix& string_matrix);
+
 		LayerRGBA *        _black_layer;          //z = 0
 		BackgroundLayer *  _background_layer;     //z = 1
 		LayerRGBA *        _opacity_layer;        //z = 2

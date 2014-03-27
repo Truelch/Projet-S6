@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<units>
+	<unit name="tank">
+		<property name="move_speed" value=4/>
+		<property name="hitboxRadius" value=22.4/>
+		<property name="groundFixture" value=5.0/>
+		<property name="density" value=1.0/>
+		<property name="filename" value="units/tank/model_tank_%02d.png"/>
+		<property name="hp" value=200/>
+		<property name="hp_max" value=200/>
+		<property name="hp_regen" value=1/>
+		<property name="power" value=100/>
+		<property name="power_max" value=100/>
+		<property name="power_regen" value=1/>
+		<property name="armor" value=6/>
+		<property name="prod_time" value=100/>
+		<property name="sight" value=400/>
+		<turrets>
+			<turret>
+				<property name="rotation" value=0/>
+				<property name="filename" value="units/tank/turret_tank_%02d.png"/>
+				<property name="x_relative" value=-3.0/>
+				<property name="y_relative" value=8.0/>
+				<property name="missile_speed" value=75.0/>
+				<property name="missile_filename" value="missiles/%02d.png"/>
+				<property name="damage" value=30/>
+				<property name="cooldown" value=1.5/>
+				<property name="range_max" value=250.0/>
+			</turret>
+		</turrets>
+	</unit>
+	<unit name="moto">
+		<property name="move_speed" value=10/>
+		<property name="hitboxRadius" value=15.0/>
+		<property name="groundFixture" value=5.0/>
+		<property name="density" value=1.0/>
+		<property name="filename" value="units/moto/moto_%02d.png"/>
+		<property name="hp" value=50/>
+		<property name="hp_max" value=50/>
+		<property name="hp_regen" value=1/>
+		<property name="power" value=100/>
+		<property name="power_max" value=100/>
+		<property name="power_regen" value=1/>
+		<property name="armor" value=6/>
+		<property name="prod_time" value=100/>
+		<property name="sight" value=400/>
+		<turrets>
+			<turret>
+				<property name="rotation" value=0/>
+				<property name="filename" value="units/moto/turret_moto.png"/>
+				<property name="x_relative" value=0/>
+				<property name="y_relative" value=0/>
+				<property name="missile_speed" value=100.0/>
+				<property name="missile_filename" value="missiles/%02d.png"/>
+				<property name="damage" value=5/>
+				<property name="cooldown" value=1.5/>
+				<property name="range_max" value=200.0/>
+			</turret>
+		</turrets>
+	</unit>
+	<unit name="boss">
+		<property name="move_speed" value=1/>
+		<property name="hitboxRadius" value=68.0/>
+		<property name="groundFixture" value=5.0/>
+		<property name="density" value=1.0/>
+		<property name="filename" value="units/boss/boss_%02d.png"/>
+		<property name="hp" value=1000/>
+		<property name="hp_max" value=1000/>
+		<property name="hp_regen" value=1/>
+		<property name="power" value=100/>
+		<property name="power_max" value=100/>
+		<property name="power_regen" value=1/>
+		<property name="armor" value=6/>
+		<property name="prod_time" value=100/>
+		<property name="sight" value=600/>
+		<turrets>
+			<turret>
+				<property name="rotation" value=0/>
+				<property name="filename" value="units/boss/big_turret_%02d.png"/>
+				<property name="x_relative" value=0/>
+				<property name="y_relative" value=0/>
+				<property name="missile_speed" value=75.0/>
+				<property name="missile_filename" value="missiles/%02d.png"/>
+				<property name="damage" value=75/>
+				<property name="cooldown" value=5/>
+				<property name="range_max" value=400/>
+			</turret>
+			<turret>
+				<property name="rotation" value=0/>
+				<property name="filename" value="units/boss/turret_%02d.png"/>
+				<property name="x_relative" value=50/>
+				<property name="y_relative" value=0/>
+				<property name="missile_speed" value=75.0/>
+				<property name="missile_filename" value="missiles/%02d.png"/>
+				<property name="damage" value=5/>
+				<property name="cooldown" value=2/>
+				<property name="range_max" value=300/>
+			</turret>
+			<turret>
+				<property name="rotation" value=0/>
+				<property name="filename" value="units/boss/turret_%02d.png"/>
+				<property name="x_relative" value=-50/>
+				<property name="y_relative" value=0/>
+				<property name="missile_speed" value=75.0/>
+				<property name="missile_filename" value="missiles/%02d.png"/>
+				<property name="damage" value=5/>
+				<property name="cooldown" value=2/>
+				<property name="range_max" value=300/>
+			</turret>
+			<turret>
+				<property name="rotation" value=0/>
+				<property name="filename" value="units/boss/turret_%02d.png"/>
+				<property name="x_relative" value=25/>
+				<property name="y_relative" value=43/>
+				<property name="missile_speed" value=75.0/>
+				<property name="missile_filename" value="missiles/%02d.png"/>
+				<property name="damage" value=5/>
+				<property name="cooldown" value=2/>
+				<property name="range_max" value=300/>
+			</turret>
+			<turret>
+				<property name="rotation" value=0/>
+				<property name="filename" value="units/boss/turret_%02d.png"/>
+				<property name="x_relative" value=23/>
+				<property name="y_relative" value=-43/>
+				<property name="missile_speed" value=75.0/>
+				<property name="missile_filename" value="missiles/%02d.png"/>
+				<property name="damage" value=5/>
+				<property name="cooldown" value=2/>
+				<property name="range_max" value=300/>
+			</turret>
+			<turret>
+				<property name="rotation" value=0/>
+				<property name="filename" value="units/boss/turret_%02d.png"/>
+				<property name="x_relative" value=-25/>
+				<property name="y_relative" value=43/>
+				<property name="missile_speed" value=75.0/>
+				<property name="missile_filename" value="missiles/%02d.png"/>
+				<property name="damage" value=5/>
+				<property name="cooldown" value=2/>
+				<property name="range_max" value=300/>
+			</turret>
+			<turret>
+				<property name="rotation" value=0/>
+				<property name="filename" value="units/boss/turret_%02d.png"/>
+				<property name="x_relative" value=-25/>
+				<property name="y_relative" value=-43/>
+				<property name="missile_speed" value=75.0/>
+				<property name="missile_filename" value="missiles/%02d.png"/>
+				<property name="damage" value=5/>
+				<property name="cooldown" value=2/>
+				<property name="range_max" value=300/>
+			</turret>
+		</turrets>
+	</unit>
+</units>

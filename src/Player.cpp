@@ -154,7 +154,7 @@ bool Player::is_ally(Player * player)
 
 void Player::on_unit_destroyed(Unit * unit) {
 	unsigned int i;
-	int j;
+	//int j;
 	int x,y;
 	if(unit->getPlayer()==this) {
 		const vector<MapTile *>& range_map_tile_list = unit->get_range_map_tile_list();
@@ -167,7 +167,8 @@ void Player::on_unit_destroyed(Unit * unit) {
 			}
 		}
 	}
-	else {
+	/*
+	else if(get_game()->get_main_player()==this) {
 		for(j=0;j<get_game()->get_display_layer()->get_unit_layer()->get_number_unit();j++) {
 			if(get_game()->get_display_layer()->get_unit_layer()->get_unit(j)->getPlayer()!=this)
 				break;
@@ -175,6 +176,7 @@ void Player::on_unit_destroyed(Unit * unit) {
 		if(j==get_game()->get_display_layer()->get_unit_layer()->get_number_unit())
 			cocos2d::CCDirector::sharedDirector()->replaceScene(((AppDelegate *)(cocos2d::CCApplication::sharedApplication()))->get_victory_scene());
 	}
+	*/
 }
 
 void Player::on_unit_range_tile(int x, int y, Unit * unit) {

@@ -19,8 +19,11 @@ Turret::Turret(): CCSprite()
 	//
 }
 
-Turret::Turret(float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit): CCSprite(), _rotation(rotation), _relative_position(CCPoint(x_relative,y_relative)), _missile_speed(missile_speed), _missile_filename(missile_filename), _damage(damage), _cooldown(cooldown),_range_max(range_max)
+Turret::Turret(float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit): CCSprite(), _rotation(rotation), _relative_position(CCPoint(x_relative,y_relative)), _missile_speed(missile_speed), _damage(damage), _cooldown(cooldown),_range_max(range_max)
 {
+	_missile_filename = (char *)malloc(100);
+	strcpy(_missile_filename,missile_filename);
+
 	initWithFile(filename);
 	change_unit(shooter_unit,_shooter_unit);
 	_relative_position.x+=shooter_unit->getSprite()->getTextureRect().size.height/2.0;
@@ -53,6 +56,10 @@ Turret::Turret(float rotation, const char * filename, Game * game, Layer * layer
 	{
 		setRotation(0);
 	}
+}
+
+Turret::~Turret() {
+	free(_missile_filename);
 }
 
 // --- GET ---
@@ -112,7 +119,7 @@ void Turret::set_missile_speed(float missile_speed)
 
 void Turret::set_missile_filename(const char * missile_filename)
 {
-	_missile_filename = missile_filename;
+	strcpy(_missile_filename,missile_filename);
 }
 
 void Turret::set_damage(float damage)

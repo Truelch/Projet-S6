@@ -37,8 +37,9 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 {
 	std::cout << "Constructeur de Game" << std::endl;
 	_display_layer = new DisplayLayer(this);
-	if(_display_layer->init_file(CCFileUtils::sharedFileUtils()->getSearchPaths()[0]+"../map/map1")==EXIT_FAILURE) {
+	if(_display_layer->init_file(CCFileUtils::sharedFileUtils()->getSearchPaths()[0]+"../map/map.tmx")==EXIT_FAILURE) {
 		std::cerr << "ERREUR : fichier map invalide" << std::endl;
+		exit(1);
 	}
 	//_display_layer->setZOrder(1);
 	_display_layer->setScale(0.2);
@@ -56,51 +57,40 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 	_main_player = _player_list[0];
 	//AI
 	
+	if(_display_layer->get_unit_layer()->init_unit_catalog(CCFileUtils::sharedFileUtils()->getSearchPaths()[0]+"../unit_catalog.xml")==EXIT_FAILURE) {
+		std::cerr << "ERREUR : fichier catalogue d'unité invalide" << std::endl;
+		exit(1);
+	}
+
 	int i=0;
 	float x,y;
 	//Amis
 	int a = 8;
-	for(i=0;i<a;i++)
-	{
-		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,10,x,y);
-		_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,4,22.4f,5.0f,1.0f,"units/tank/model_tank_01.png", "tank",200,200,1.0,100,100,1.0,6.0,100, _player_list[0],400);
-		_display_layer->get_unit_layer()->get_unit(i)->add_turret(0,"units/tank/turret_tank_01.png", this, _display_layer->get_missile_layer(), -3.0, 8.0,75.0,"missiles/01.png", 30, 1.5, 250.0,_display_layer->get_unit_layer()->get_unit(i));
-	}
 	
 	for(i=0;i<a;i++)
 	{
-		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,8,x,y);
-		_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,10,15.0f,5.0f,1.0f,"units/moto/moto_01.png", "moto",50,50,1.0,100,100,1.0,6.0,100, _player_list[0],400);
-		_display_layer->get_unit_layer()->get_unit(i+a)->add_turret(0,"units/moto/turret_moto.png", this, _display_layer->get_missile_layer(), 0, 0,100.0,"missiles/01.png", 5, 1.5, 200.0,_display_layer->get_unit_layer()->get_unit(i+a));
+		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,10,x,y);
+		_display_layer->get_unit_layer()->add_unit("moto",x,y,x,y,0,"moto",_player_list[0]);
 	}	
+
+	for(i=0;i<a;i++)
+	{
+		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,8,x,y);
+		_display_layer->get_unit_layer()->add_unit("tank",x,y,x,y,0,"tank",_player_list[0]);
+	}
 	
 	
 	//Ennemis
 	for(i=0;i<a;i++)
 	{
 		_display_layer->coordonate_tile_to_cocos2dx(2*i+5,25,x,y);
-		_display_layer->get_unit_layer()->add_unit(x,y,x,y,-90,5,22.4,5.0f,1.0f,"units/tank/model_tank_00.png", "tank",200,200,1.0,100,100,1.0,6.0,100, _player_list[1],600);
-		_display_layer->get_unit_layer()->get_unit(i+a*2)->add_turret(0,"units/tank/turret_tank_00.png", this, _display_layer->get_missile_layer(), -3.0, 8.0, 75.0,"missiles/00.png", 30, 1.5, 250.0,_display_layer->get_unit_layer()->get_unit(i+a*2));
+		_display_layer->get_unit_layer()->add_unit("tank",x,y,x,y,0,"tank",_player_list[1]);
 	}
 	
 	
 	//BOSS
 	_display_layer->coordonate_tile_to_cocos2dx(25,20,x,y);
-	_display_layer->get_unit_layer()->add_unit(x,y,x,y,0,1,68.0f,5.0f,1.0f,"units/boss/boss_00.png", "boss",1000,1000,1.0,100,100,1.0,6.0,100, _player_list[1],600);
-	_display_layer->get_unit_layer()->get_unit(a*3)->add_turret(0,"units/boss/big_turret_00.png", this, _display_layer->get_missile_layer(), 0, 0, 75.0,"missiles/00.png", 75, 5, 400,_display_layer->get_unit_layer()->get_unit(a*3));
-	//
-	_display_layer->get_unit_layer()->get_unit(a*3)->add_turret(0,"units/boss/turret_00.png", this, _display_layer->get_missile_layer(), 50, 0, 
-					75.0,"missiles/00.png", 5, 2, 300,_display_layer->get_unit_layer()->get_unit(a*3));
-	_display_layer->get_unit_layer()->get_unit(a*3)->add_turret(0,"units/boss/turret_00.png", this, _display_layer->get_missile_layer(), -50, 0, 
-					75.0,"missiles/00.png", 5, 2, 300,_display_layer->get_unit_layer()->get_unit(a*3));	
-	_display_layer->get_unit_layer()->get_unit(a*3)->add_turret(0,"units/boss/turret_00.png", this, _display_layer->get_missile_layer(), 25, 43, 
-					75.0,"missiles/00.png", 5, 2, 300,_display_layer->get_unit_layer()->get_unit(a*3));	
-	_display_layer->get_unit_layer()->get_unit(a*3)->add_turret(0,"units/boss/turret_00.png", this, _display_layer->get_missile_layer(), 25, -43, 
-					75.0,"missiles/00.png", 5, 2, 300,_display_layer->get_unit_layer()->get_unit(a*3));	
-	_display_layer->get_unit_layer()->get_unit(a*3)->add_turret(0,"units/boss/turret_00.png", this, _display_layer->get_missile_layer(), -25, 43, 
-					75.0,"missiles/00.png", 5, 2, 300,_display_layer->get_unit_layer()->get_unit(a*3));	
-	_display_layer->get_unit_layer()->get_unit(a*3)->add_turret(0,"units/boss/turret_00.png", this, _display_layer->get_missile_layer(), -25, -43, 
-					75.0,"missiles/00.png", 5, 2, 300,_display_layer->get_unit_layer()->get_unit(a*3));	
+	_display_layer->get_unit_layer()->add_unit("boss",x,y,x,y,0,"boss",_player_list[1]);
 
 	/*
 	_display_layer->get_unit_layer()->add_unit(400,200,400,200,-90,5,5.0f,1.0f,"units/tank01.png", "tank",100,100,100,100,100,100,100,100, _player_list[0],200);
@@ -124,17 +114,20 @@ Game::Game(): Scene(), _scroll_left_mouse(false), _scroll_right_mouse(false), _s
 
 	Building * building = new Building(tile, "ram01.png", this, 0, 0);
 	_display_layer->get_building_layer()->addChild(building->getSprite());
+	*/
 
 	//_display_layer->get_building_layer()->add_building(10,5,"buildings/ram01.png",this,_display_layer->get_building_layer(),0,0,"batiment1",_main_player,200);
 
 	set_tile_to_center_of_screen(4,3);
 	
 	_list_music.push_back("audio/02 Bad Wings.mp3");
+	/*
 	_list_music.push_back("audio/03 How To Be Eaten By A Woman.mp3");
 	_list_music.push_back("audio/04 A Dream Within A Dream.mp3");
 	_list_music.push_back("audio/05 Fistful Of Silence.mp3");
 	_list_music.push_back("audio/08 Drive It Like You Stole It.mp3");
 	_list_music.push_back("audio/09 Fortune Days.mp3");
+	*/
 
 	shuffle(_list_music.begin(), _list_music.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
 

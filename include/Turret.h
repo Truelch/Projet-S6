@@ -12,8 +12,8 @@ class Turret : public CCSprite
 {
 	public:
 		Turret();
-		Turret(float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, 
-				float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit);
+		Turret(float rotation, const char * filename, Game * game, Layer * layer, float x_relative, float y_relative, float missile_speed, const char * missile_filename, int damage, float cooldown, float range_max, Unit * shooter_unit);
+		virtual ~Turret();
 		//~Turret(); //Besoin ? => Nope
 				
 		// --- GET ---
@@ -57,7 +57,7 @@ class Turret : public CCSprite
 		float           _rotation;
 		CCPoint         _relative_position;
 		float           _missile_speed;
-		const char *    _missile_filename;		
+		char *    _missile_filename;		
 		float           _damage;	
 		float           _current_cooldown; //temps écoulé depuis le dernier tir. Si il vaut cooldown, il ne s'incrémente plus et le projectile est prêt à être tiré.
 		float           _cooldown;
